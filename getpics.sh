@@ -20,4 +20,3 @@ case $DESKTOP_SESSION in
         /usr/bin/gsettings set org.gnome.desktop.background picture-uri file:///$(pwd)/$imname
         ;;
 esac
-cd ~/Desktop
