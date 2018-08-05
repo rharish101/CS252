@@ -7,7 +7,7 @@ fi
 cd ~/apod
 wget http://apod.nasa.gov/apod/astropix.html
 a='http://apod.nasa.gov/apod/'
-b=$(grep 'href="i' astropix.html | awk -F "\"" '{print $2}')
+b=$(awk -F "\"" '/href="i/{print $2}' astropix.html)
 wget $a$b
 imname=$(ls *.jpg)
 case $DESKTOP_SESSION in
