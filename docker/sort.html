@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+Give Numbers with space to sort:
+<input name="searchTxt" type="text" id="searchTxt" class="searchField"/>
+
+
+<p>Click the button to display the sorted array.</p>
+
+<button onclick="myFunction()">Sort Numbers</button>
+
+<p id="demo"></p>
+
+<script>
+function sortNumber(a,b) {
+    return a - b;
+}
+
+
+function myFunction() {
+    var str = document.getElementById("searchTxt").value;
+    
+    var res = str.trim().split(" ").sort(sortNumber);
+    document.getElementById("demo").innerHTML = res;
+}
+</script>
+
+</body>
+</html>
