@@ -3,6 +3,7 @@
 /****************** SERVER CODE ****************/
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <netinet/in.h>
 #include <string.h>
 #include <sys/socket.h>
@@ -52,9 +53,22 @@ int main(){
 
       printf("%s\n",buffer );
 
+      // READ file
+      char *file_contents;
+      long input_file_size;
+      FILE *input_file = fopen("demo.html", "rb");
+      fseek(input_file, 0, SEEK_END);
+      input_file_size = ftell(input_file);
+      rewind(input_file);
+      file_contents = malloc((input_file_size + 1) * (sizeof(char)));
+      fread(file_contents, sizeof(char), input_file_size, input_file);
+      fclose(input_file);
+      file_contents[input_file_size] = 0;
+
+
       /*---- Send message to the socket of the incoming connection ----*/
 
-      send(newSocket,buffer,1024,0);
+      send(newSocket,file_contents,input_file_size+1,0);
   }
 
   return 0;
