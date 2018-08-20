@@ -4,6 +4,7 @@
 /****************** CLIENT CODE ****************/
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <string.h>
@@ -45,7 +46,20 @@ int main(){
 
     /*---- Print the received message ----*/
 
-    printf("Data received: %s\n",buffer);
+    char html_code[8] = "\n<html>";
+    char slice[8];
+    for (int i = 0; (buffer[i]) && (i < 7); i++)
+        slice[i] = buffer[i];
+    slice[7] = '\0';
+    if (strcmp(html_code, slice) != 0)
+        printf("Data received: '%s'\n", buffer);
+    else
+    {
+        FILE *html = fopen("temp.html", "wb");
+        fputs(buffer, html);
+        printf("HTML received\n");
+        popen("./display_html.sh ./temp.html", "r");
+    }
 
     return 0;
 }
