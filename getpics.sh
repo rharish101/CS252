@@ -18,6 +18,8 @@ case $DESKTOP_SESSION in
         ;;
     "ubuntu")
         ;&
+    "gnome-classic")
+        ;&
     "gnome")
         /usr/bin/gsettings set org.gnome.desktop.background picture-uri file:///$(pwd)/$imname
         ;;
