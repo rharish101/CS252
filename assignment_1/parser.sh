@@ -23,4 +23,4 @@ truck=$((truck > 4 ? 4 : truck))
 cat=$((cat > 4 ? 4 : cat))
 dog=$((dog > 4 ? 4 : dog))
 
-echo "$car,$truck,$cat,$dog"
+echo -e "$car\n$truck\n$cat\n$dog"
