@@ -38,12 +38,12 @@ fi
 if [[ $1 == "-h" ]] || [[ $1 == "--help" ]]; then
     usage
     exit 0
-else
+elif [[ $1 != "" ]]; then
     usage
     exit 1
 fi
 
-curl "https://docs.google.com/forms/d/e/1FAIpQLSc3ypY5atlevImjuCVBbIqVwO2PdJuFzJn7utdDL1Lnxj6v4g/formResponse" -d ifq -d "entry.564303604='$name'" -d "entry.1542955752='$suggestion'" -d submit=Submit -o /tmp/google.html
+curl -s "https://docs.google.com/forms/d/e/1FAIpQLSc3ypY5atlevImjuCVBbIqVwO2PdJuFzJn7utdDL1Lnxj6v4g/formResponse" -d ifq -d "entry.564303604='$name'" -d "entry.1542955752='$suggestion'" -d submit=Submit -o /tmp/google.html
 
 if [ -f "/bin/google-chrome-stable" ] || [ -f "/usr/bin/google-chrome-stable" ]; then
     google-chrome-stable /tmp/google.html
