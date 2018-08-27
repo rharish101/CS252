@@ -50,3 +50,4 @@ if [ -f "/bin/google-chrome-stable" ] || [ -f "/usr/bin/google-chrome-stable" ];
 else
     firefox /tmp/google.html
 fi
+rm /tmp/google.html
