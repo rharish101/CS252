@@ -10,20 +10,6 @@
 #include <arpa/inet.h>
 
 
-// char* get_image_name(int i, char * image_type){
-//       char * file_name = (char*)malloc(200 * sizeof(char));
-//
-//       char img_flag[5];
-//       sprintf(img_flag, "%d", i);
-//
-//       strcat(file_name,"images/");
-//       strcat(file_name,image_type);
-//       strcat(file_name,"/");
-//       strcat(file_name,img_flag);
-//       strcat(file_name,".jpg\0");
-//       return file_name;
-// }
-
 int main(){
   int welcomeSocket, newSocket;
   struct sockaddr_in serverAddr;
@@ -58,13 +44,22 @@ int main(){
       addr_size = sizeof serverStorage;
       newSocket = accept(welcomeSocket, (struct sockaddr *) &serverStorage, &addr_size);
 
-      char query[1024];
-      int valread = read( newSocket , query , 1024);
+      char query[300];
+      int valread = recv( newSocket , query , 300, 0);
+
+      printf(" query : %s\n", query );
 
 
-      int dog_num = 2;
-      int cat_num = 2;
-      int car_num = 3;
+      // do to: soft code this based on query
+      char temp_query[200] = "4 car, 4 dogs, 4 cats and 4 trucks";
+      char bash_command[250] = "./scripts/gen_html.sh \" ";
+      strcat(bash_command,temp_query);
+      strcat(bash_command,"\"");
+      system(bash_command);
+
+      int dog_num = 4;
+      int cat_num = 4;
+      int car_num = 4;
       int truck_num = 4;
 
       send(newSocket, &dog_num,sizeof(dog_num),0);
@@ -86,21 +81,115 @@ int main(){
           pic_size = ftell(picture);
           fseek(picture, 0, SEEK_SET);
 
-          char  send_buffer[pic_size];
-          while(!feof(picture)) {
-             fread(send_buffer, 1, sizeof(send_buffer), picture);
+          send(newSocket,&pic_size,sizeof(pic_size),0);
+
+          char send_buffer[pic_size];
+          fread(send_buffer, 1, sizeof(send_buffer), picture);
+          printf("pic size:  %d\n", pic_size);
+
+          send(newSocket,send_buffer,pic_size,0);
+      }
+
+      send(newSocket, &cat_num,sizeof(cat_num),0);
+      for(int i=0; i< cat_num;i++){
+          FILE *picture;
+          switch(i){
+              case 0: picture = fopen("images/cats/1.jpg","r");
+                     break;
+              case 1: picture = fopen("images/cats/2.jpg","r");
+                     break;
+              case 2: picture = fopen("images/cats/3.jpg","r");
+                     break;
+              case 3: picture = fopen("images/cats/4.jpg","r");
+                     break;
           }
 
-          printf("pic size:  %d\n", pic_size);
+          int pic_size;
+          fseek(picture, 0, SEEK_END);
+          pic_size = ftell(picture);
+          fseek(picture, 0, SEEK_SET);
+
           send(newSocket,&pic_size,sizeof(pic_size),0);
-          send(newSocket,picture,pic_size,0);
+
+          char send_buffer[pic_size];\
+          fread(send_buffer, 1, sizeof(send_buffer), picture);
+          printf("pic size:  %d\n", pic_size);
+
+          send(newSocket,send_buffer,pic_size,0);
+      }
+
+      send(newSocket, &car_num,sizeof(car_num),0);
+      for(int i=0; i< car_num;i++){
+          FILE *picture;
+          switch(i){
+              case 0: picture = fopen("images/cars/1.jpg","r");
+                     break;
+              case 1: picture = fopen("images/cars/2.jpg","r");
+                     break;
+              case 2: picture = fopen("images/cars/3.jpg","r");
+                     break;
+              case 3: picture = fopen("images/cars/4.jpg","r");
+                     break;
+          }
+
+          int pic_size;
+          fseek(picture, 0, SEEK_END);
+          pic_size = ftell(picture);
+          fseek(picture, 0, SEEK_SET);
+
+          send(newSocket,&pic_size,sizeof(pic_size),0);
+
+          char send_buffer[pic_size];\
+          fread(send_buffer, 1, sizeof(send_buffer), picture);
+          printf("pic size:  %d\n", pic_size);
+
+          send(newSocket,send_buffer,pic_size,0);
+      }
+
+      send(newSocket, &truck_num,sizeof(truck_num),0);
+      for(int i=0; i< truck_num;i++){
+          FILE *picture;
+          switch(i){
+              case 0: picture = fopen("images/trucks/1.jpg","r");
+                     break;
+              case 1: picture = fopen("images/trucks/2.jpg","r");
+                     break;
+              case 2: picture = fopen("images/trucks/3.jpg","r");
+                     break;
+              case 3: picture = fopen("images/trucks/4.jpg","r");
+                     break;
+          }
+
+          int pic_size;
+          fseek(picture, 0, SEEK_END);
+          pic_size = ftell(picture);
+          fseek(picture, 0, SEEK_SET);
+
+          send(newSocket,&pic_size,sizeof(pic_size),0);
+
+          char send_buffer[pic_size];\
+          fread(send_buffer, 1, sizeof(send_buffer), picture);
+          printf("pic size:  %d\n", pic_size);
+
+          send(newSocket,send_buffer,pic_size,0);
       }
 
 
+      // send html file
+      FILE *html = fopen("a1_output.html", "r");
 
+      int html_size;
+      fseek(html, 0, SEEK_END);
+      html_size = ftell(html);
+      fseek(html, 0, SEEK_SET);
 
+      send(newSocket,&html_size,sizeof(html_size),0);
 
+      char send_buffer[html_size];\
+      fread(send_buffer, 1, sizeof(send_buffer), html);
+      printf("html size:  %d\n", html_size);
 
+      send(newSocket,send_buffer,html_size,0);
 
   }
 
