@@ -1,4 +1,6 @@
-#!/usr/bin/zsh
+#!/bin/bash
+
+
 request=$1  #Assumed to be raw
 
 html_start="<html>

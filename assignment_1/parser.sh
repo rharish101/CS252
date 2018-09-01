@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 request=$1
 car=0
 truck=0

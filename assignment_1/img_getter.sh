@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 request=$1  #Assumed to be raw
 
 IFS=$'\n'
