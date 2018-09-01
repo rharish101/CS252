@@ -36,6 +36,6 @@ done
 
 output="./a1_output.html"
 echo "$html_start$html_mid$html_end" > $output
-xdg-open $output
-sleep 5
-rm $output
+# xdg-open $output
+# sleep 5
+# rm $output
