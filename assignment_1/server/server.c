@@ -9,15 +9,23 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 
-struct img{
-    char name[100];
-    char img_data[1024];
-    int img_size;
-};
+
+// char* get_image_name(int i, char * image_type){
+//       char * file_name = (char*)malloc(200 * sizeof(char));
+//
+//       char img_flag[5];
+//       sprintf(img_flag, "%d", i);
+//
+//       strcat(file_name,"images/");
+//       strcat(file_name,image_type);
+//       strcat(file_name,"/");
+//       strcat(file_name,img_flag);
+//       strcat(file_name,".jpg\0");
+//       return file_name;
+// }
 
 int main(){
   int welcomeSocket, newSocket;
-  char buffer[1024];
   struct sockaddr_in serverAddr;
   struct sockaddr_storage serverStorage;
   socklen_t addr_size;
@@ -50,37 +58,49 @@ int main(){
       addr_size = sizeof serverStorage;
       newSocket = accept(welcomeSocket, (struct sockaddr *) &serverStorage, &addr_size);
 
-      int valread = read( newSocket , buffer, 1024);
-
-      for(int i = 0; buffer[i]; i++){
-          buffer[i] = tolower(buffer[i]);
-      }
-
-      printf("%s\n",buffer );
+      char query[1024];
+      int valread = read( newSocket , query , 1024);
 
 
-    int image_num = 6;
+      int dog_num = 2;
+      int cat_num = 2;
+      int car_num = 3;
+      int truck_num = 4;
 
-    send(newSocket, &image_num,sizeof(image_num),0);
-
-    for(int i=0; i< image_num ;i++){
+      send(newSocket, &dog_num,sizeof(dog_num),0);
+      for(int i=0; i< dog_num;i++){
           FILE *picture;
-          picture = fopen("cat.png", "r");
+          switch(i){
+              case 0: picture = fopen("images/dogs/1.jpg","r");
+                     break;
+              case 1: picture = fopen("images/dogs/2.jpg","r");
+                     break;
+              case 2: picture = fopen("images/dogs/3.jpg","r");
+                     break;
+              case 3: picture = fopen("images/dogs/4.jpg","r");
+                     break;
+          }
 
           int pic_size;
           fseek(picture, 0, SEEK_END);
           pic_size = ftell(picture);
           fseek(picture, 0, SEEK_SET);
-          send(newSocket,&pic_size,sizeof(pic_size),0);
 
-          //get Picture as Byte Array
-          char send_buffer[pic_size];
+          char  send_buffer[pic_size];
           while(!feof(picture)) {
-              fread(send_buffer, 1, sizeof(send_buffer), picture);
+             fread(send_buffer, 1, sizeof(send_buffer), picture);
           }
-          send(newSocket,send_buffer,pic_size,0);
 
+          printf("pic size:  %d\n", pic_size);
+          send(newSocket,&pic_size,sizeof(pic_size),0);
+          send(newSocket,picture,pic_size,0);
       }
+
+
+
+
+
+
 
   }
 

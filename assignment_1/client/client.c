@@ -18,7 +18,7 @@ int main(){
     char hello[1024];
     scanf ("%[^\n]%*c", hello);
 
-
+    
     /*---- Create the socket. The three arguments are: ----*/
     /* 1) Internet domain 2) Stream socket 3) Default protocol (TCP in this case) */
     clientSocket = socket(PF_INET, SOCK_STREAM, 0);
@@ -42,23 +42,32 @@ int main(){
     printf("Message sent\n");
 
     /*---- Read the message from the server into the buffer ----*/
-    int image_count;
-    recv(clientSocket, &image_count, sizeof(image_count), 0);
-    printf("Image count : %d\n",image_count );
+    int dog_count;
+    recv(clientSocket, &dog_count, sizeof(dog_count), 0);
+    printf("Dog count : %d\n",dog_count );
 
-    for(int i=0;i<image_count;i++){
+    for(int i=0;i < dog_count;i++){
         int img_size;
         recv(clientSocket, &img_size, sizeof(img_size), 0);
-        printf("Image C : %d %d\n",i, img_size );
+        printf("Image Size: %d %d\n",i, img_size );
 
         //Read Picture Byte Array and convert to pic
         char p_array[img_size];
         recv(clientSocket, p_array, sizeof(p_array), 0);
         FILE *image;
-        image = fopen("bat.png", "w");
+        switch(i){
+            case 0: image = fopen("dog1.jpg","w");
+                   break;
+            case 1: image = fopen("dog2.jpg","w");
+                   break;
+            case 2: image = fopen("dog3.jpg","w");
+                   break;
+            case 3: image = fopen("dog4.jpg","w");
+                   break;
+        }
+
         fwrite(p_array, 1, sizeof(p_array), image);
         fclose(image);
-
 
     }
 
