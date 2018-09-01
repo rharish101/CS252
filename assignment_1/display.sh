@@ -19,19 +19,19 @@ catf=false
 dogf=false
 for img in $(./img_getter.sh "$request"); do
     if [[ $img =~ "car" ]] && [ $carf = false ]; then
-        html_mid="$html_mid<br />\n        <b>Cars:</b><br />"
+        html_mid="$html_mid<br />        <b>Cars:</b><br />"
         carf=true
     elif [[ $img =~ "truck" ]] && [ $truckf = false ]; then
-        html_mid="$html_mid<br />\n        <b>Trucks:</b><br />"
+        html_mid="$html_mid<br />        <b>Trucks:</b><br />"
         truckf=true
     elif [[ $img =~ "cat" ]] && [ $catf = false ]; then
-        html_mid="$html_mid<br />\n        <b>Cats:</b><br />"
+        html_mid="$html_mid<br />        <b>Cats:</b><br />"
         catf=true
     elif [[ $img =~ "dog" ]] && [ $dogf = false ]; then
-        html_mid="$html_mid<br />\n        <b>Dogs:</b><br />"
+        html_mid="$html_mid<br />        <b>Dogs:</b><br />"
         dogf=true
     fi
-    html_mid="$html_mid\n            <img src=\"$img\" height=\"256\" width=\"256\">"
+    html_mid="$html_mid            <img src=\"$img\" height=\"256\" width=\"256\">"
 done
 
 output="./a1_output.html"
