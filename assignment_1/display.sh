@@ -34,4 +34,8 @@ for img in $(./img_getter.sh "$request"); do
     html_mid="$html_mid\n            <img src=\"$img\" height=\"256\" width=\"256\">"
 done
 
-echo "$html_start$html_mid$html_end" > output.html
+output="./a1_output.html"
+echo "$html_start$html_mid$html_end" > $output
+xdg-open $output
+sleep 5
+rm $output

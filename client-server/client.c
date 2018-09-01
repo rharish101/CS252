@@ -55,10 +55,11 @@ int main(){
         printf("Data received: '%s'\n", buffer);
     else
     {
-        FILE *html = fopen("temp.html", "wb");
+        FILE *html = fopen("/tmp/client_temp.html", "wb");
         fputs(buffer, html);
         printf("HTML received\n");
-        popen("./display_html.sh ./temp.html", "r");
+        popen("xdg-open /tmp/client_temp.html", "r");
+        popen("sleep 5 && rm /tmp/client_temp.html", "r");
     }
 
     return 0;
