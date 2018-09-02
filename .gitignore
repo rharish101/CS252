@@ -1,4 +1,7 @@
-assignment_1/images/*
+assignment_1/client/*.jpg
+assignment_1/client/c
+assignment_1/server/s
+assignment_1/server/a1_output.html
 output.html
 client-server/c
 client-server/s
