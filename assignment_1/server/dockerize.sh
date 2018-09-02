@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 embed=${1:-true}
 docker build -t image_server .
 docker run -d --rm --net "host" -e EMBED=$1 --name server image_server
