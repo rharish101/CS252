@@ -1,5 +1,6 @@
 assignment_1/client/*.jpg
 assignment_1/client/c
+assignment_1/client/images/*
 assignment_1/server/s
 assignment_1/server/a1_output.html
 output.html
