@@ -37,7 +37,7 @@ int main(){
     struct sockaddr_storage serverStorage;
     socklen_t addr_size;
 
-    /*---- Create the socket. The three arguments are: ----*/
+    /*---- Create the socket. The three arguments are: ---*/
     /* 1) Internet domain 2) Stream socket 3) Default protocol (TCP in this case) */
     welcomeSocket = socket(PF_INET, SOCK_STREAM, 0);
 
