@@ -1,7 +1,6 @@
 #!/bin/bash
-
-
 request=$1  #Assumed to be raw
+flag=${2:-false}
 
 html_start="<html>
     <head><title>CS252 A1</title></head>
@@ -31,7 +30,11 @@ for img in $(./scripts/img_getter.sh "$request"); do
         html_mid="$html_mid<br />        <b>Dogs:</b><br />"
         dogf=true
     fi
-    html_mid="$html_mid            <img src=\"$img\" height=\"256\" width=\"256\">"
+    if [ $flag = true ]; then
+        html_mid="$html_mid            <img src=\"$img\" height=\"256\" width=\"256\">"
+    else
+        html_mid="$html_mid            <img src=\"data:image/jpg;base64,$(base64 $img)\" height=\"256\" width=\"256\">"
+    fi
 done
 
 output="./a1_output.html"

@@ -31,11 +31,16 @@ void send_images(int newSocket, char *img_type, int count){
     }
 }
 
-int main(){
+int main(int argc, char **argv){
     int welcomeSocket, newSocket;
     struct sockaddr_in serverAddr;
     struct sockaddr_storage serverStorage;
     socklen_t addr_size;
+
+    if ((argc == 2) && (strcmp(argv[1], "noembed") == 0))
+        printf("HTML without image embedding\n");
+    else
+        printf("HTML with image embedding\n");
 
     /*---- Create the socket. The three arguments are: ---*/
     /* 1) Internet domain 2) Stream socket 3) Default protocol (TCP in this case) */
@@ -73,38 +78,43 @@ int main(){
         char bash_command[250] = "./scripts/gen_html.sh \" ";
         strcat(bash_command, query);
         strcat(bash_command, "\"");
+        if ((argc == 2) && (strcmp(argv[1], "noembed") == 0))
+            strcat(bash_command, " \"true\"");
         system(bash_command);
 
-        int dog_num, cat_num, car_num, truck_num;
-        char parse_command[250] = "./scripts/parser.sh \" ";
-        strcat(parse_command, query);
-        strcat(parse_command, "\"");
+        if ((argc == 2) && (strcmp(argv[1], "noembed") == 0))
+        {
+            int dog_num, cat_num, car_num, truck_num;
+            char parse_command[250] = "./scripts/parser.sh \" ";
+            strcat(parse_command, query);
+            strcat(parse_command, "\"");
 
-        FILE *parsed = popen(parse_command, "r");
-        char path[1035];
+            FILE *parsed = popen(parse_command, "r");
+            char path[1035];
 
-        fgets(path, sizeof(path), parsed);
-        sscanf(path, "%d\n", &car_num);
-        fgets(path, sizeof(path), parsed);
-        sscanf(path, "%d\n", &truck_num);
-        fgets(path, sizeof(path), parsed);
-        sscanf(path, "%d\n", &cat_num);
-        fgets(path, sizeof(path), parsed);
-        sscanf(path, "%d\n", &dog_num);
+            fgets(path, sizeof(path), parsed);
+            sscanf(path, "%d\n", &car_num);
+            fgets(path, sizeof(path), parsed);
+            sscanf(path, "%d\n", &truck_num);
+            fgets(path, sizeof(path), parsed);
+            sscanf(path, "%d\n", &cat_num);
+            fgets(path, sizeof(path), parsed);
+            sscanf(path, "%d\n", &dog_num);
 
-        pclose(parsed);
+            pclose(parsed);
 
-        send(newSocket, &dog_num, sizeof(dog_num), 0);
-        send_images(newSocket, "dogs", dog_num);
+            send(newSocket, &dog_num, sizeof(dog_num), 0);
+            send_images(newSocket, "dogs", dog_num);
 
-        send(newSocket, &cat_num, sizeof(cat_num), 0);
-        send_images(newSocket, "cats", cat_num);
+            send(newSocket, &cat_num, sizeof(cat_num), 0);
+            send_images(newSocket, "cats", cat_num);
 
-        send(newSocket, &car_num, sizeof(car_num), 0);
-        send_images(newSocket, "cars", car_num);
+            send(newSocket, &car_num, sizeof(car_num), 0);
+            send_images(newSocket, "cars", car_num);
 
-        send(newSocket, &truck_num, sizeof(truck_num), 0);
-        send_images(newSocket, "trucks", truck_num);
+            send(newSocket, &truck_num, sizeof(truck_num), 0);
+            send_images(newSocket, "trucks", truck_num);
+        }
 
         // send html file
         FILE *html = fopen("a1_output.html", "r");

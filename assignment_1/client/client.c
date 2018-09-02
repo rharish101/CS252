@@ -19,7 +19,7 @@ void store_images(int clientSocket, char *img_type, int count){
             img_size = 9999999;
         printf("Image Size: %d %d\n", i, img_size);
 
-        //Read Picture Byte Array and convert to pic
+        /* Read Picture Byte Array and convert to pic */
         char p_array[img_size];
         recv(clientSocket, p_array, sizeof(p_array), 0);
         FILE *image;
@@ -38,12 +38,17 @@ void store_images(int clientSocket, char *img_type, int count){
     }
 }
 
-int main(){
+int main(int argc, char **argv){
     int clientSocket;
     struct sockaddr_in serverAddr;
     socklen_t addr_size;
-    char hello[300];
 
+    if ((argc == 2) && (strcmp(argv[1], "noembed") == 0))
+        printf("HTML without image embedding\n");
+    else
+        printf("HTML with image embedding\n");
+
+    char hello[300];
     scanf ("%[^\n]%*c", hello);
 
     printf("Message to send : %s\n", hello);
@@ -71,23 +76,26 @@ int main(){
     printf("Message sent : %s\n", hello);
 
     /*---- Read the message from the server into the buffer ----*/
-    int count;
+    if ((argc == 2) && (strcmp(argv[1], "noembed") == 0))
+    {
+        int count;
 
-    recv(clientSocket, &count, sizeof(count), 0);
-    printf("Dog count : %d\n", count);
-    store_images(clientSocket, "dogs", count);
+        recv(clientSocket, &count, sizeof(count), 0);
+        printf("Dog count : %d\n", count);
+        store_images(clientSocket, "dogs", count);
 
-    recv(clientSocket, &count, sizeof(count), 0);
-    printf("cat count : %d\n",count );
-    store_images(clientSocket, "cats", count);
+        recv(clientSocket, &count, sizeof(count), 0);
+        printf("cat count : %d\n",count );
+        store_images(clientSocket, "cats", count);
 
-    recv(clientSocket, &count, sizeof(count), 0);
-    printf("car count : %d\n",count );
-    store_images(clientSocket, "cars", count);
+        recv(clientSocket, &count, sizeof(count), 0);
+        printf("car count : %d\n",count );
+        store_images(clientSocket, "cars", count);
 
-    recv(clientSocket, &count, sizeof(count), 0);
-    printf("truck count : %d\n",count );
-    store_images(clientSocket, "trucks", count);
+        recv(clientSocket, &count, sizeof(count), 0);
+        printf("truck count : %d\n",count );
+        store_images(clientSocket, "trucks", count);
+    }
 
     int html_size;
     recv(clientSocket, &html_size, sizeof(html_size), 0);
