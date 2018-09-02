@@ -12,9 +12,11 @@
 #include <arpa/inet.h>
 
 void store_images(int clientSocket, char *img_type, int count){
-    for(int i = 0; i < count; i++){
-        int img_size;
+    for(int i = 1; i <= count; i++){
+        int img_size = 0;
         recv(clientSocket, &img_size, sizeof(img_size), 0);
+        if (img_size < 0)
+            img_size = 9999999;
         printf("Image Size: %d %d\n", i, img_size);
 
         //Read Picture Byte Array and convert to pic
@@ -24,7 +26,8 @@ void store_images(int clientSocket, char *img_type, int count){
         char dir_name[20];
         sprintf(dir_name, "images/%s", img_type);
         char img_name[25];
-        sprintf(img_name, "images/%s/%d.jpg", img_type, i + 1);
+        sprintf(img_name, "images/%s/%d.jpg", img_type, i);
+
 
         mkdir("images", 0755);
         mkdir(dir_name, 0755);
