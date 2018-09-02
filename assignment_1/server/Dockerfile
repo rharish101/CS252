@@ -4,4 +4,4 @@ WORKDIR /server
 COPY . /server
 RUN cd /server && gcc server.c -o s
 
-CMD ["./s"]
+CMD ["./embed_decider.sh"]
