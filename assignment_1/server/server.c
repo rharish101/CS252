@@ -70,17 +70,29 @@ int main(){
 
         printf("Query: %s\n", query);
 
-        // TODO: soft code this based on query
-        /* char temp_query[200] = "4 car, 4 dogs, 4 cats and 4 trucks"; */
         char bash_command[250] = "./scripts/gen_html.sh \" ";
         strcat(bash_command, query);
         strcat(bash_command, "\"");
         system(bash_command);
 
-        int dog_num = 4;
-        int cat_num = 4;
-        int car_num = 4;
-        int truck_num = 4;
+        int dog_num, cat_num, car_num, truck_num;
+        char parse_command[250] = "./scripts/parser.sh \" ";
+        strcat(parse_command, query);
+        strcat(parse_command, "\"");
+
+        FILE *parsed = popen(parse_command, "r");
+        char path[1035];
+
+        fgets(path, sizeof(path), parsed);
+        sscanf(path, "%d\n", &car_num);
+        fgets(path, sizeof(path), parsed);
+        sscanf(path, "%d\n", &truck_num);
+        fgets(path, sizeof(path), parsed);
+        sscanf(path, "%d\n", &cat_num);
+        fgets(path, sizeof(path), parsed);
+        sscanf(path, "%d\n", &dog_num);
+
+        pclose(parsed);
 
         send(newSocket, &dog_num, sizeof(dog_num), 0);
         send_images(newSocket, "dogs", dog_num);
