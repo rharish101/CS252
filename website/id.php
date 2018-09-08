@@ -12,50 +12,70 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
-$em_id=$_POST['employ_id'];
-$query = "SELECT `birth_date`, `first_name`, `last_name` , `gender` , `hire_date` FROM `employees` WHERE `emp_no`= '$em_id'";
-	$res = mysqli_query( $conn,$query )
-	or die("failed to query in database".mysqli_error($conn));
-$row = mysqli_fetch_array($res);
+function fetch_data ($conn, $field, $value) {
+  $query1 = "SELECT * FROM employees WHERE $field = ";
+  if (gettype($value) !== "integer") {
+    $query1 = $query1."'$value'";
+  }
+  else {
+    $query1 = $query1."$value";
+  }
+  $res1 = mysqli_query($conn, $query1)
+    or die("failed to query in database: ".mysqli_error($conn));
 
-if ($row['first_name'] === NULL) {
-  die("no such employee exists");
+  $row1 = mysqli_fetch_array($res1);
+  while ($row1 !== NULL) {
+    $query2 = "SELECT * FROM `dept_emp` WHERE emp_no = ".$row1['emp_no'];
+    $res2 = mysqli_query($conn, $query2)
+      or die("failed to query in database: ".mysqli_error($conn));
+    $row2 = mysqli_fetch_array($res2);
+
+    if ($row1['first_name'] === NULL) {
+      die("no such employee exists");
+    }
+
+    echo "First name: ";
+    echo $row1['first_name'];
+    echo "</br>";
+
+    echo "Last name: ";
+    echo $row1['last_name'];
+    echo "</br>";
+
+    echo "Gender: ";
+    echo $row1['gender'];
+    echo "</br>";
+
+    echo "Birth date: ";
+    echo $row1['birth_date'];
+    echo "</br>";
+
+    echo "Department Number: ";
+    echo $row2['dept_no'];
+    echo "</br>";
+
+    echo "From: ";
+    echo $row2['from_date'];
+    echo "</br>";
+
+    echo "To Date ";
+    echo $row2['to_date'];
+    echo "</br>";
+    $row1 = mysqli_fetch_array($res1);
+    echo "</br>";
+  }
 }
 
-echo "First name: ";
-echo $row['first_name'];
-echo "</br>";
+$em_id=$_POST['employ_id'];
+$em_ln=$_POST['lastname'];
+echo "<b>By Employee Number:</b><br>";
+if ($em_id !== NULL) {
+  fetch_data($conn, "emp_no", $em_id);
+}
+echo "<br><b>By Last Name:</b><br>";
+if ($em_ln !== NULL) {
+  fetch_data($conn, "last_name", $em_ln);
+}
 
-echo "Last name: ";
-echo $row['last_name'];
-echo "</br>";
-
-echo "Gender: ";
-echo $row['gender'];
-echo "</br>";
-
-
-echo "Birth date: ";
-echo $row['birth_date'];
-echo "</br>";
-
-
-$query = "SELECT `dept_no`, `from_date`, `to_date`  FROM `dept_emp` WHERE `emp_no`= '$em_id'";
-  $res = mysqli_query( $conn,$query )
-  or die("failed to query in database".mysqli_error($conn));
-$row = mysqli_fetch_array($res);
-
-
-echo "Department Number: ";
-echo $row['dept_no'];
-echo "</br>";
-
-echo "From: ";
-echo $row['from_date'];
-echo "</br>";
-
-echo "To Date ";
-echo $row['to_date'];
-echo "</br>";
 ?>
 </html>
