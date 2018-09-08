@@ -2,17 +2,6 @@
 
 
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "Shubharshu@143";
-$dbname = "employees";
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 #$em_id=$_POST['lastname'];
 $lastname=$_POST['lastname'];
