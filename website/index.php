@@ -11,5 +11,19 @@
   <br>
   <input type="submit" name="submit" value="search using employee id"/>
   <br>
+  <br>
+  <br>
+  <form name="form1" method="post" action="lastname.php">  
+ Employee Search by Last name:
+          <input type="text" name="lastname" placeholder="type last name" />
+      <br>
+      
+      
+      <input type="submit" name="submit" value="search using Last name"/>
+      <br>
+
+
+</form>
+
 </form>
 </html>
