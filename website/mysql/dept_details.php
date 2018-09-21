@@ -9,7 +9,7 @@
 
   function get_gender_ratio($conn, $dept_name)
   {
-    $query = "SELECT employees.gender, count(employees.emp_no) AS count FROM employees, dept_emp, departments WHERE (employees.emp_no = dept_emp.emp_no) AND (dept_emp.dept_no = departments.dept_no) AND (departments.dept_name = '". $dept_name . "') GROUP BY employees.gender";
+    $query = "SELECT employees.gender, COUNT(employees.emp_no) AS count FROM employees, dept_emp, departments WHERE (employees.emp_no = dept_emp.emp_no) AND (dept_emp.dept_no = departments.dept_no) AND (departments.dept_name = '". $dept_name . "') GROUP BY employees.gender";
     $res = mysqli_query($conn, $query)
       or die("Failed to query in database: " . mysqli_error($conn));
     $row = mysqli_fetch_array($res);
@@ -27,6 +27,33 @@
       else
       {
         $females = $row['count'];
+      }
+      $row = mysqli_fetch_array($res);
+    }
+
+    return $females / $males;
+  }
+
+  function get_pay_ratio($conn, $dept_name)
+  {
+    $query = "SELECT employees.gender, AVG(salaries.salary) AS avg_salary FROM employees, dept_emp, departments, salaries WHERE (employees.emp_no = dept_emp.emp_no) AND (employees.emp_no = salaries.emp_no) AND (dept_emp.dept_no = departments.dept_no) AND (departments.dept_name = '". $dept_name . "') GROUP BY employees.gender";
+    $res = mysqli_query($conn, $query)
+      or die("Failed to query in database: " . mysqli_error($conn));
+    $row = mysqli_fetch_array($res);
+    if ($row['gender'] === NULL)
+    {
+      die("No such department exists");
+    }
+
+    while ($row !== NULL)
+    {
+      if ($row['gender'] === "M")
+      {
+        $males = $row['avg_salary'];
+      }
+      else
+      {
+        $females = $row['avg_salary'];
       }
       $row = mysqli_fetch_array($res);
     }
@@ -121,6 +148,7 @@
       die("No data provided");
     }
     echo "Gender ratio (females/males) = " .  get_gender_ratio($conn, $dept_name);
+    echo "<br>Gender pay ratio (females/males) = " .  get_pay_ratio($conn, $dept_name);
     echo "<br><br>List of employees in descending order of tenure:<br><br>";
     get_tenure_ordered($conn, $dept_name);
   }
