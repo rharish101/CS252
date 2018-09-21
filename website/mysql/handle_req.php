@@ -22,12 +22,15 @@
       fetch_emp_data($conn, $_POST['employ_id'], $_POST['lastname'], $_POST['dept_name']);
     }
 
-    else
+    elseif (isset($_POST['larg_dept']))
     {
-      echo "<b>Department of " . ucwords($_POST['department']) . " Details</b><br><br>";
       $largest = get_largest_department($conn);
       echo "Largest department: " . $largest['dept_name'] . ", with " . $largest['count'] . " employees";
-      echo "<br><br>";
+    }
+
+    elseif (isset($_POST['dept_det']))
+    {
+      echo "<b>Department of " . ucwords($_POST['department']) . " Details</b><br><br>";
       fetch_dept_data($conn, $_POST['department']);
     }
   ?>
