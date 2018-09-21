@@ -36,7 +36,7 @@
 
   function get_pay_ratio($conn, $dept_name)
   {
-    $query = "SELECT employees.gender, AVG(salaries.salary) AS avg_salary FROM employees, dept_emp, departments, salaries WHERE (employees.emp_no = dept_emp.emp_no) AND (employees.emp_no = salaries.emp_no) AND (dept_emp.dept_no = departments.dept_no) AND (departments.dept_name = '". $dept_name . "') GROUP BY employees.gender";
+    $query = "SELECT employees.gender, AVG(mysalaries.salary) AS avg_salary FROM employees, dept_emp, departments, (select emp_no, max(salary) as salary from salaries group by emp_no) as mysalaries WHERE (employees.emp_no = dept_emp.emp_no) AND (employees.emp_no = mysalaries.emp_no) AND (dept_emp.dept_no = departments.dept_no) AND (departments.dept_name = '". $dept_name . "') GROUP BY employees.gender";
     $res = mysqli_query($conn, $query)
       or die("Failed to query in database: " . mysqli_error($conn));
     $row = mysqli_fetch_array($res);
@@ -92,10 +92,6 @@
 
       echo "Birth date: ";
       echo $row['birth_date'];
-      echo "</br>";
-
-      echo "Department: ";
-      echo $dept_name;
       echo "</br>";
 
       $from = date_create_from_format('Y-m-d', $row['from_date']);
