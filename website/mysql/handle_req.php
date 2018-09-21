@@ -25,6 +25,9 @@
     else
     {
       echo "<b>Department Details</b><br><br>";
+      $largest = get_largest_department($conn);
+      echo "Largest department: " . $largest[0] . ", count = " . $largest[1];
+      echo "<br><br>";
       fetch_dept_data($conn, $_POST['department']);
     }
   ?>

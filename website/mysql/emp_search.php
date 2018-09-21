@@ -2,9 +2,9 @@
   function query_dept($conn, $dept_name)
   {
     // Get department number
-    $query1 = "SELECT * FROM departments WHERE dept_name = '".$dept_name."'";
+    $query1 = "SELECT * FROM departments WHERE dept_name = '" . $dept_name . "'";
     $res1 = mysqli_query($conn, $query1)
-      or die("Failed to query in database: ".mysqli_error($conn));
+      or die("Failed to query in database: " . mysqli_error($conn));
     $row1 = mysqli_fetch_array($res1);
     if ($row1['dept_no'] === NULL)
     {
@@ -12,9 +12,9 @@
     }
 
     // Get department details
-    $query2 = "SELECT * FROM dept_emp WHERE dept_no = '".$row1['dept_no']."'";
+    $query2 = "SELECT * FROM dept_emp WHERE dept_no = '" . $row1['dept_no'] . "'";
     $res2 = mysqli_query($conn, $query2)
-      or die("Failed to query in database: ".mysqli_error($conn));
+      or die("Failed to query in database: " . mysqli_error($conn));
 
     $row2 = mysqli_fetch_array($res2);
     if ($row2['emp_no'] === NULL)
@@ -25,9 +25,9 @@
     while ($row2 !== NULL)
     {
       // Get employee details
-      $query3 = "SELECT * FROM employees WHERE emp_no = '".$row2['emp_no']."'";
+      $query3 = "SELECT * FROM employees WHERE emp_no = '" . $row2['emp_no'] . "'";
       $res3 = mysqli_query($conn, $query3)
-        or die("Failed to query in database: ".mysqli_error($conn));
+        or die("Failed to query in database: " . mysqli_error($conn));
       $row3 = mysqli_fetch_array($res3);
 
       echo "First name: ";
@@ -72,15 +72,15 @@
     $query1 = "SELECT * FROM employees WHERE ";
     if ($emp_no !== "")
     {
-      $query1 = $query1."emp_no = $emp_no";
+      $query1 = $query1 . "emp_no = $emp_no";
     }
     if ($last_name !== "")
     {
       if ($emp_no !== "")
       {
-        $query1 = $query1." AND ";
+        $query1 = $query1 . " AND ";
       }
-      $query1 = $query1."last_name = '$last_name'";
+      $query1 = $query1 . "last_name = '$last_name'";
     }
 
     // Search by department instead of employees
@@ -99,7 +99,7 @@
 
     // Get employee details
     $res1 = mysqli_query($conn, $query1)
-      or die("Failed to query in database: ".mysqli_error($conn));
+      or die("Failed to query in database: " . mysqli_error($conn));
     $row1 = mysqli_fetch_array($res1);
     if ($row1['first_name'] === NULL)
     {
@@ -110,15 +110,15 @@
     while ($row1 !== NULL)
     {
       // Get department details
-      $query2 = "SELECT * FROM `dept_emp` WHERE emp_no = ".$row1['emp_no'];
+      $query2 = "SELECT * FROM `dept_emp` WHERE emp_no = " . $row1['emp_no'];
       $res2 = mysqli_query($conn, $query2)
-        or die("failed to query in database: ".mysqli_error($conn));
+        or die("failed to query in database: " . mysqli_error($conn));
       $row2 = mysqli_fetch_array($res2);
 
       // Get department name
-      $query3 = "SELECT * FROM `departments` WHERE dept_no = '".$row2['dept_no']."'";
+      $query3 = "SELECT * FROM `departments` WHERE dept_no = '" . $row2['dept_no'] . "'";
       $res3 = mysqli_query($conn, $query3)
-        or die("failed to query in database: ".mysqli_error($conn));
+        or die("failed to query in database: " . mysqli_error($conn));
       $row3 = mysqli_fetch_array($res3);
 
       if (($dept_name !== "") && (strcasecmp($row3['dept_name'], $dept_name) != 0))
