@@ -14,6 +14,10 @@
     {
       $query = $query . "AND (departments.dept_name = '$dept_name')";
     }
+    if (($emp_no === "") && ($last_name === "") && ($dept_name === ""))
+    {
+      die("No data provided");
+    }
 
     // Get employee details
     $res = mysqli_query($conn, $query)
@@ -24,7 +28,6 @@
       die("No such employee exists");
     }
 
-    $found = FALSE;
     while ($row !== NULL)
     {
       echo "First name: ";

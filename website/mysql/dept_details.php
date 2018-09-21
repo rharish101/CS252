@@ -116,6 +116,10 @@
 
   function fetch_dept_data($conn, $dept_name)
   {
+    if ($dept_name === "")
+    {
+      die("No data provided");
+    }
     echo "Gender ratio (females/males) = " .  get_gender_ratio($conn, $dept_name);
     echo "<br><br>List of employees in descending order of tenure:<br><br>";
     get_tenure_ordered($conn, $dept_name);
