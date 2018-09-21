@@ -1,117 +1,123 @@
 <?php
   function get_largest_department($conn)
   {
-    $query = "SELECT * FROM departments";
+    $query = "SELECT departments.dept_name, COUNT(dept_emp.emp_no) AS count FROM departments, dept_emp WHERE (departments.dept_no = dept_emp.dept_no) GROUP BY departments.dept_name ORDER BY count DESC LIMIT 1";
+    $res = mysqli_query($conn, $query)
+      or die("Failed to query in database: " . mysqli_error($conn));
+    return mysqli_fetch_array($res);
+  }
+
+  function get_gender_ratio($conn, $dept_name)
+  {
+    $query = "SELECT employees.gender, count(employees.emp_no) AS count FROM employees, dept_emp, departments WHERE (employees.emp_no = dept_emp.emp_no) AND (dept_emp.dept_no = departments.dept_no) AND (departments.dept_name = '". $dept_name . "') GROUP BY employees.gender";
     $res = mysqli_query($conn, $query)
       or die("Failed to query in database: " . mysqli_error($conn));
     $row = mysqli_fetch_array($res);
+    if ($row['gender'] === NULL)
+    {
+      die("No such department exists");
+    }
 
-    $max = 0;
-    $max_dept = "";
     while ($row !== NULL)
     {
-      $count = get_dept_count($conn, $row['dept_name']);
-      if ($count > $max)
+      if ($row['gender'] === "M")
       {
-        $max = $count;
-        $max_dept = $row['dept_name'];
+        $males = $row['count'];
+      }
+      else
+      {
+        $females = $row['count'];
       }
       $row = mysqli_fetch_array($res);
     }
 
-    return array($max_dept, $max);
+    return $females / $males;
   }
 
-  function get_dept_count($conn, $dept_name)
+  function get_tenure_ordered($conn, $dept_name)
   {
-    // Get department number
-    $query1 = "SELECT * FROM departments WHERE dept_name = '" . $dept_name . "'";
-    $res1 = mysqli_query($conn, $query1)
+    $query = "SELECT employees.*, dept_emp.*, departments.dept_name FROM employees, dept_emp, departments WHERE (employees.emp_no = dept_emp.emp_no) AND (dept_emp.dept_no = departments.dept_no) AND (departments.dept_name = '". $dept_name . "') ORDER BY DATEDIFF(dept_emp.from_date, dept_emp.to_date)";
+    $res = mysqli_query($conn, $query)
       or die("Failed to query in database: " . mysqli_error($conn));
-    $row1 = mysqli_fetch_array($res1);
-
-    // Get department details
-    $query2 = "SELECT * FROM dept_emp WHERE dept_no = '" . $row1['dept_no'] . "'";
-    $res2 = mysqli_query($conn, $query2)
-      or die("Failed to query in database: " . mysqli_error($conn));
-    $row2 = mysqli_fetch_array($res2);
-
-    $count = 0;
-    while ($row2 !== NULL)
-    {
-      $count = $count + 1;
-      $row2 = mysqli_fetch_array($res2);
-    }
-
-    return $count;
-  }
-
-  function fetch_dept_data($conn, $dept_name)
-  {
-    // Get department number
-    $query1 = "SELECT * FROM departments WHERE dept_name = '" . $dept_name . "'";
-    $res1 = mysqli_query($conn, $query1)
-      or die("Failed to query in database: " . mysqli_error($conn));
-    $row1 = mysqli_fetch_array($res1);
-    if ($row1['dept_no'] === NULL)
+    $row = mysqli_fetch_array($res);
+    if ($row['dept_no'] === NULL)
     {
       die("No such department exists");
     }
 
-    // Get department details
-    $query2 = "SELECT * FROM dept_emp WHERE dept_no = '" . $row1['dept_no'] . "'";
-    $res2 = mysqli_query($conn, $query2)
-      or die("Failed to query in database: " . mysqli_error($conn));
-
-    $row2 = mysqli_fetch_array($res2);
-    if ($row2['emp_no'] === NULL)
+    while ($row !== NULL)
     {
-      die("No such department exists");
-    }
-
-    echo "Details for department of " . ucwords($dept_name) . ":<br><br>";
-    while ($row2 !== NULL)
-    {
-      // Get employee details
-      $query3 = "SELECT * FROM employees WHERE emp_no = '" . $row2['emp_no'] . "'";
-      $res3 = mysqli_query($conn, $query3)
-        or die("Failed to query in database: " . mysqli_error($conn));
-      $row3 = mysqli_fetch_array($res3);
-
       echo "First name: ";
-      echo $row3['first_name'];
+      echo $row['first_name'];
       echo "</br>";
 
       echo "Last name: ";
-      echo $row3['last_name'];
+      echo $row['last_name'];
       echo "</br>";
 
       echo "Employee ID: ";
-      echo $row2['emp_no'];
+      echo $row['emp_no'];
       echo "</br>";
 
       echo "Gender: ";
-      echo $row3['gender'];
+      echo $row['gender'];
       echo "</br>";
 
       echo "Birth date: ";
-      echo $row3['birth_date'];
+      echo $row['birth_date'];
       echo "</br>";
 
       echo "Department: ";
       echo $dept_name;
       echo "</br>";
 
-      echo "From: ";
-      echo $row2['from_date'];
+      $from = date_create_from_format('Y-m-d', $row['from_date']);
+      $to = date_create_from_format('Y-m-d', $row['to_date']);
+      if ($to->format("Y") === "9999")
+      {
+        $to = date_create_from_format('Y-m-d', date('Y-m-d'));
+      }
+      $duration = date_diff($from, $to);
+
+      if ($duration->format("%y") === "1")
+      {
+        $tenure = "1 year ";
+      }
+      elseif ($duration->format("%y") === "0")
+      {
+        $tenure = "";
+      }
+      else
+      {
+        $tenure = $duration->format("%y") . " years ";
+      }
+
+      if ($duration->format("%m") === "1")
+      {
+        $tenure = $tenure . "1 month";
+      }
+      elseif ($duration->format("%m") !== "0")
+      {
+        $tenure = $tenure . $duration->format("%m") . " months";
+      }
+      elseif ($duration->format("%y") === "0")
+      {
+        $tenure = "Fresh";
+      }
+
+      echo "Tenure: ";
+      echo $tenure;
       echo "</br>";
 
-      echo "To Date ";
-      echo $row2['to_date'];
-      echo "</br>";
-
-      $row2 = mysqli_fetch_array($res2);
+      $row = mysqli_fetch_array($res);
       echo "</br>";
     }
+  }
+
+  function fetch_dept_data($conn, $dept_name)
+  {
+    echo "Gender ratio (females/males) = " .  get_gender_ratio($conn, $dept_name);
+    echo "<br><br>List of employees in descending order of tenure:<br><br>";
+    get_tenure_ordered($conn, $dept_name);
   }
 ?>

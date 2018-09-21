@@ -24,9 +24,9 @@
 
     else
     {
-      echo "<b>Department Details</b><br><br>";
+      echo "<b>Department of " . ucwords($_POST['department']) . " Details</b><br><br>";
       $largest = get_largest_department($conn);
-      echo "Largest department: " . $largest[0] . ", count = " . $largest[1];
+      echo "Largest department: " . $largest['dept_name'] . ", with " . $largest['count'] . " employees";
       echo "<br><br>";
       fetch_dept_data($conn, $_POST['department']);
     }
