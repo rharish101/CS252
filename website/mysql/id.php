@@ -68,12 +68,13 @@ function fetch_data ($conn, $field, $value) {
 
 $em_id=$_POST['employ_id'];
 $em_ln=$_POST['lastname'];
-echo "<b>By Employee Number:</b><br>";
-if ($em_id !== NULL) {
+if ($em_id !== "") {
+  echo "<b>By Employee Number:</b><br>";
   fetch_data($conn, "emp_no", $em_id);
+  echo "<br>";
 }
-echo "<br><b>By Last Name:</b><br>";
-if ($em_ln !== NULL) {
+if ($em_ln !== "") {
+  echo "<b>By Last Name:</b><br>";
   fetch_data($conn, "last_name", $em_ln);
 }
 
