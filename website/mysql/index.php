@@ -12,6 +12,9 @@
   Employee last name:
     <input type="text" name="lastname" placeholder="type last name" />
   <br>
+  Employee department:
+    <input type="text" name="department" placeholder="type last name" />
+  <br>
   <input type="submit" name="submit" value="search"/>
   <br>
 </form>
