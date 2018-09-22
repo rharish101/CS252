@@ -4,7 +4,8 @@
     $query = "SELECT employees.*, dept_emp.*, departments.dept_name
               FROM employees
               INNER JOIN dept_emp ON employees.emp_no = dept_emp.emp_no
-              INNER JOIN departments ON dept_emp.dept_no = departments.dept_no";
+              INNER JOIN departments ON dept_emp.dept_no = departments.dept_no
+              WHERE (1 = 1) ";
     if ($emp_no !== "")
     {
       $query = $query . "AND (employees.emp_no = $emp_no)";
