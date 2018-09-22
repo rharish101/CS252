@@ -45,40 +45,63 @@
 
   function get_pay_ratio($conn, $dept_name)
   {
-    $query = "SELECT employees.gender, AVG(mysalaries.salary) AS avg_salary
-              FROM employees
-              INNER JOIN dept_emp ON employees.emp_no = dept_emp.emp_no
-              INNER JOIN
+    $query = "SELECT title, COALESCE(M, 0) AS M, COALESCE(F, 0) AS F, cnt
+              FROM
               (
-                SELECT emp_no, MAX(salary) AS salary
-                FROM salaries
-                GROUP BY emp_no
-              ) AS mysalaries ON employees.emp_no = mysalaries.emp_no
-              INNER JOIN departments ON dept_emp.dept_no = departments.dept_no
-              WHERE departments.dept_name = '". $dept_name . "'
-              GROUP BY employees.gender";
+                SELECT title, SUM(M) AS M, SUM(F) AS F, SUM(cnt) as cnt
+                FROM
+                (
+                  SELECT
+                    mytitles.title,
+                    CASE WHEN employees.gender = 'M' THEN AVG(mysalaries.salary) END AS M,
+                    CASE WHEN employees.gender = 'F' THEN AVG(mysalaries.salary) END AS F,
+                    COUNT(employees.emp_no) AS cnt
+                  FROM employees
+                  INNER JOIN dept_emp ON employees.emp_no = dept_emp.emp_no
+                  INNER JOIN
+                  (
+                    SELECT emp_no, MAX(salary) AS salary
+                    FROM salaries
+                    GROUP BY emp_no
+                  ) AS mysalaries ON employees.emp_no = mysalaries.emp_no
+                  INNER JOIN
+                  (
+                    SELECT t1.emp_no, t1.title
+                    FROM titles AS t1
+                    INNER JOIN
+                    (
+                      SELECT MAX(from_date) AS maxm, emp_no
+                      FROM titles
+                      GROUP BY titles.emp_no
+                    ) AS t2 ON t1.emp_no = t2.emp_no AND t1.from_date = t2.maxm
+                  ) AS mytitles ON employees.emp_no = mytitles.emp_no
+                  INNER JOIN departments ON dept_emp.dept_no = departments.dept_no
+                  WHERE departments.dept_name = '". $dept_name . "'
+                  GROUP BY mytitles.title, employees.gender
+                ) AS pay_ratio_nulls
+                GROUP BY title
+              ) AS pay_ratio";
     $res = mysqli_query($conn, $query)
       or die("Failed to query in database: " . mysqli_error($conn));
     $row = mysqli_fetch_array($res);
-    if ($row['gender'] === NULL)
+    if ($row['title'] === NULL)
     {
       die("No such department exists");
     }
 
+    $total = 0;
+    $weighted_ratios = 0;
     while ($row !== NULL)
     {
-      if ($row['gender'] === "M")
+      if (($row['M'] != 0) && ($row['F'] != 0))
       {
-        $males = $row['avg_salary'];
-      }
-      else
-      {
-        $females = $row['avg_salary'];
+        $total += $row['cnt'];
+        $weighted_ratios += ($row['F'] / $row['M']) * $row['cnt'];
       }
       $row = mysqli_fetch_array($res);
     }
 
-    return $females / $males;
+    return $weighted_ratios / $total;
   }
 
   function get_tenure_ordered($conn, $dept_name)
