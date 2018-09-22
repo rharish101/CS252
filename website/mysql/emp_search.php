@@ -1,7 +1,10 @@
 <?php
   function fetch_emp_data ($conn, $emp_no, $last_name, $dept_name)
   {
-    $query = "SELECT employees.*, dept_emp.*, departments.dept_name FROM employees, dept_emp, departments WHERE (employees.emp_no = dept_emp.emp_no) AND (dept_emp.dept_no = departments.dept_no)";
+    $query = "SELECT employees.*, dept_emp.*, departments.dept_name
+              FROM employees
+              INNER JOIN dept_emp ON employees.emp_no = dept_emp.emp_no
+              INNER JOIN departments ON dept_emp.dept_no = departments.dept_no";
     if ($emp_no !== "")
     {
       $query = $query . "AND (employees.emp_no = $emp_no)";

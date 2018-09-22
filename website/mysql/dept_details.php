@@ -1,7 +1,11 @@
 <?php
   function get_largest_department($conn)
   {
-    $query = "SELECT departments.dept_name, COUNT(dept_emp.emp_no) AS count FROM departments, dept_emp WHERE (departments.dept_no = dept_emp.dept_no) GROUP BY departments.dept_name ORDER BY count DESC LIMIT 1";
+    $query = "SELECT departments.dept_name, COUNT(dept_emp.emp_no) AS count
+              FROM departments
+              INNER JOIN dept_emp ON (departments.dept_no = dept_emp.dept_no)
+              GROUP BY departments.dept_name
+              ORDER BY count DESC LIMIT 1";
     $res = mysqli_query($conn, $query)
       or die("Failed to query in database: " . mysqli_error($conn));
     return mysqli_fetch_array($res);
@@ -9,7 +13,12 @@
 
   function get_gender_ratio($conn, $dept_name)
   {
-    $query = "SELECT employees.gender, COUNT(employees.emp_no) AS count FROM employees, dept_emp, departments WHERE (employees.emp_no = dept_emp.emp_no) AND (dept_emp.dept_no = departments.dept_no) AND (departments.dept_name = '". $dept_name . "') GROUP BY employees.gender";
+    $query = "SELECT employees.gender, COUNT(employees.emp_no) AS count
+              FROM employees
+              INNER JOIN dept_emp ON employees.emp_no = dept_emp.emp_no
+              INNER JOIN departments ON dept_emp.dept_no = departments.dept_no
+              WHERE departments.dept_name = '". $dept_name . "'
+              GROUP BY employees.gender";
     $res = mysqli_query($conn, $query)
       or die("Failed to query in database: " . mysqli_error($conn));
     $row = mysqli_fetch_array($res);
@@ -36,7 +45,18 @@
 
   function get_pay_ratio($conn, $dept_name)
   {
-    $query = "SELECT employees.gender, AVG(mysalaries.salary) AS avg_salary FROM employees, dept_emp, departments, (select emp_no, max(salary) as salary from salaries group by emp_no) as mysalaries WHERE (employees.emp_no = dept_emp.emp_no) AND (employees.emp_no = mysalaries.emp_no) AND (dept_emp.dept_no = departments.dept_no) AND (departments.dept_name = '". $dept_name . "') GROUP BY employees.gender";
+    $query = "SELECT employees.gender, AVG(mysalaries.salary) AS avg_salary
+              FROM employees
+              INNER JOIN dept_emp ON employees.emp_no = dept_emp.emp_no
+              INNER JOIN
+              (
+                SELECT emp_no, MAX(salary) AS salary
+                FROM salaries
+                GROUP BY emp_no
+              ) AS mysalaries ON employees.emp_no = mysalaries.emp_no
+              INNER JOIN departments ON dept_emp.dept_no = departments.dept_no
+              WHERE departments.dept_name = '". $dept_name . "'
+              GROUP BY employees.gender";
     $res = mysqli_query($conn, $query)
       or die("Failed to query in database: " . mysqli_error($conn));
     $row = mysqli_fetch_array($res);
@@ -63,7 +83,12 @@
 
   function get_tenure_ordered($conn, $dept_name)
   {
-    $query = "SELECT employees.*, dept_emp.*, departments.dept_name FROM employees, dept_emp, departments WHERE (employees.emp_no = dept_emp.emp_no) AND (dept_emp.dept_no = departments.dept_no) AND (departments.dept_name = '". $dept_name . "') ORDER BY DATEDIFF(dept_emp.from_date, dept_emp.to_date)";
+    $query = "SELECT employees.*, dept_emp.*, departments.dept_name
+              FROM employees
+              INNER JOIN dept_emp ON employees.emp_no = dept_emp.emp_no
+              INNER JOIN departments ON dept_emp.dept_no = departments.dept_no
+              WHERE departments.dept_name = '". $dept_name . "'
+              ORDER BY DATEDIFF(dept_emp.from_date, dept_emp.to_date)";
     $res = mysqli_query($conn, $query)
       or die("Failed to query in database: " . mysqli_error($conn));
     $row = mysqli_fetch_array($res);
