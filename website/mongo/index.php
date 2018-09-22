@@ -4,29 +4,29 @@
   </head>
   <body>
     <?php
+      function print_array($arr)
+      {
+        $first = false;
+        foreach ($arr->bsonSerialize() as $item)
+        {
+          if ($first == false)
+          {
+            echo $item;
+            $first = true;
+          }
+          else
+            echo ", " . $item;
+        }
+      }
+
       require 'vendor/autoload.php';
       $client = new MongoDB\Client("mongodb://localhost:27017");
       $collection = $client->cases->cases;
 
       $result = $collection->find();
-      $max_fir = 0;
       $max_time = 0;
-      $max_crime = 0;
-      $min_crime = 99999999999;
       $now = date_create_from_format('Y-m-d H:i:s', date("Y-m-d H:i:s"));
       foreach ($result as $item) {
-        // FIRs
-        if ($firs[$item['DISTRICT']] === NULL) {
-          $firs[$item['DISTRICT']] = 1;
-        }
-        else {
-          $firs[$item['DISTRICT']] += 1;
-        }
-        if ($firs[$item['DISTRICT']] > $max_fir) {
-          $max_fir = $firs[$item['DISTRICT']];
-          $dist = $item['DISTRICT'];
-        }
-
         // Inefficiency
         $date_start = date_create_from_format('Y-m-d H:i:s.u', $item['Registered_Date']);
         if ($item['CS_FR_Date'] === " ") {
@@ -46,29 +46,43 @@
           $max_time = ($time[$item['PS']] / $firs[$item['DISTRICT']]);
           $ps = $item['PS'];
         }
-
-        // Crimes
-        foreach ($item['Act_Section'] as $entry) {
-          if ($crime[$entry] === NULL) {
-            $crime[$entry] = 1;
-          }
-          else {
-            $crime[$entry] += 1;
-          }
-          if ($crime[$entry] > $max_crime) {
-            $max_crime = $crime[$entry];
-            $top_crime = $entry;
-          }
-          if ($crime[$entry] < $min_crime) {
-            $min_crime = $crime[$entry];
-            $low_crime = $entry;
-          }
-        }
       }
+
+      // FIRs
+      $cursor = $collection->aggregate([
+        ['$sortByCount' => '$DISTRICT'],
+        ['$limit' => 1],
+      ]);
+      foreach ($cursor as $state)
+        $dist = $state['_id'];
+
+      // Crimes
+      $crimes_query = array(
+        ['$unwind' => '$Act_Section'],
+        ['$match' => ['Act_Section' => new MongoDB\BSON\Regex('^(?!(unknown)$).*$')]],
+        ['$group' => ['_id' => '$Act_Section', 'count' => ['$sum' => 1]]],
+        ['$group' => ['_id' => '$count', 'sections' => ['$push' => '$_id']]],
+      );
+
+      // Least unique crime
+      $top_crimes_query = array_merge($crimes_query, [['$sort' => ['_id' => 1]], ['$limit' => 1]]);
+      $cursor = $collection->aggregate($top_crimes_query);
+      foreach ($cursor as $state)
+        $top_crime = $state['sections'];
+
+      // Most unique crime
+      $low_crimes_query = array_merge($crimes_query, [['$sort' => ['_id' => -1]], ['$limit' => 1]]);
+      $cursor = $collection->aggregate($low_crimes_query);
+      foreach ($cursor as $state)
+        $low_crime = $state['sections'];
+
       echo "District with most FIRs: $dist<br>";
       echo "Most inefficient police station: $ps<br>";
-      echo "Most unique crime section: $low_crime<br>";
-      echo "Least unique crime section: $top_crime<br>";
+      echo "Most unique crime section(s): ";
+      print_array($top_crime);
+      echo "<br>Least unique crime section(s): ";
+      print_array($low_crime);
+      echo "<br>";
     ?>
   </body>
 </html>
