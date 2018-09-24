@@ -23,7 +23,25 @@
       $client = new MongoDB\Client("mongodb://localhost:27017");
       $collection = $client->cases->cases;
 
+      // FIRs
+      $cursor = $collection->aggregate([
+        ['$sortByCount' => '$DISTRICT'],
+        ['$limit' => 1],
+      ]);
+      foreach ($cursor as $state)
+        $dist = $state['_id'];
+
       // Inefficiency
+      $cursor = $collection->aggregate([
+        ['$group' => ['_id' => '$PS', 'total' => ['$sum' => 1], 'pending' => ['$sum' => ['$cond' => [['$eq' => ['$Status', 'Pending']], 1, 0]]]]],
+        ['$addFields' => ['ratio' => ['$divide' => ['$pending', '$total']]]],
+        ['$group' => ['_id' => '$ratio', 'ps' => ['$push' => '$_id']]],
+        ['$sort' => ['_id' => -1]],
+        ['$limit' => 1],
+      ]);
+      foreach ($cursor as $state)
+        $ps = $state['ps'];
+
       /* $result = $collection->find();
       $max_time = 0;
       $now = date_create_from_format('Y-m-d H:i:s', date("Y-m-d H:i:s"));
@@ -48,25 +66,6 @@
         }
       } */
 
-      // FIRs
-      $cursor = $collection->aggregate([
-        ['$sortByCount' => '$DISTRICT'],
-        ['$limit' => 1],
-      ]);
-      foreach ($cursor as $state)
-        $dist = $state['_id'];
-
-      // Inefficiency
-      $cursor = $collection->aggregate([
-        ['$group' => ['_id' => '$PS', 'total' => ['$sum' => 1], 'pending' => ['$sum' => ['$cond' => [['$eq' => ['$Status', 'Pending']], 1, 0]]]]],
-        ['$addFields' => ['ratio' => ['$divide' => ['$pending', '$total']]]],
-        ['$group' => ['_id' => '$ratio', 'ps' => ['$push' => '$_id']]],
-        ['$sort' => ['_id' => -1]],
-        ['$limit' => 1],
-      ]);
-      foreach ($cursor as $state)
-        $ps = $state['ps'];
-
       // Crimes
       $crimes_query = array(
         ['$unwind' => '$Act_Section'],
@@ -89,12 +88,17 @@
       foreach ($cursor as $state)
         $low_crime = $state['sections'];
 
-      echo "<b>District with most FIRs:</b><br>&nbsp;&nbsp;&nbsp;&nbsp;$dist<br>";
-      echo "<br><b>Most inefficient police station(s):</b><br>";
+      echo "<table cellpadding=15><tr>";
+      echo "<td><b>District with most FIRs</b>";
+      echo "<td><b>Most inefficient police station(s)</b>";
+      echo "<td><b>Most unique crime section(s):</b>";
+      echo "<td><b>Least unique crime section(s):</b></tr>";
+      echo "<tr><td valign=top>" . $dist;
+      echo "<td valign=top>";
       print_array($ps);
-      echo "<br><br><b>Most unique crime section(s):</b><br>";
+      echo "<td valign=top>";
       print_array($top_crime);
-      echo "<br><br><b>Least unique crime section(s):</b><br>";
+      echo "<td valign=top>";
       print_array($low_crime);
     ?>
   </body>
