@@ -1,0 +1,1 @@
+This is a small web app built using Node.js and Express at the back end. It connects to a MongoDB collection, performs some simple statistical operations on query results and serves results to a rudimentary front-end. I didn't use Angular for the front-end, since the routing was simple and I didn't want to clutter up the demo. 

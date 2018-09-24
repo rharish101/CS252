@@ -1,0 +1,102 @@
+body{
+  background-color: #00bfff;
+  color: white;
+  font-family: Verdana, Geneva, sans-serif;
+}
+
+h1{
+  margin: 50px;
+  text-align: center;
+  font-size: 48px;
+  font-family: "Lucida Console", Monaco, monospace;
+}
+
+#button-panel{
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 2%;
+  border: none;
+}
+
+td{
+  text-align: center;
+}
+
+.circle-button{
+    background-color: #00bfff;
+    border: 2px solid white;
+    width: 200px;
+    max-width: 100%;
+    height: 200px;
+    max-height: 100%;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    border-radius: 50%;
+    outline: none;
+}
+
+.circle-button:hover{
+  font-size: 24px;
+}
+
+.circle-button:active{
+  background-color: black;
+}
+
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  fill: white;
+}
+
+.bar {
+  fill: white;
+}
+
+.bar:hover {
+  fill: blue ;
+}
+
+
+.x.axis text{
+  display: none;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
