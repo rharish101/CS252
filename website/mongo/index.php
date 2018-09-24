@@ -25,11 +25,13 @@
 
       // FIRs
       $cursor = $collection->aggregate([
-        ['$sortByCount' => '$DISTRICT'],
+        ['$group' => ['_id' => '$DISTRICT', 'count' => ['$sum' => 1]]],
+        ['$group' => ['_id' => '$count', 'dists' => ['$push' => '$_id']]],
+        ['$sort' => ['_id' => -1]],
         ['$limit' => 1],
       ]);
       foreach ($cursor as $state)
-        $dist = $state['_id'];
+        $dists = $state['dists'];
 
       // Inefficiency
       $cursor = $collection->aggregate([
@@ -89,11 +91,12 @@
         $low_crime = $state['sections'];
 
       echo "<table cellpadding=15><tr>";
-      echo "<td><b>District with most FIRs</b>";
+      echo "<td><b>District(s) with most FIRs</b>";
       echo "<td><b>Most inefficient police station(s)</b>";
       echo "<td><b>Most unique crime section(s):</b>";
       echo "<td><b>Least unique crime section(s):</b></tr>";
-      echo "<tr><td valign=top>" . $dist;
+      echo "<tr><td valign=top>";
+      print_array($dists);
       echo "<td valign=top>";
       print_array($ps);
       echo "<td valign=top>";
