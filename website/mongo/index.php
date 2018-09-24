@@ -11,11 +11,11 @@
         {
           if ($first == false)
           {
-            echo $item;
+            echo "&nbsp;&nbsp;&nbsp;&nbsp;" . $item;
             $first = true;
           }
           else
-            echo ", " . $item;
+            echo "<br>&nbsp;&nbsp;&nbsp;&nbsp;" . $item;
         }
       }
 
@@ -23,11 +23,11 @@
       $client = new MongoDB\Client("mongodb://localhost:27017");
       $collection = $client->cases->cases;
 
-      $result = $collection->find();
+      // Inefficiency
+      /* $result = $collection->find();
       $max_time = 0;
       $now = date_create_from_format('Y-m-d H:i:s', date("Y-m-d H:i:s"));
       foreach ($result as $item) {
-        // Inefficiency
         $date_start = date_create_from_format('Y-m-d H:i:s.u', $item['Registered_Date']);
         if ($item['CS_FR_Date'] === " ") {
           $date_end = $now;
@@ -46,7 +46,7 @@
           $max_time = ($time[$item['PS']] / $firs[$item['DISTRICT']]);
           $ps = $item['PS'];
         }
-      }
+      } */
 
       // FIRs
       $cursor = $collection->aggregate([
@@ -55,6 +55,17 @@
       ]);
       foreach ($cursor as $state)
         $dist = $state['_id'];
+
+      // Inefficiency
+      $cursor = $collection->aggregate([
+        ['$group' => ['_id' => '$PS', 'total' => ['$sum' => 1], 'pending' => ['$sum' => ['$cond' => [['$eq' => ['$Status', 'Pending']], 1, 0]]]]],
+        ['$addFields' => ['ratio' => ['$divide' => ['$pending', '$total']]]],
+        ['$group' => ['_id' => '$ratio', 'ps' => ['$push' => '$_id']]],
+        ['$sort' => ['_id' => -1]],
+        ['$limit' => 1],
+      ]);
+      foreach ($cursor as $state)
+        $ps = $state['ps'];
 
       // Crimes
       $crimes_query = array(
@@ -78,13 +89,13 @@
       foreach ($cursor as $state)
         $low_crime = $state['sections'];
 
-      echo "District with most FIRs: $dist<br>";
-      echo "Most inefficient police station: $ps<br>";
-      echo "Most unique crime section(s): ";
+      echo "<b>District with most FIRs:</b><br>&nbsp;&nbsp;&nbsp;&nbsp;$dist<br>";
+      echo "<br><b>Most inefficient police station(s):</b><br>";
+      print_array($ps);
+      echo "<br><br><b>Most unique crime section(s):</b><br>";
       print_array($top_crime);
-      echo "<br>Least unique crime section(s): ";
+      echo "<br><br><b>Least unique crime section(s):</b><br>";
       print_array($low_crime);
-      echo "<br>";
     ?>
   </body>
 </html>
