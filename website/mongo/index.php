@@ -70,7 +70,7 @@
       // Crimes
       $crimes_query = array(
         ['$unwind' => '$Act_Section'],
-        ['$match' => ['Act_Section' => new MongoDB\BSON\Regex('^(?!(unknown)$).*$')]],
+        ['$match' => ['Act_Section' => new MongoDB\BSON\Regex('^(?!(unknown|\))$).+$')]],
         ['$group' => ['_id' => '$_id', 'Act_Section' => ['$addToSet' => '$Act_Section']]],
         ['$unwind' => '$Act_Section'],
         ['$group' => ['_id' => '$Act_Section', 'count' => ['$sum' => 1]]],
