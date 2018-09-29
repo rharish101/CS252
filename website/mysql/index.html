@@ -1,34 +1,107 @@
-<html>
-  <form name="form1" method="post" action="handle_req.php">
-    <b>MySQL Database Authentication:</b><br>
-      Username:
-        <input type="string" name="username" placeholder="Enter DB Username..." />
-      <br>
-      Password:
-        <input type="password" name="password" placeholder="Enter DB Password..." />
-    <br><br>
 
-    <b>Employee Search:</b><br>
-      ID:
-        <input type="number" name="employ_id" placeholder="Enter Employee ID..." />
-      <br>
-      Last Name:
-        <input type="text" name="lastname" placeholder="Enter Last Name..." />
-      <br>
-      Department:
-        <input type="text" name="dept_name" placeholder="Enter Department..." />
-      <br>
-      <input type="submit" name="emp_search" value="Search"/>
-    <br><br>
 
-    <b>Department Details:</b><br>
-      Largest Department:
-        <input type="submit" name="larg_dept" value="Click here"/>
-      <br>
-      Department:
-        <input type="text" name="department" placeholder="Enter Department..." />
-      <br>
-      <input type="submit" name="dept_det" value="Get details"/>
-    <br>
-  </form>
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <title>Employee Database </title>
+  </head>
+  <body>
+    
+    <div class="container">
+        <h1 class="text-center"><u>Employee Database Search Engine</u></h1>
+        <br>
+        
+        <form name="form1" method="post" action="handle_req.php">
+            <h2> Employee Search and filter: </h2>
+            <div class="form-row">
+              <div class="col">
+               ID : <input type="number" name="employ_id" class="form-control" placeholder="Enter Employee ID...">
+              </div>
+              <div class="col">
+                  Last Name: <input type="text" name="lastname" class="form-control" placeholder="Enter Last Name...">
+              </div>
+              <div class="col">
+                  Department: <input type="text" name="dept_name" class="form-control" placeholder="Enter Department...">
+              </div>
+            </div>
+            <br>
+            <div class="form-group row">
+                <div class="col-sm-10">
+                  <input type="submit"  name="emp_search" class="btn btn-primary">
+                </div>
+            </div>
+
+            <br>
+            <h2> Department Details: </h2>
+            <br>
+            <h5> Employees within Department: </h5>
+            <div class="form-row">
+                <div class="col">
+                 <input type="text" name="department" class="form-control" placeholder="Enter Department...">
+                </div>
+            </div>
+            <br>
+            <div class="form-group row">
+                <div class="col-sm-10">
+                  <input type="submit"  name="dept_det" value="Get details" class="btn ">
+                </div>
+            </div>
+
+            <h5> Gender ratio within Department: </h5>
+            <div class="form-row">
+                <div class="col">
+                 <input type="text" name="gr_department" class="form-control" placeholder="Enter Department...">
+                </div>
+            </div>
+            <br>
+            <div class="form-group row">
+                <div class="col-sm-10">
+                  <input type="submit"  name="gr_dept_det" value="Get details" class="btn "/>
+                </div>
+            </div>
+              
+
+            <h5> Gender pay ratio within Department: </h5>
+            <div class="form-row">
+                <div class="col">
+                <input type="text" name="gpr_department" class="form-control" placeholder="Enter Department...">
+                </div>
+            </div>
+            <br>
+            <div class="form-group row">
+                <div class="col-sm-10">
+                  <input type="submit"  name="gpr_dept_det" value="Get details" class="btn "/>
+                </div>
+            </div>
+              
+
+             <h2> Largest Department: </h2>
+             <div class="form-group row">
+                <div class="col-sm-10">
+                  
+                  <input type="submit" name="larg_dept" value="Click here" class="btn"/>
+                </div>
+            </div>
+                
+            
+
+               
+          </form>
+
+      </div>
+      
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh5U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
 </html>
