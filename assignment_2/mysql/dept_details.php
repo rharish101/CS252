@@ -127,69 +127,75 @@
       die("No such department exists");
     }
 
-    while ($row !== NULL)
-    {
-      echo "First name: ";
-      echo $row['first_name'];
-      echo "</br>";
+        echo '
+        <div class="container">
+        <h4>List of employees in descending order of tenure</h4>
+                
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Employee ID</th>
+              <th>Gender</th>
+              <th>Birth Date</th>
+              <th>Tenure</th>
+            </tr>
+          </thead>
+          <tbody>
+          ';
+          while ($row !== NULL)
+          { 
+            echo '
+            <tr>
+            <td>' . $row['first_name'] . ' </td>
+            <td>' . $row['last_name'] . ' </td>
+            <td>' . $row['emp_no'] . ' </td>
+            <td>' . $row['gender'] . ' </td>
+            <td>' . $row['birth_date'] . ' </td>';
+            $from = date_create_from_format('Y-m-d', $row['from_date']);
+            $to = date_create_from_format('Y-m-d', $row['to_date']);
+            if ($to->format("Y") === "9999")
+            {
+              $to = date_create_from_format('Y-m-d', date('Y-m-d'));
+            }
+            $duration = date_diff($from, $to);
+      
+            if ($duration->format("%y") === "1")
+            {
+              $tenure = "1 year ";
+            }
+            elseif ($duration->format("%y") === "0")
+            {
+              $tenure = "";
+            }
+            else
+            {
+              $tenure = $duration->format("%y") . " years ";
+            }
+      
+            if ($duration->format("%m") === "1")
+            {
+              $tenure = $tenure . "1 month";
+            }
+            elseif ($duration->format("%m") !== "0")
+            {
+              $tenure = $tenure . $duration->format("%m") . " months";
+            }
+            elseif ($duration->format("%y") === "0")
+            {
+              $tenure = "Fresh";
+            }
 
-      echo "Last name: ";
-      echo $row['last_name'];
-      echo "</br>";
-
-      echo "Employee ID: ";
-      echo $row['emp_no'];
-      echo "</br>";
-
-      echo "Gender: ";
-      echo $row['gender'];
-      echo "</br>";
-
-      echo "Birth date: ";
-      echo $row['birth_date'];
-      echo "</br>";
-
-      $from = date_create_from_format('Y-m-d', $row['from_date']);
-      $to = date_create_from_format('Y-m-d', $row['to_date']);
-      if ($to->format("Y") === "9999")
-      {
-        $to = date_create_from_format('Y-m-d', date('Y-m-d'));
-      }
-      $duration = date_diff($from, $to);
-
-      if ($duration->format("%y") === "1")
-      {
-        $tenure = "1 year ";
-      }
-      elseif ($duration->format("%y") === "0")
-      {
-        $tenure = "";
-      }
-      else
-      {
-        $tenure = $duration->format("%y") . " years ";
-      }
-
-      if ($duration->format("%m") === "1")
-      {
-        $tenure = $tenure . "1 month";
-      }
-      elseif ($duration->format("%m") !== "0")
-      {
-        $tenure = $tenure . $duration->format("%m") . " months";
-      }
-      elseif ($duration->format("%y") === "0")
-      {
-        $tenure = "Fresh";
-      }
-
-      echo "Tenure: ";
-      echo $tenure;
-      echo "</br>";
-
-      $row = mysqli_fetch_array($res);
-      echo "</br>";
-    }
+            echo '<td>' . $tenure .' </td>
+            </tr>';
+            $row = mysqli_fetch_array($res);
+          }
+                  
+          echo '</tbody>
+                </table>
+                </div>
+            ';
   }
 
   function fetch_dept_data($conn, $dept_name)
@@ -198,9 +204,6 @@
     {
       die("No data provided");
     }
-    echo "Gender ratio (females/males) = " .  get_gender_ratio($conn, $dept_name);
-    echo "<br>Gender pay ratio (females/males) = " .  get_pay_ratio($conn, $dept_name);
-    echo "<br><br>List of employees in descending order of tenure:<br><br>";
-    get_tenure_ordered($conn, $dept_name);
+    return get_tenure_ordered($conn, $dept_name);
   }
 ?>

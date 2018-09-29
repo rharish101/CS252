@@ -1,4 +1,15 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body>
   <?php
     include 'emp_search.php';
     include 'dept_details.php';
@@ -16,7 +27,6 @@
     {
       if (preg_match("/^[A-Za-z]*$/", $_POST['lastname']) && preg_match("/^[A-Za-z]*$/", $_POST['dept_name']))
       {
-        echo "<b>Employee Search</b><br><br>";
         fetch_emp_data($conn, $_POST['employ_id'], $_POST['lastname'], $_POST['dept_name']);
       }
       else
@@ -26,14 +36,15 @@
     elseif (isset($_POST['larg_dept']))
     {
       $largest = get_largest_department($conn);
-      echo "Largest department: " . $largest['dept_name'] . ", with " . $largest['count'] . " employees";
+      
+      echo "<br><h3 class='text-center'>Largest department: " . $largest['dept_name'] . ", No. of Employees : " . $largest['count'] . "<h3>" ;
     }
 
     elseif (isset($_POST['dept_det']))
     {
       if (preg_match("/^[A-Za-z]+$/", $_POST['department']))
       {
-        echo "<b>Department of " . ucwords($_POST['department']) . " Details</b><br><br>";
+        echo '<h1 class="text-center"><u>Department of ' . ucwords($_POST['department']) . '</u></h1>';
         fetch_dept_data($conn, $_POST['department']);
       }
       else
@@ -44,7 +55,7 @@
       if (preg_match("/^[A-Za-z]+$/", $_POST['gr_department']))
       {
         $gr = get_gender_ratio($conn, $_POST['gr_department']);
-       echo "Gender ratio (females/males) in  " .  $_POST['gr_department'] . " Department = " . $gr ;
+       echo "<br><h3 class='text-center'>Gender ratio (females/males) in  " .  $_POST['gr_department'] . " Department = " . $gr . '<h3>' ;
       }
       else
         die("Incorrect Department Name");
@@ -54,10 +65,12 @@
       if (preg_match("/^[A-Za-z]+$/", $_POST['gpr_department']))
       {
         $gpr = get_pay_ratio($conn, $_POST['gpr_department']);
-        echo "Gender Pay ratio (females/males) in  " .  $_POST['gr_department'] . " Department = " . $gpr ;
+        echo "<br><h3 class='text-center'>Gender Pay ratio (females/males) in  " .  $_POST['gpr_department'] . " Department = " . $gpr . '<h3>' ;
       }
       else
         die("Incorrect Department Name");
     }
   ?>
+</body>
 </html>
+

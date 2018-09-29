@@ -1,3 +1,4 @@
+
 <?php
   function fetch_emp_data ($conn, $emp_no, $last_name, $dept_name)
   {
@@ -31,43 +32,48 @@
     {
       die("No such employee exists");
     }
+    
+        echo '
+        <div class="container">
+        <h2>Employee Search</h2>
+                
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Employee ID</th>
+              <th>Gender</th>
+              <th>Birth Date</th>
+              <th>Department</th>
+              <th>From </th>
+              <th>To</th>
+            </tr>
+          </thead>
+          <tbody>
+          ';
+          while ($row !== NULL)
+          { 
+            echo '
+            <tr>
+            <td>' . $row['first_name'] . ' </td>
+            <td>' . $row['last_name'] . ' </td>
+            <td>' . $row['emp_no'] . ' </td>
+            <td>' . $row['gender'] . ' </td>
+            <td>' . $row['birth_date'] . ' </td>
+            <td>' . $row['dept_name'] . ' </td>
+            <td>' . $row['from_date'] . ' </td>
+            <td>' . $row['to_date'] . ' </td>
+            </tr>';
 
-    while ($row !== NULL)
-    {
-      echo "First name: ";
-      echo $row['first_name'];
-      echo "</br>";
-
-      echo "Last name: ";
-      echo $row['last_name'];
-      echo "</br>";
-
-      echo "Employee ID: ";
-      echo $row['emp_no'];
-      echo "</br>";
-
-      echo "Gender: ";
-      echo $row['gender'];
-      echo "</br>";
-
-      echo "Birth date: ";
-      echo $row['birth_date'];
-      echo "</br>";
-
-      echo "Department: ";
-      echo $row['dept_name'];
-      echo "</br>";
-
-      echo "From: ";
-      echo $row['from_date'];
-      echo "</br>";
-
-      echo "To Date ";
-      echo $row['to_date'];
-      echo "</br>";
-
-      $row = mysqli_fetch_array($res);
-      echo "</br>";
-    }
-  }
+            $row = mysqli_fetch_array($res);
+          }
+                  
+          echo '</tbody>
+                </table>
+                </div>
+            ';
+  
+}
 ?>
+
