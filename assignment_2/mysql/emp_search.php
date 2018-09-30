@@ -1,4 +1,3 @@
-
 <?php
   function fetch_emp_data ($conn, $emp_no, $last_name, $dept_name)
   {
@@ -32,48 +31,48 @@
     {
       die("No such employee exists");
     }
-    
-        echo '
-        <div class="container">
-        <h2>Employee Search</h2>
-                
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Employee ID</th>
-              <th>Gender</th>
-              <th>Birth Date</th>
-              <th>Department</th>
-              <th>From </th>
-              <th>To</th>
-            </tr>
-          </thead>
-          <tbody>
-          ';
-          while ($row !== NULL)
-          { 
-            echo '
-            <tr>
-            <td>' . $row['first_name'] . ' </td>
-            <td>' . $row['last_name'] . ' </td>
-            <td>' . $row['emp_no'] . ' </td>
-            <td>' . $row['gender'] . ' </td>
-            <td>' . $row['birth_date'] . ' </td>
-            <td>' . $row['dept_name'] . ' </td>
-            <td>' . $row['from_date'] . ' </td>
-            <td>' . $row['to_date'] . ' </td>
-            </tr>';
 
-            $row = mysqli_fetch_array($res);
-          }
-                  
-          echo '</tbody>
-                </table>
-                </div>
-            ';
-  
-}
+    echo '
+      <div class="container">
+      <h2>Employee Search</h2>
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Employee ID</th>
+            <th>Gender</th>
+            <th>Birth Date</th>
+            <th>Department</th>
+            <th>From </th>
+            <th>To</th>
+          </tr>
+        </thead>
+        <tbody>
+    ';
+
+    while ($row !== NULL)
+    {
+      echo '
+      <tr>
+      <td>' . $row['first_name'] . ' </td>
+      <td>' . $row['last_name'] . ' </td>
+      <td>' . $row['emp_no'] . ' </td>
+      <td>' . $row['gender'] . ' </td>
+      <td>' . $row['birth_date'] . ' </td>
+      <td>' . $row['dept_name'] . ' </td>
+      <td>' . $row['from_date'] . ' </td>
+      <td>' . $row['to_date'] . ' </td>
+      </tr>';
+
+      $row = mysqli_fetch_array($res);
+    }
+
+    echo '
+        </tbody>
+      </table>
+      </div>
+    ';
+  }
 ?>
-

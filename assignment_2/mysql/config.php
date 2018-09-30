@@ -1,8 +1,8 @@
 <?php
-return [
+  return [
     'host' => 'localhost',
-    'name' => "employees",
+    'name' => 'employees',
     'user' => 'username',
     'pass' => 'password'
-];
+  ];
 ?>

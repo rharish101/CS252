@@ -36,8 +36,7 @@
     elseif (isset($_POST['larg_dept']))
     {
       $largest = get_largest_department($conn);
-      
-      echo "<br><h3 class='text-center'>Largest department: " . $largest['dept_name'] . ", No. of Employees : " . $largest['count'] . "<h3>" ;
+      echo "<br><h3 class='text-center'>Largest department: " . ucwords($largest['dept_name']) . ", No. of Employees : " . $largest['count'] . "<h3>" ;
     }
 
     elseif (isset($_POST['dept_det']))
@@ -45,7 +44,7 @@
       if (preg_match("/^[A-Za-z]+$/", $_POST['department']))
       {
         echo '<h1 class="text-center"><u>Department of ' . ucwords($_POST['department']) . '</u></h1>';
-        fetch_dept_data($conn, $_POST['department']);
+        get_tenure_ordered($conn, $_POST['department']);
       }
       else
         die("Incorrect Department Name");
@@ -55,7 +54,7 @@
       if (preg_match("/^[A-Za-z]+$/", $_POST['gr_department']))
       {
         $gr = get_gender_ratio($conn, $_POST['gr_department']);
-       echo "<br><h3 class='text-center'>Gender ratio (females/males) in  " .  $_POST['gr_department'] . " Department = " . $gr . '<h3>' ;
+        echo "<br><h3 class='text-center'>Gender ratio (females/males) in " .  ucwords($_POST['gr_department']) . " department = " . $gr . '<h3>' ;
       }
       else
         die("Incorrect Department Name");
@@ -65,7 +64,7 @@
       if (preg_match("/^[A-Za-z]+$/", $_POST['gpr_department']))
       {
         $gpr = get_pay_ratio($conn, $_POST['gpr_department']);
-        echo "<br><h3 class='text-center'>Gender Pay ratio (females/males) in  " .  $_POST['gpr_department'] . " Department = " . $gpr . '<h3>' ;
+        echo "<br><h3 class='text-center'>Gender pay ratio (females/males) in " .  ucwords($_POST['gpr_department']) . " department = " . $gpr . '<h3>' ;
       }
       else
         die("Incorrect Department Name");
@@ -73,4 +72,3 @@
   ?>
 </body>
 </html>
-
