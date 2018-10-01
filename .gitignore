@@ -6,4 +6,5 @@ assignment_1/server/a1_output.html
 output.html
 client-server/c
 client-server/s
-assignment_2/mysql/config.php
+assignment_2/mongo/composer.*
+assignment_2/mongo/vendor/
