@@ -1,0 +1,62 @@
+<!--
+  Generated template for the CustomerPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Closest Drivers</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="bg-style">
+  <img src="assets/imgs/customer.jpg" class="page-img">
+
+  <div class="info">
+    Here are the 3 closest drivers:
+  </div>
+
+  <ion-card>
+    <ion-card-header><b><b>5km</b></b></ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-row><ion-icon name="contact"></ion-icon>Ramu</ion-row>
+        <hr>
+        <ion-row><ion-icon name="call"></ion-icon>1234567890</ion-row>
+      </ion-list>
+      <div style="text-align: center">
+        <button ion-button round outline color="bright" (click)="callDriver(1234567890)">Call</button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header><b><b>7km</b></b></ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-row><ion-icon name="contact"></ion-icon>Motu</ion-row>
+        <hr>
+        <ion-row><ion-icon name="call"></ion-icon>1234568790</ion-row>
+      </ion-list>
+      <div style="text-align: center">
+        <button ion-button round outline color="bright" (click)="callDriver(1234568790)">Call</button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header><b><b>8km</b></b></ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-row><ion-icon name="contact"></ion-icon>Chotu</ion-row>
+        <hr>
+        <ion-row><ion-icon name="call"></ion-icon>0123456789</ion-row>
+      </ion-list>
+      <div style="text-align: center">
+        <button ion-button round outline color="bright" (click)="callDriver(0123456789)">Call</button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
