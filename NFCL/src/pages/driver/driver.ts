@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { StatusBar } from '@ionic-native/status-bar';
 
 /**
  * Generated class for the DriverPage page.
@@ -16,10 +17,50 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 
 export class DriverPage {
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+  constructor(private statusBar: StatusBar, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController) { }
 
   ionViewDidLoad() {
+    this.statusBar.overlaysWebView(false);
+    this.statusBar.backgroundColorByHexString('#636b80');
+    const prompt = this.alertCtrl.create({
+      title: 'Details',
+      message: "Enter your details",
+      inputs: [
+        {
+          name: 'name',
+          placeholder: 'Name',
+          type: 'text'
+        },
+        {
+          name: 'phone',
+          placeholder: "Phone Number",
+          type: 'tel'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => {
+            console.log('Cancel');
+            this.navCtrl.popToRoot();
+          }
+        },
+        {
+          text: 'Save',
+          handler: data => {
+            console.log(data);
+            console.log('Saved');
+          }
+        }
+      ],
+      cssClass: 'alertCustomCss',
+      enableBackdropDismiss: false
+    });
+    prompt.present();
     console.log('ionViewDidLoad DriverPage');
+  }
+
+  updateLocation() {
+    console.log("Updated Location");
   }
 }

@@ -5,14 +5,29 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
   <ion-navbar>
-    <ion-title>driver</ion-title>
+    <ion-title>Driver Mode</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
-<ion-content padding>
+<ion-content class="bg-style">
+  <img src="assets/imgs/driver.jpg" class="page-img">
+  <div class="img-shadow"></div>
 
+  <div class="centering">
+    <button ion-button round color="bright" class="update-button" (click)="updateLocation()">Update Location</button>
+  </div>
+
+  <div class="info">
+    Your location will be automatically updated every 20 minutes
+  </div>
+
+  <div class="notif-title-1">Notif</div>
+  <div class="notif-title-2">ications</div>
+
+  <div class="rev-shadow"></div>
+  <ion-item class="notif-area">
+    No notifications
+  </ion-item>
 </ion-content>

@@ -21,8 +21,13 @@ $app-direction: ltr;
 // the Sass variables found in Ionic's source scss files.
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/theming/overriding-ionic-variables/
-
-
+@font-face {
+  font-family: 'GoogleSans';
+  src: url('../assets/fonts/GoogleSans-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+$font-family-md-base: 'GoogleSans';
 
 
 // Named Color Variables
@@ -46,6 +51,10 @@ $colors: (
 $text-color: color($colors, dark, base);
 $toolbar-md-title-text-color: color($colors, dark, base);
 $card-md-header-color: color($colors, bright, base);
+$alert-md-input-text-color: color($colors, dark, base);
+$alert-md-button-text-color: color($colors, bright, base);
+$alert-input-placeholder-color: color($colors, background, base);
+$alert-md-button-background-color-activated: color($colors, background, base);
 
 
 // App iOS Variables

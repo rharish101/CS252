@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { CallNumber } from '@ionic-native/call-number';
+import { StatusBar } from '@ionic-native/status-bar';
 
 /**
  * Generated class for the CustomerPage page.
@@ -17,9 +18,11 @@ import { CallNumber } from '@ionic-native/call-number';
 })
 
 export class CustomerPage {
-  constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, public alertCtrl: AlertController, private callNumber: CallNumber) { }
+  constructor(private statusBar: StatusBar, public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, public alertCtrl: AlertController, private callNumber: CallNumber) { }
 
   ionViewDidLoad() {
+    this.statusBar.overlaysWebView(false);
+    this.statusBar.backgroundColorByHexString('#636b80');
     console.log('ionViewDidLoad CustomerPage');
     const loader = this.loadingCtrl.create({
       content: "Please wait...",
@@ -27,11 +30,11 @@ export class CustomerPage {
     loader.present();
     let failure: boolean = true;
 
-    setTimeout(() => {
+    /* setTimeout(() => {
       loader.dismiss();
       failure = false;
       console.log('Loaded successfully');
-    }, 1000);
+    }, 1000); */
 
     setTimeout(() => {
       if (failure) {
@@ -40,13 +43,15 @@ export class CustomerPage {
 
         const alert = this.alertCtrl.create({
           title: 'Could not connect',
-          subTitle: 'Check your internet connection',
+          message: 'Check your internet connection',
           buttons: [{
             text: 'OK',
             handler: data => {
               this.navCtrl.popToRoot();
             }
-          }]
+          }],
+          cssClass: 'alertCustomCss',
+          enableBackdropDismiss: false
         });
         alert.present();
       }
