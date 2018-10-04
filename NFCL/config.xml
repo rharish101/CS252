@@ -18,7 +18,7 @@
     <preference name="FadeSplashScreenDuration" value="300" />
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <preference name="SplashScreen" value="screen" />
-    <preference name="SplashScreenDelay" value="3000" />
+    <preference name="ShowSplashScreenSpinner" value="false" />
     <platform name="android">
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
@@ -85,4 +85,6 @@
     <engine name="browser" spec="5.0.4" />
     <plugin name="mx.ferreyra.callnumber" spec="~0.0.2" />
     <plugin name="cordova-sqlite-storage" spec="2.4.0" />
+    <engine name="android" spec="~7.1.1" />
+    <preference name="SplashScreenDelay" value="3000" />
 </widget>
