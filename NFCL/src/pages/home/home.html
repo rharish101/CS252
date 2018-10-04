@@ -1,21 +1,4 @@
 <ion-content class="bg-style">
-  <ion-slides class="top-slides" *ngIf="slidesVisible" (ionSlideDidChange)="slideChanged()">
-    <ion-slide>
-      <img src="assets/imgs/slides-1.jpg" class="slide-img">
-      <div class="slide-overlay">Slide 1</div>
-    </ion-slide>
-    <ion-slide>
-      <img src="assets/imgs/slides-2.jpg" class="slide-img">
-      <div class="slide-overlay">Slide 2</div>
-    </ion-slide>
-    <ion-slide>
-      <img src="assets/imgs/slides-3.jpg" class="slide-img">
-      <div class="slide-overlay">Slide 3</div>
-      <button ion-button icon-only round (click)="closeSlides()" class="slide-close"><ion-icon name="arrow-round-forward"></ion-icon></button>
-    </ion-slide>
-    <ion-slide></ion-slide>
-  </ion-slides>
-
   <img src="assets/imgs/main-img.jpg" class="main-img">
   <div class="img-overlay">Welcome to NFCL</div>
   <div class="img-shadow"></div>
