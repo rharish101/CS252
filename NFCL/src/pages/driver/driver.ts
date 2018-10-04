@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
+import { Geolocation } from '@ionic-native/geolocation';
 
 /**
  * Generated class for the DriverPage page.
@@ -17,7 +18,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 })
 
 export class DriverPage {
-  constructor(private statusBar: StatusBar, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController) { }
+  constructor(private geolocation: Geolocation, private statusBar: StatusBar, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController) { }
 
   ionViewDidLoad() {
     this.statusBar.overlaysWebView(false);
@@ -62,7 +63,9 @@ export class DriverPage {
   }
 
   updateLocation() {
-    console.log("Updated Location");
+    this.geolocation.getCurrentPosition().then((resp) => {
+      console.log(resp.coords.latitude, resp.coords.longitude);
+    });
   }
 
   handleData(data: {'name': string, 'phone': string}) {

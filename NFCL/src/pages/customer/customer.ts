@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { CallNumber } from '@ionic-native/call-number';
 import { StatusBar } from '@ionic-native/status-bar';
+import { Geolocation } from '@ionic-native/geolocation';
 
 /**
  * Generated class for the CustomerPage page.
@@ -18,7 +19,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 })
 
 export class CustomerPage {
-  constructor(private statusBar: StatusBar, public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, public alertCtrl: AlertController, private callNumber: CallNumber) { }
+  constructor(private geolocation: Geolocation, private statusBar: StatusBar, public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, public alertCtrl: AlertController, private callNumber: CallNumber) { }
 
   ionViewDidLoad() {
     this.statusBar.overlaysWebView(false);
@@ -26,6 +27,9 @@ export class CustomerPage {
     console.log('ionViewDidLoad CustomerPage');
     const loader = this.loadingCtrl.create({
       content: "Please wait...",
+    });
+    this.geolocation.getCurrentPosition().then((resp) => {
+      console.log(resp.coords.latitude, resp.coords.longitude);
     });
     loader.present();
     let failure: boolean = true;
