@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { NavController, Slides } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'page-home',
@@ -7,7 +8,36 @@ import { NavController } from 'ionic-angular';
 })
 
 export class HomePage {
-  constructor(public navCtrl: NavController) { }
+  @ViewChild(Slides) slides: Slides;
+
+  constructor(private storage: Storage, public navCtrl: NavController) { }
+
+  slidesVisible: boolean = false;
+
+  ionViewDidEnter() {
+    this.storage.get('firsttime').then((val) => {
+      if (val === null) {
+        this.slidesVisible = true;
+        setTimeout(() => {
+          this.slides.lockSwipeToPrev(true);
+        }, 500);
+        this.storage.set('firsttime', 'no');
+      }
+    });
+  }
+
+  slideChanged() {
+    if (this.slides.isBeginning())
+      this.slides.lockSwipeToPrev(true);
+    else
+      this.slides.lockSwipeToPrev(false);
+    if (this.slides.isEnd())
+      this.slidesVisible = false;
+  }
+
+  closeSlides() {
+    this.slides.slideNext();
+  }
 
   openPage(role: string) {
     if (role === "customer")
