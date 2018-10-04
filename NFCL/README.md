@@ -6,3 +6,11 @@
 4. After installing the platform run `ionic cordova build android` to generate the apk file. The genereated apk file is present inside platforms/android/app/build/outputs/apk/debug.
 
 If you face any **enviroment changed** errors, please run ```npm rebuild node-sass --force```.
+
+## Testing Storage
+
+For deleting local storage in Google Chrome while testing (eg. tutorial slides only work on first start):
+1. Open Chrome developer tools.
+2. Select the *Application* tab.
+3. Select *IndexedDB* from *Storage* in the left toolbar.
+4. Delete the storage.
