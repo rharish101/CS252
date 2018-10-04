@@ -30,11 +30,12 @@ export class CustomerPage {
     loader.present();
     let failure: boolean = true;
 
-    /* setTimeout(() => {
+    setTimeout(() => {
       loader.dismiss();
       failure = false;
       console.log('Loaded successfully');
-    }, 1000); */
+      this.displayData();
+    }, 1000);
 
     setTimeout(() => {
       if (failure) {
@@ -60,5 +61,41 @@ export class CustomerPage {
 
   callDriver(phone: string) {
     this.callNumber.callNumber(phone, true);
+  }
+
+  public driversInfo: string = "";
+
+  public driver1Visible: boolean = false;
+  public driver1Dist: number = 0;
+  public driver1Name: string = "";
+  public driver1Phone: number = 0;
+
+  public driver2Visible: boolean = false;
+  public driver2Dist: number = 0;
+  public driver2Name: string = "";
+  public driver2Phone: number = 0;
+
+  public driver3Visible: boolean = false;
+  public driver3Dist: number = 0;
+  public driver3Name: string = "";
+  public driver3Phone: number = 0;
+
+  displayData() {
+    this.driversInfo = "<div class='info'>Here are the 3 closest drivers:</div>";
+
+    this.driver1Visible = true;
+    this.driver1Dist = 5;
+    this.driver1Name = "Ramu";
+    this.driver1Phone = 1234567890;
+
+    this.driver2Visible = true;
+    this.driver2Dist = 7;
+    this.driver2Name = "Motu";
+    this.driver2Phone = 2234567890;
+
+    this.driver3Visible = true;
+    this.driver3Dist = 8;
+    this.driver3Name = "Chotu";
+    this.driver3Phone = 3234567890;
   }
 }

@@ -49,6 +49,7 @@ export class DriverPage {
           text: 'Save',
           handler: data => {
             console.log(data);
+            this.handleData(data);
             console.log('Saved');
           }
         }
@@ -62,5 +63,25 @@ export class DriverPage {
 
   updateLocation() {
     console.log("Updated Location");
+  }
+
+  handleData(data: {'name': string, 'phone': string}) {
+    let phone_regex = new RegExp(String.raw`^(\+\d{2}-?)?\d+$`);
+    if (!(phone_regex.test(data['phone'])) || (data['phone'] == "") || (data['name'] == "")) {
+      const error = this.alertCtrl.create({
+        title: 'Error',
+        message: "Your details seem invalid. Please try again",
+        buttons: [{
+            text: 'Ok',
+            handler: data => {
+              console.log('Error cancel');
+              this.navCtrl.popToRoot();
+            }
+        }],
+        cssClass: 'alertCustomCss',
+        enableBackdropDismiss: false
+      });
+      error.present();
+    }
   }
 }
