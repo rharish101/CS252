@@ -67,6 +67,17 @@ export class DriverPage {
   }
 
   ionViewDidLeave() {
+    this.http.post(this.server, {
+      name: this.name,
+      phone: this.phone,
+      latitude: 0,
+      longitude: 0,
+      remove: true
+    }).map(res => res.json()).subscribe((data) => {
+      console.log('Data delete successful', data);
+    }, (error) => {
+      console.log('Server error', error);
+    });
     this.onDestroy$.next();
   }
 
@@ -90,6 +101,7 @@ export class DriverPage {
         phone: this.phone,
         latitude: resp.coords.latitude,
         longitude: resp.coords.longitude,
+        remove: false
       }).map(res => res.json()).subscribe((data) => {
         console.log('Location update successful', data);
       }, (error) => {
@@ -129,6 +141,7 @@ export class DriverPage {
       phone: this.phone,
       latitude: this.latitude,
       longitude: this.longitude,
+      remove: false
     }).map(res => res.json()).subscribe((data) => {
       console.log('Location update successful', data);
     }, (error) => {
