@@ -7,8 +7,16 @@
 
 If you face any **enviroment changed** errors, please run ```npm rebuild node-sass --force```.
 
-## Testing Storage
+## Testing Customers
+For testing driver details for customers:
+1. Move `drivers.php` to a location accessible by the Apache HTTP Server.
+2. Open `src/pages/customer/customer.ts`.
+3. Replace the server location with the url of your copy of `drivers.php`:
+  ```
+  private server: string = "http://localhost/~rharish/drivers.php";
+  ```
 
+## Testing Storage
 For deleting local storage in Google Chrome while testing (eg. tutorial slides only work on first start):
 1. Open Chrome developer tools.
 2. Select the *Application* tab.

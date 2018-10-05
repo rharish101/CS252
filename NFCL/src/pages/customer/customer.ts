@@ -3,6 +3,8 @@ import { IonicPage, NavController, NavParams, LoadingController, AlertController
 import { CallNumber } from '@ionic-native/call-number';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Geolocation } from '@ionic-native/geolocation';
+import { Http } from '@angular/http';
+import 'rxjs/add/operator/map';
 
 /**
  * Generated class for the CustomerPage page.
@@ -19,7 +21,10 @@ import { Geolocation } from '@ionic-native/geolocation';
 })
 
 export class CustomerPage {
-  constructor(private geolocation: Geolocation, private statusBar: StatusBar, public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, public alertCtrl: AlertController, private callNumber: CallNumber) { }
+  constructor(private callNumber: CallNumber, private geolocation: Geolocation, private statusBar: StatusBar, public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, public alertCtrl: AlertController, public http: Http) { }
+
+  private failure: boolean = true;
+  private failed: boolean = false;
 
   ionViewDidLoad() {
     this.statusBar.overlaysWebView(false);
@@ -28,23 +33,21 @@ export class CustomerPage {
     const loader = this.loadingCtrl.create({
       content: "Please wait...",
     });
-    this.geolocation.getCurrentPosition().then((resp) => {
-      console.log(resp.coords.latitude, resp.coords.longitude);
-    });
     loader.present();
-    let failure: boolean = true;
+
+    this.geolocation.getCurrentPosition().then((resp) => {
+      this.latitude = resp.coords.latitude;
+      this.longitude = resp.coords.longitude;
+      console.log(resp.coords.latitude, resp.coords.longitude);
+    }).catch((error) => {
+      console.log('Error in location', error);
+    });
 
     setTimeout(() => {
-      loader.dismiss();
-      failure = false;
-      console.log('Loaded successfully');
-      this.displayData();
-    }, 1000);
-
-    setTimeout(() => {
-      if (failure) {
+      if (this.failure) {
         console.log('Loaded unsuccessfully');
         loader.dismiss();
+        this.failed = true;
 
         const alert = this.alertCtrl.create({
           title: 'Could not connect',
@@ -61,11 +64,15 @@ export class CustomerPage {
         alert.present();
       }
     }, 5000);
+
+    this.displayData(loader);
   }
 
   callDriver(phone: string) {
     this.callNumber.callNumber(phone, true);
   }
+
+  private server: string = "http://localhost/~rharish/drivers.php";
 
   public driversInfo: string = "";
 
@@ -84,22 +91,80 @@ export class CustomerPage {
   public driver3Name: string = "";
   public driver3Phone: number = 0;
 
-  displayData() {
-    this.driversInfo = "<div class='info'>Here are the 3 closest drivers:</div>";
+  private latitude: number = 0;
+  private longitude: number = 0;
 
-    this.driver1Visible = true;
-    this.driver1Dist = 5;
-    this.driver1Name = "Ramu";
-    this.driver1Phone = 1234567890;
+  displayData(loader) {
+    this.http.post(this.server, {
+      latitude: this.latitude,
+      longitude: this.longitude,
+    }).map(res => res.json()).subscribe((data) => {
+      let length: number = data.drivers.length;
+      let drivers: Array<{dist: number, name: string, phone: number}> = data.drivers;
+      drivers.sort((a, b) => {
+        if (a.dist < b.dist)
+          return -1;
+        else if (a.dist > b.dist)
+          return 1;
+        else
+          return 0;
+      })
 
-    this.driver2Visible = true;
-    this.driver2Dist = 7;
-    this.driver2Name = "Motu";
-    this.driver2Phone = 2234567890;
+      if (length > 0) {
+        this.driver1Dist = Number(drivers[0].dist);
+        this.driver1Name = String(drivers[0].name);
+        this.driver1Phone = Number(drivers[0].phone);
+      }
 
-    this.driver3Visible = true;
-    this.driver3Dist = 8;
-    this.driver3Name = "Chotu";
-    this.driver3Phone = 3234567890;
+      if (length > 1) {
+        this.driver2Dist = Number(drivers[1].dist);
+        this.driver2Name = String(drivers[1].name);
+        this.driver2Phone = Number(drivers[1].phone);
+      }
+
+      if (length > 2) {
+        this.driver3Dist = Number(drivers[2].dist);
+        this.driver3Name = String(drivers[2].name);
+        this.driver3Phone = Number(drivers[2].phone);
+      }
+
+      if (!this.failed) {
+        if (length > 0)
+          this.driver1Visible = true;
+        if (length > 1)
+          this.driver2Visible = true;
+        if (length > 2)
+          this.driver3Visible = true;
+
+        if (length == 0)
+          this.driversInfo = "<div class='failure'>No drivers found</div>";
+        else if (length == 1)
+          this.driversInfo = "<div class='info'>Here is the closest driver:</div>";
+        else
+          this.driversInfo = "<div class='info'>Here are the " + String(length) + " closest drivers:</div>";
+
+        loader.dismiss();
+        this.failure = false;
+        console.log('Loaded successfully');
+      }
+    }, (error) => {
+      this.failure = false;
+      loader.dismiss();
+      console.log('Server error', error);
+
+      const alert = this.alertCtrl.create({
+        title: 'Server Error',
+        message: 'Please try again',
+        buttons: [{
+          text: 'OK',
+          handler: data => {
+            this.navCtrl.popToRoot();
+          }
+        }],
+        cssClass: 'alertCustomCss',
+        enableBackdropDismiss: false
+      });
+      alert.present();
+    });
   }
 }
