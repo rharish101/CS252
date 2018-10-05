@@ -4,6 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs';
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 
 /**
@@ -65,17 +66,25 @@ export class DriverPage {
     console.log('ionViewDidLoad DriverPage');
   }
 
+  ionViewDidLeave() {
+    this.onDestroy$.next();
+  }
+
   private server: string = "http://localhost/~rharish/update.php";
   private name: string = "";
   private phone: number = 0;
-  /* private latitude: number = 0;
-  private longitude: number = 0; */
+  // private latitude: number = 0;
+  // private longitude: number = 0;
+
+  private popup;
+  private onDestroy$ = new Subject<void>();
 
   updateLocation() {
     this.geolocation.getCurrentPosition().then((resp) => {
-      /* this.latitude = resp.coords.latitude;
-      this.longitude = resp.coords.longitude; */
+      // this.latitude = resp.coords.latitude;
+      // this.longitude = resp.coords.longitude;
       console.log(resp.coords.latitude, resp.coords.longitude);
+
       this.http.post(this.server, {
         name: this.name,
         phone: this.phone,
@@ -85,16 +94,34 @@ export class DriverPage {
         console.log('Location update successful', data);
       }, (error) => {
         console.log('Server error', error);
+        try {
+          this.popup.dismiss();
+        } catch(e) {
+          console.log("try-catch", e);
+        }
+        this.popup = this.alertCtrl.create({
+          title: 'Server Error',
+          message: 'Please try again',
+          buttons: ['OK'],
+          cssClass: 'alertCustomCss',
+          enableBackdropDismiss: false
+        });
+        this.popup.present();
       });
     }).catch((error) => {
       console.log('Error in location', error);
-      const alert = this.alertCtrl.create({
+      try {
+        this.popup.dismiss();
+      } catch(e) {
+        console.log("try-catch", e);
+      }
+      this.popup = this.alertCtrl.create({
         title: 'Error',
         message: "Could not retrieve location. Please try again",
         buttons: ['Ok'],
         cssClass: 'alertCustomCss',
       });
-      alert.present();
+      this.popup.present();
     });
 
     /* this.http.post(this.server, {
@@ -106,6 +133,19 @@ export class DriverPage {
       console.log('Location update successful', data);
     }, (error) => {
       console.log('Server error', error);
+      try {
+        this.popup.dismiss();
+      } catch(e) {
+        console.log("try-catch", e);
+      }
+      this.popup = this.alertCtrl.create({
+        title: 'Server Error',
+        message: 'Please try again',
+        buttons: ['OK'],
+        cssClass: 'alertCustomCss',
+        enableBackdropDismiss: false
+      });
+      this.popup.present();
     }); */
   }
 
@@ -131,7 +171,7 @@ export class DriverPage {
       this.name = data['name'];
       this.phone = Number(data['phone']);
       this.updateLocation();
-      Observable.interval(1000 * 60 * 20).subscribe(x => {
+      Observable.interval(1000 * 5).takeUntil(this.onDestroy$).subscribe(x => {
         this.updateLocation();
       });
     }

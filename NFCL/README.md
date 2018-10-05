@@ -16,6 +16,15 @@ For testing driver details for customers:
   private server: string = "http://localhost/~rharish/drivers.php";
   ```
 
+## Testing Drivers
+For testing driver details updation for drivers:
+1. Move `update.php` to a location accessible by the Apache HTTP Server.
+2. Open `src/pages/driver/driver.ts`.
+3. Replace the server location with the url of your copy of `update.php`:
+  ```
+  private server: string = "http://localhost/~rharish/update.php";
+  ```
+
 ## Testing Storage
 For deleting local storage in Google Chrome while testing (eg. tutorial slides only work on first start):
 1. Open Chrome developer tools.
