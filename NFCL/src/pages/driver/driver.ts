@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Geolocation } from '@ionic-native/geolocation';
+import { Http } from '@angular/http';
+import { Observable } from 'rxjs';
+import 'rxjs/add/operator/map';
 
 /**
  * Generated class for the DriverPage page.
@@ -18,7 +21,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 })
 
 export class DriverPage {
-  constructor(private geolocation: Geolocation, private statusBar: StatusBar, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController) { }
+  constructor(private geolocation: Geolocation, private statusBar: StatusBar, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public http: Http) { }
 
   ionViewDidLoad() {
     this.statusBar.overlaysWebView(false);
@@ -62,10 +65,48 @@ export class DriverPage {
     console.log('ionViewDidLoad DriverPage');
   }
 
+  private server: string = "http://localhost/~rharish/update.php";
+  private name: string = "";
+  private phone: number = 0;
+  /* private latitude: number = 0;
+  private longitude: number = 0; */
+
   updateLocation() {
     this.geolocation.getCurrentPosition().then((resp) => {
+      /* this.latitude = resp.coords.latitude;
+      this.longitude = resp.coords.longitude; */
       console.log(resp.coords.latitude, resp.coords.longitude);
+      this.http.post(this.server, {
+        name: this.name,
+        phone: this.phone,
+        latitude: resp.coords.latitude,
+        longitude: resp.coords.longitude,
+      }).map(res => res.json()).subscribe((data) => {
+        console.log('Location update successful', data);
+      }, (error) => {
+        console.log('Server error', error);
+      });
+    }).catch((error) => {
+      console.log('Error in location', error);
+      const alert = this.alertCtrl.create({
+        title: 'Error',
+        message: "Could not retrieve location. Please try again",
+        buttons: ['Ok'],
+        cssClass: 'alertCustomCss',
+      });
+      alert.present();
     });
+
+    /* this.http.post(this.server, {
+      name: this.name,
+      phone: this.phone,
+      latitude: this.latitude,
+      longitude: this.longitude,
+    }).map(res => res.json()).subscribe((data) => {
+      console.log('Location update successful', data);
+    }, (error) => {
+      console.log('Server error', error);
+    }); */
   }
 
   handleData(data: {'name': string, 'phone': string}) {
@@ -75,16 +116,24 @@ export class DriverPage {
         title: 'Error',
         message: "Your details seem invalid. Please try again",
         buttons: [{
-            text: 'Ok',
-            handler: data => {
-              console.log('Error cancel');
-              this.navCtrl.popToRoot();
-            }
+          text: 'Ok',
+          handler: data => {
+            console.log('Error cancel');
+            this.navCtrl.popToRoot();
+          }
         }],
         cssClass: 'alertCustomCss',
         enableBackdropDismiss: false
       });
       error.present();
+    }
+    else {
+      this.name = data['name'];
+      this.phone = Number(data['phone']);
+      this.updateLocation();
+      Observable.interval(1000 * 60 * 20).subscribe(x => {
+        this.updateLocation();
+      });
     }
   }
 }
