@@ -72,7 +72,7 @@ export class CustomerPage {
     this.callNumber.callNumber(phone, true);
   }
 
-  private server: string = "http://localhost/NFCL/drivers.php";
+  private server: string = "http://cse.iitk.ac.in/users/rharish/NFCL/drivers.php";
 
   public driversInfo: string = "";
 
