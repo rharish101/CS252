@@ -7,6 +7,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { CallNumber } from '@ionic-native/call-number';
 import { IonicStorageModule } from '@ionic/storage';
 import { Geolocation } from '@ionic-native/geolocation';
+import { Push } from '@ionic-native/push';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -32,6 +33,7 @@ import { HomePage } from '../pages/home/home';
     CallNumber,
     Geolocation,
     SplashScreen,
+    Push,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

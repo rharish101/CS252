@@ -81,7 +81,7 @@ export class DriverPage {
     this.onDestroy$.next();
   }
 
-  private server: string = "http://localhost/~rharish/update.php";
+  private server: string = "http://localhost/NFCL/update.php";
   private name: string = "";
   private phone: number = 0;
   // private latitude: number = 0;
