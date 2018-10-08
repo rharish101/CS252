@@ -28,8 +28,6 @@ export class DriverPage {
   constructor(private network: Network, private storage: Storage, private geolocation: Geolocation, private statusBar: StatusBar, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public http: Http, public globalvars:GlobalVarsService) { }
 
   ionViewDidLoad() {
-    this.statusBar.overlaysWebView(false);
-    this.statusBar.backgroundColorByHexString('#636b80');
     this.storage.get('driverdetails').then((val) => {
       if (val === null) {
         this.storage.set('driverdetails', 'exists');
@@ -76,6 +74,11 @@ export class DriverPage {
       }
     });
     console.log('ionViewDidLoad DriverPage');
+  }
+
+  ionViewDidEnter() {
+    this.statusBar.overlaysWebView(false);
+    this.statusBar.backgroundColorByHexString('#636b80');
   }
 
   deleteDetails() {
@@ -137,12 +140,12 @@ export class DriverPage {
       // this.longitude = resp.coords.longitude;
       console.log(resp.coords.latitude, resp.coords.longitude);
 
-      let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
+      if (this.network.type === "none") {
         console.log('Connection error');
 
         const alert = this.alertCtrl.create({
-          title: 'No Internet',
-          message: 'Please try again',
+          title: 'Could not connect',
+          message: 'Check your internet connection',
           buttons: [{
             text: 'OK',
             handler: data => {
@@ -153,10 +156,8 @@ export class DriverPage {
           enableBackdropDismiss: false
         });
         alert.present();
-        disconnectSubscription.unsubscribe();
-      });
-
-      let connectSubscription = this.network.onConnect().subscribe(() => {
+      }
+      else {
         this.storage.get('drivercontacts').then((val) => {
           this.http.post(this.server, {
             name: val.name,
@@ -183,8 +184,7 @@ export class DriverPage {
             this.popup.present();
           });
         });
-        connectSubscription.unsubscribe();
-      });
+      }
     }).catch((error) => {
       console.log('Error in location', error);
       try {

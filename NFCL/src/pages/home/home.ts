@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { StatusBar } from '@ionic-native/status-bar';
 
 @Component({
   selector: 'page-home',
@@ -8,7 +9,7 @@ import { Storage } from '@ionic/storage';
 })
 
 export class HomePage {
-  constructor(private storage: Storage, public navCtrl: NavController) { }
+  constructor(private storage: Storage, private statusBar: StatusBar, public navCtrl: NavController) { }
 
   ionViewDidLoad() {
     this.storage.get('firsttime').then((val) => {
@@ -17,6 +18,10 @@ export class HomePage {
         this.navCtrl.push('TutorialPage');
       }
     });
+  }
+
+  ionViewDidEnter() {
+    this.statusBar.styleBlackTranslucent();
   }
 
   openPage(role: string) {

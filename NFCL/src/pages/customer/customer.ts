@@ -28,8 +28,6 @@ export class CustomerPage {
   private failed: boolean = false;
 
   ionViewDidLoad() {
-    this.statusBar.overlaysWebView(false);
-    this.statusBar.backgroundColorByHexString('#636b80');
     console.log('ionViewDidLoad CustomerPage');
     const loader = this.loadingCtrl.create({
       content: "Please wait...",
@@ -85,6 +83,11 @@ export class CustomerPage {
     this.displayData(loader);
   }
 
+  ionViewDidEnter() {
+    this.statusBar.overlaysWebView(false);
+    this.statusBar.backgroundColorByHexString('#636b80');
+  }
+
   callDriver(phone: string) {
     this.callNumber.callNumber(phone, true);
   }
@@ -112,14 +115,14 @@ export class CustomerPage {
   private longitude: number;
 
   displayData(loader) {
-    let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
+    if (this.network.type === "none") {
       this.failure = false;
       loader.dismiss();
       console.log('Connection error');
 
       const alert = this.alertCtrl.create({
-        title: 'No Internet',
-        message: 'Please try again',
+        title: 'Could not connect',
+        message: 'Check your internet connection',
         buttons: [{
           text: 'OK',
           handler: data => {
@@ -130,10 +133,8 @@ export class CustomerPage {
         enableBackdropDismiss: false
       });
       alert.present();
-      disconnectSubscription.unsubscribe();
-    });
-
-    let connectSubscription = this.network.onConnect().subscribe(() => {
+    }
+    else {
       this.http.post(this.server, {
         latitude: this.latitude,
         longitude: this.longitude,
@@ -205,7 +206,6 @@ export class CustomerPage {
         });
         alert.present();
       });
-      connectSubscription.unsubscribe();
-    });
+    }
   }
 }
