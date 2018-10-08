@@ -8,6 +8,7 @@ import { CallNumber } from '@ionic-native/call-number';
 import { IonicStorageModule } from '@ionic/storage';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Push } from '@ionic-native/push';
+import { Network } from '@ionic-native/network';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -33,6 +34,7 @@ import { GlobalVarsService } from '../services/globalvars/globalvars';
     StatusBar,
     CallNumber,
     Geolocation,
+    Network,
     SplashScreen,
     GlobalVarsService,
     Push,
