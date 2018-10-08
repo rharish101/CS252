@@ -11,6 +11,7 @@ import { Push } from '@ionic-native/push';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
+import { GlobalVarsService } from '../services/globalvars/globalvars';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { HomePage } from '../pages/home/home';
     CallNumber,
     Geolocation,
     SplashScreen,
+    GlobalVarsService,
     Push,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

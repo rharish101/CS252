@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angu
 import { StatusBar } from '@ionic-native/status-bar';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Http } from '@angular/http';
+import { GlobalVarsService } from '../../services/globalvars/globalvars';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
@@ -22,7 +23,7 @@ import 'rxjs/add/operator/map';
 })
 
 export class DriverPage {
-  constructor(private geolocation: Geolocation, private statusBar: StatusBar, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public http: Http) { }
+  constructor(private geolocation: Geolocation, private statusBar: StatusBar, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public http: Http, public globalvars:GlobalVarsService) { }
 
   ionViewDidLoad() {
     this.statusBar.overlaysWebView(false);
@@ -99,6 +100,7 @@ export class DriverPage {
       this.http.post(this.server, {
         name: this.name,
         phone: this.phone,
+        registration: this.globalvars.registrationId,
         latitude: resp.coords.latitude,
         longitude: resp.coords.longitude,
         remove: false
