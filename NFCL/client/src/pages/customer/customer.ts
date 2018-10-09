@@ -53,7 +53,7 @@ export class CustomerPage {
         });
         alert.present();
       }
-    }, 5000);
+    }, 20000);
 
     this.displayData(loader);
     console.log('ionViewDidEnter DriverPage');

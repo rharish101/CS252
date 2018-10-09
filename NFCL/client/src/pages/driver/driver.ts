@@ -139,7 +139,7 @@ export class DriverPage {
           cssClass: 'alertCustomCss'
         });
       }
-    }, 5000);
+    }, 20000);
 
     if ((this.network.type === "none") && (!failed)) {
       console.log('Connection error');
