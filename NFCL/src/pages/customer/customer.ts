@@ -28,6 +28,8 @@ export class CustomerPage {
   private failed: boolean = false;
 
   ionViewDidLoad() {
+    this.statusBar.overlaysWebView(false);
+    this.statusBar.backgroundColorByHexString('#636b80');
     console.log('ionViewDidLoad CustomerPage');
     const loader = this.loadingCtrl.create({
       content: "Please wait...",
@@ -49,6 +51,7 @@ export class CustomerPage {
         buttons: [{
           text: 'OK',
           handler: data => {
+            this.statusBar.styleBlackTranslucent();
             this.navCtrl.popToRoot();
           }
         }],
@@ -70,6 +73,7 @@ export class CustomerPage {
           buttons: [{
             text: 'OK',
             handler: data => {
+              this.statusBar.styleBlackTranslucent();
               this.navCtrl.popToRoot();
             }
           }],
@@ -81,11 +85,6 @@ export class CustomerPage {
     }, 5000);
 
     this.displayData(loader);
-  }
-
-  ionViewDidEnter() {
-    this.statusBar.overlaysWebView(false);
-    this.statusBar.backgroundColorByHexString('#636b80');
   }
 
   callDriver(phone: string) {
@@ -126,6 +125,7 @@ export class CustomerPage {
         buttons: [{
           text: 'OK',
           handler: data => {
+            this.statusBar.styleBlackTranslucent();
             this.navCtrl.popToRoot();
           }
         }],
@@ -198,6 +198,7 @@ export class CustomerPage {
           buttons: [{
             text: 'OK',
             handler: data => {
+              this.statusBar.styleBlackTranslucent();
               this.navCtrl.popToRoot();
             }
           }],

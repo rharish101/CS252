@@ -12,16 +12,13 @@ export class HomePage {
   constructor(private storage: Storage, private statusBar: StatusBar, public navCtrl: NavController) { }
 
   ionViewDidLoad() {
+    this.statusBar.styleBlackTranslucent();
     this.storage.get('firsttime').then((val) => {
       if (val === null) {
         this.storage.set('firsttime', 'no');
         this.navCtrl.push('TutorialPage');
       }
     });
-  }
-
-  ionViewDidEnter() {
-    this.statusBar.styleBlackTranslucent();
   }
 
   openPage(role: string) {

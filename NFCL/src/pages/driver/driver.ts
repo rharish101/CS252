@@ -28,10 +28,12 @@ export class DriverPage {
   constructor(private network: Network, private storage: Storage, private geolocation: Geolocation, private statusBar: StatusBar, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public http: Http, public globalvars:GlobalVarsService) { }
 
   ionViewDidLoad() {
+    this.statusBar.overlaysWebView(false);
+    this.statusBar.backgroundColorByHexString('#636b80');
     this.storage.get('driverdetails').then((val) => {
       if (val === null) {
         this.storage.set('driverdetails', 'exists');
-        const prompt = this.alertCtrl.create({
+        this.showPopup({
           title: 'Details',
           message: "Enter your details",
           inputs: [
@@ -51,6 +53,7 @@ export class DriverPage {
               text: 'Cancel',
               handler: data => {
                 console.log('Cancel');
+                this.statusBar.styleBlackTranslucent();
                 this.navCtrl.popToRoot();
               }
             },
@@ -66,7 +69,6 @@ export class DriverPage {
           cssClass: 'alertCustomCss',
           enableBackdropDismiss: false
         });
-        prompt.present();
       }
       else {
         this.notifVisible = true;
@@ -74,11 +76,6 @@ export class DriverPage {
       }
     });
     console.log('ionViewDidLoad DriverPage');
-  }
-
-  ionViewDidEnter() {
-    this.statusBar.overlaysWebView(false);
-    this.statusBar.backgroundColorByHexString('#636b80');
   }
 
   deleteDetails() {
@@ -94,13 +91,14 @@ export class DriverPage {
         this.storage.set('driverdetails', null);
         this.storage.set('drivercontacts', null);
         console.log('Data delete successful', data);
-        this.popup = this.alertCtrl.create({
+        this.showPopup({
           title: 'Success',
           message: 'Data successfully deleted',
           buttons: [
             {
               text: 'Exit',
               handler: data => {
+                this.statusBar.styleBlackTranslucent();
                 this.navCtrl.popToRoot();
               }
             }
@@ -108,24 +106,27 @@ export class DriverPage {
           cssClass: 'alertCustomCss',
           enableBackdropDismiss: false
         });
-        this.popup.present();
       }, (error) => {
         console.log('Server error', error);
-        try {
-          this.popup.dismiss();
-        } catch(e) {
-          console.log("try-catch", e);
-        }
-        this.popup = this.alertCtrl.create({
+        this.showPopup({
           title: 'Server Error',
           message: 'Please try again',
           buttons: ['OK'],
           cssClass: 'alertCustomCss',
         });
-        this.popup.present();
       });
       this.onDestroy$.next();
     });
+  }
+
+  showPopup(popup) {
+    try {
+      this.popup.dismiss();
+    } catch(e) {
+      console.log("try-catch", e);
+    }
+    this.popup = this.alertCtrl.create(popup);
+    this.popup.present();
   }
 
   private server: string = "https://cse.iitk.ac.in/users/rharish/NFCL/update.php";
@@ -142,20 +143,19 @@ export class DriverPage {
 
       if (this.network.type === "none") {
         console.log('Connection error');
-
-        const alert = this.alertCtrl.create({
+        this.showPopup({
           title: 'Could not connect',
           message: 'Check your internet connection',
           buttons: [{
             text: 'OK',
             handler: data => {
+              this.statusBar.styleBlackTranslucent();
               this.navCtrl.popToRoot();
             }
           }],
           cssClass: 'alertCustomCss',
           enableBackdropDismiss: false
         });
-        alert.present();
       }
       else {
         this.storage.get('drivercontacts').then((val) => {
@@ -170,55 +170,43 @@ export class DriverPage {
             console.log('Location update successful', data);
           }, (error) => {
             console.log('Server error', error);
-            try {
-              this.popup.dismiss();
-            } catch(e) {
-              console.log("try-catch", e);
-            }
-            this.popup = this.alertCtrl.create({
+            this.showPopup({
               title: 'Server Error',
               message: 'Please try again',
               buttons: ['OK'],
               cssClass: 'alertCustomCss',
             });
-            this.popup.present();
           });
         });
       }
     }).catch((error) => {
       console.log('Error in location', error);
-      try {
-        this.popup.dismiss();
-      } catch(e) {
-        console.log("try-catch", e);
-      }
-      this.popup = this.alertCtrl.create({
+      this.showPopup({
         title: 'Error',
         message: "Could not retrieve location. Please try again",
         buttons: ['Ok'],
         cssClass: 'alertCustomCss',
       });
-      this.popup.present();
     });
   }
 
   handleData(data: {'name': string, 'phone': string}) {
     let phone_regex = new RegExp(String.raw`^(\+\d{2}-?)?\d+$`);
     if (!(phone_regex.test(data['phone'])) || (data['phone'] == "") || (data['name'] == "")) {
-      const error = this.alertCtrl.create({
+      this.showPopup({
         title: 'Error',
         message: "Your details seem invalid. Please try again",
         buttons: [{
           text: 'Ok',
           handler: data => {
             console.log('Error cancel');
+            this.statusBar.styleBlackTranslucent();
             this.navCtrl.popToRoot();
           }
         }],
         cssClass: 'alertCustomCss',
         enableBackdropDismiss: false
       });
-      error.present();
     }
     else {
       this.storage.set('drivercontacts', {"name": data['name'], "phone": Number(data['phone'])});
