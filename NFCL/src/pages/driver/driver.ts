@@ -53,6 +53,7 @@ export class DriverPage {
               text: 'Cancel',
               handler: data => {
                 console.log('Cancel');
+                this.statusBar.overlaysWebView(true);
                 this.statusBar.styleBlackTranslucent();
                 this.navCtrl.popToRoot();
               }
@@ -98,6 +99,7 @@ export class DriverPage {
             {
               text: 'Exit',
               handler: data => {
+                this.statusBar.overlaysWebView(true);
                 this.statusBar.styleBlackTranslucent();
                 this.navCtrl.popToRoot();
               }
@@ -149,6 +151,7 @@ export class DriverPage {
           buttons: [{
             text: 'OK',
             handler: data => {
+              this.statusBar.overlaysWebView(true);
               this.statusBar.styleBlackTranslucent();
               this.navCtrl.popToRoot();
             }
@@ -200,6 +203,7 @@ export class DriverPage {
           text: 'Ok',
           handler: data => {
             console.log('Error cancel');
+            this.statusBar.overlaysWebView(true);
             this.statusBar.styleBlackTranslucent();
             this.navCtrl.popToRoot();
           }
