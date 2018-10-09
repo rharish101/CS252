@@ -9,6 +9,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Push } from '@ionic-native/push';
 import { Network } from '@ionic-native/network';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -35,6 +36,7 @@ import { GlobalVarsService } from '../services/globalvars/globalvars';
     CallNumber,
     Geolocation,
     Network,
+    ScreenOrientation,
     SplashScreen,
     GlobalVarsService,
     Push,
