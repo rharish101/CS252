@@ -27,10 +27,7 @@ export class CustomerPage {
   private failure: boolean = true;
   private failed: boolean = false;
 
-  ionViewDidLoad() {
-    this.statusBar.overlaysWebView(false);
-    this.statusBar.backgroundColorByHexString('#636b80');
-    console.log('ionViewDidLoad CustomerPage');
+  ionViewDidEnter() {
     const loader = this.loadingCtrl.create({
       content: "Please wait...",
     });
@@ -48,8 +45,6 @@ export class CustomerPage {
           buttons: [{
             text: 'OK',
             handler: data => {
-              this.statusBar.overlaysWebView(true);
-              this.statusBar.styleBlackTranslucent();
               this.navCtrl.popToRoot();
             }
           }],
@@ -61,6 +56,17 @@ export class CustomerPage {
     }, 5000);
 
     this.displayData(loader);
+    console.log('ionViewDidEnter DriverPage');
+  }
+
+  ionViewWillEnter() {
+    this.statusBar.overlaysWebView(false);
+    this.statusBar.backgroundColorByHexString('#636b80');
+  }
+
+  ionViewWillleave() {
+    this.statusBar.overlaysWebView(true);
+    this.statusBar.styleBlackTranslucent();
   }
 
   callDriver(phone: string) {
@@ -98,8 +104,6 @@ export class CustomerPage {
         buttons: [{
           text: 'OK',
           handler: data => {
-            this.statusBar.overlaysWebView(true);
-            this.statusBar.styleBlackTranslucent();
             this.navCtrl.popToRoot();
           }
         }],
@@ -164,18 +168,38 @@ export class CustomerPage {
             console.log('Loaded successfully');
           }
         }, (error) => {
+          if (!this.failed) {
+            this.failure = false;
+            loader.dismiss();
+            console.log('Server error', error);
+
+            const alert = this.alertCtrl.create({
+              title: 'Server Error',
+              message: 'Please try again',
+              buttons: [{
+                text: 'OK',
+                handler: data => {
+                  this.navCtrl.popToRoot();
+                }
+              }],
+              cssClass: 'alertCustomCss',
+              enableBackdropDismiss: false
+            });
+            alert.present();
+          }
+        });
+      }).catch((error) => {
+        if (!this.failed) {
           this.failure = false;
           loader.dismiss();
-          console.log('Server error', error);
+          console.log('Error in location', error);
 
           const alert = this.alertCtrl.create({
-            title: 'Server Error',
-            message: 'Please try again',
+            title: 'Error',
+            message: "Could not retrieve location. Please try again",
             buttons: [{
               text: 'OK',
               handler: data => {
-                this.statusBar.overlaysWebView(true);
-                this.statusBar.styleBlackTranslucent();
                 this.navCtrl.popToRoot();
               }
             }],
@@ -183,28 +207,7 @@ export class CustomerPage {
             enableBackdropDismiss: false
           });
           alert.present();
-        });
-      }).catch((error) => {
-        this.failure = false;
-        this.failed = true;
-        loader.dismiss();
-        console.log('Error in location', error);
-
-        const alert = this.alertCtrl.create({
-          title: 'Error',
-          message: "Could not retrieve location. Please try again",
-          buttons: [{
-            text: 'OK',
-            handler: data => {
-              this.statusBar.overlaysWebView(true);
-              this.statusBar.styleBlackTranslucent();
-              this.navCtrl.popToRoot();
-            }
-          }],
-          cssClass: 'alertCustomCss',
-          enableBackdropDismiss: false
-        });
-        alert.present();
+        }
       });
     }
   }

@@ -27,9 +27,12 @@ import 'rxjs/add/operator/map';
 export class DriverPage {
   constructor(private network: Network, private storage: Storage, private geolocation: Geolocation, private statusBar: StatusBar, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public http: Http, public globalvars:GlobalVarsService) { }
 
-  ionViewDidLoad() {
-    this.statusBar.overlaysWebView(false);
-    this.statusBar.backgroundColorByHexString('#636b80');
+  private server: string = "https://cse.iitk.ac.in/users/rharish/NFCL/update.php";
+
+  private popup;
+  private onDestroy$ = new Subject<void>();
+
+  ionViewDidEnter() {
     this.storage.get('driverdetails').then((val) => {
       if (val === null) {
         this.storage.set('driverdetails', 'exists');
@@ -53,8 +56,6 @@ export class DriverPage {
               text: 'Cancel',
               handler: data => {
                 console.log('Cancel');
-                this.statusBar.overlaysWebView(true);
-                this.statusBar.styleBlackTranslucent();
                 this.navCtrl.popToRoot();
               }
             },
@@ -76,49 +77,138 @@ export class DriverPage {
         this.updateLocation();
       }
     });
-    console.log('ionViewDidLoad DriverPage');
+    console.log('ionViewDidEnter DriverPage');
   }
 
-  deleteDetails() {
-    this.storage.get('drivercontacts').then((val) => {
-      this.http.post(this.server, {
-        name: val.name,
-        phone: val.phone,
-        registration: this.globalvars.registrationId,
-        latitude: 0,
-        longitude: 0,
-        remove: true
-      }).map(res => res.json()).subscribe((data) => {
-        this.storage.set('driverdetails', null);
-        this.storage.set('drivercontacts', null);
-        console.log('Data delete successful', data);
+  ionViewWillEnter() {
+    this.statusBar.overlaysWebView(false);
+    this.statusBar.backgroundColorByHexString('#636b80');
+  }
+
+  ionViewWillleave() {
+    this.statusBar.overlaysWebView(true);
+    this.statusBar.styleBlackTranslucent();
+  }
+
+  sendDetails(post_json, sub_func, use_geo: boolean) {
+    let failure: boolean = true;
+    let failed: boolean = false;
+
+    let sendFunc = function (latitude, longitude) {
+      this.storage.get('drivercontacts').then((val) => {
+        post_json.name = val.name;
+        post_json.phone = val.phone;
+        post_json.latitude = latitude;
+        post_json.longitude = longitude;
+        this.http.post(this.server, post_json).map(res => res.json()).subscribe((data) => {
+          if (!failed) {
+            failure = false;
+            sub_func(data);
+          }
+        }, (error) => {
+          if (!failed) {
+            failure = false;
+            console.log('Server error', error);
+            this.showPopup({
+              title: 'Server Error',
+              message: 'Please try again',
+              buttons: ['OK'],
+              cssClass: 'alertCustomCss',
+            });
+          }
+        });
+      });
+    }
+
+    setTimeout(() => {
+      if (failure) {
+        console.log('Loaded unsuccessfully');
+        failed = true;
+
         this.showPopup({
-          title: 'Success',
-          message: 'Data successfully deleted',
-          buttons: [
-            {
-              text: 'Exit',
-              handler: data => {
-                this.statusBar.overlaysWebView(true);
-                this.statusBar.styleBlackTranslucent();
-                this.navCtrl.popToRoot();
-              }
+          title: 'Could not connect',
+          message: 'Check your internet connection',
+          buttons: [{
+            text: 'OK',
+            handler: data => {
+              this.navCtrl.popToRoot();
             }
-          ],
+          }],
           cssClass: 'alertCustomCss',
           enableBackdropDismiss: false
         });
-      }, (error) => {
-        console.log('Server error', error);
-        this.showPopup({
-          title: 'Server Error',
-          message: 'Please try again',
-          buttons: ['OK'],
-          cssClass: 'alertCustomCss',
-        });
+      }
+    }, 5000);
+
+    if ((this.network.type === "none") && (!failed)) {
+      console.log('Connection error');
+      failure = false;
+      this.showPopup({
+        title: 'Could not connect',
+        message: 'Check your internet connection',
+        buttons: [{
+          text: 'OK',
+          handler: data => {
+            this.navCtrl.popToRoot();
+          }
+        }],
+        cssClass: 'alertCustomCss',
+        enableBackdropDismiss: false
       });
+    }
+    else if (!failed) {
+      if (use_geo) {
+        this.geolocation.getCurrentPosition().then((resp) => {
+          console.log(resp.coords.latitude, resp.coords.longitude);
+          sendFunc(resp.coords.latitude, resp.coords.longitude);
+        }).catch((error) => {
+          if (!failed) {
+            failure = false;
+            console.log('Error in location', error);
+            this.showPopup({
+              title: 'Error',
+              message: "Could not retrieve location. Please try again",
+              buttons: ['Ok'],
+              cssClass: 'alertCustomCss',
+            });
+          }
+        });
+      }
+      else
+        sendFunc(0, 0);
+    }
+  }
+
+  deleteDetails() {
+    let cleanDetails = function (data) {
+      this.storage.set('driverdetails', null);
+      this.storage.set('drivercontacts', null);
       this.onDestroy$.next();
-    });
+      console.log('Data delete successful', data);
+      this.showPopup({
+        title: 'Success',
+        message: 'Data successfully deleted',
+        buttons: [{
+          text: 'Exit',
+          handler: data => {
+            this.navCtrl.popToRoot();
+          }
+        }],
+        cssClass: 'alertCustomCss',
+        enableBackdropDismiss: false
+      });
+    }
+
+    let json = {
+      name: "",
+      phone: 0,
+      latitude: 0,
+      longitude: 0,
+      registration: this.globalvars.registrationId,
+      remove: true
+    }
+
+    this.sendDetails(json, cleanDetails, false);
   }
 
   showPopup(popup) {
@@ -131,67 +221,24 @@ export class DriverPage {
     this.popup.present();
   }
 
-  private server: string = "https://cse.iitk.ac.in/users/rharish/NFCL/update.php";
+  updateLocation() {
+    let logger = function (data) {
+      console.log('Location update successful', data);
+    }
+
+    let json = {
+      name: "",
+      phone: 0,
+      latitude: 0,
+      longitude: 0,
+      registration: this.globalvars.registrationId,
+      remove: false
+    }
+
+    this.sendDetails(json, logger, true);
+  }
 
   private notifVisible: boolean = false;
-  private popup;
-  private onDestroy$ = new Subject<void>();
-
-  updateLocation() {
-    this.geolocation.getCurrentPosition().then((resp) => {
-      // this.latitude = resp.coords.latitude;
-      // this.longitude = resp.coords.longitude;
-      console.log(resp.coords.latitude, resp.coords.longitude);
-
-      if (this.network.type === "none") {
-        console.log('Connection error');
-        this.showPopup({
-          title: 'Could not connect',
-          message: 'Check your internet connection',
-          buttons: [{
-            text: 'OK',
-            handler: data => {
-              this.statusBar.overlaysWebView(true);
-              this.statusBar.styleBlackTranslucent();
-              this.navCtrl.popToRoot();
-            }
-          }],
-          cssClass: 'alertCustomCss',
-          enableBackdropDismiss: false
-        });
-      }
-      else {
-        this.storage.get('drivercontacts').then((val) => {
-          this.http.post(this.server, {
-            name: val.name,
-            phone: val.phone,
-            registration: this.globalvars.registrationId,
-            latitude: resp.coords.latitude,
-            longitude: resp.coords.longitude,
-            remove: false
-          }).map(res => res.json()).subscribe((data) => {
-            console.log('Location update successful', data);
-          }, (error) => {
-            console.log('Server error', error);
-            this.showPopup({
-              title: 'Server Error',
-              message: 'Please try again',
-              buttons: ['OK'],
-              cssClass: 'alertCustomCss',
-            });
-          });
-        });
-      }
-    }).catch((error) => {
-      console.log('Error in location', error);
-      this.showPopup({
-        title: 'Error',
-        message: "Could not retrieve location. Please try again",
-        buttons: ['Ok'],
-        cssClass: 'alertCustomCss',
-      });
-    });
-  }
 
   handleData(data: {'name': string, 'phone': string}) {
     let phone_regex = new RegExp(String.raw`^(\+\d{2}-?)?\d+$`);
@@ -203,8 +250,6 @@ export class DriverPage {
           text: 'Ok',
           handler: data => {
             console.log('Error cancel');
-            this.statusBar.overlaysWebView(true);
-            this.statusBar.styleBlackTranslucent();
             this.navCtrl.popToRoot();
           }
         }],
