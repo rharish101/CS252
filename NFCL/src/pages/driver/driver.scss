@@ -10,16 +10,10 @@ page-driver {
     overflow: hidden;
   }
 
-  .notif-title-1 {
+  .notif-title {
     margin-left: 3vw;
     font-variant: small-caps;
-    position: absolute;
-    bottom: 13%;
-  }
-
-  .notif-title-2 {
-    margin-left: 12.5vw;
-    font-variant: small-caps;
+    font-variant-ligatures: none;
     position: absolute;
     bottom: 13%;
   }
