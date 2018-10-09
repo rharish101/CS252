@@ -86,7 +86,7 @@ export class DriverPage {
     this.statusBar.backgroundColorByHexString('#636b80');
   }
 
-  ionViewWillleave() {
+  ionViewWillLeave() {
     this.statusBar.overlaysWebView(true);
     this.statusBar.styleBlackTranslucent();
   }
@@ -135,14 +135,8 @@ export class DriverPage {
         this.showPopup({
           title: 'Could not connect',
           message: 'Check your internet connection',
-          buttons: [{
-            text: 'OK',
-            handler: data => {
-              this.navCtrl.popToRoot();
-            }
-          }],
-          cssClass: 'alertCustomCss',
-          enableBackdropDismiss: false
+          buttons: ['OK'],
+          cssClass: 'alertCustomCss'
         });
       }
     }, 5000);
@@ -153,12 +147,7 @@ export class DriverPage {
       this.showPopup({
         title: 'Could not connect',
         message: 'Check your internet connection',
-        buttons: [{
-          text: 'OK',
-          handler: data => {
-            this.navCtrl.popToRoot();
-          }
-        }],
+        buttons: ['OK'],
         cssClass: 'alertCustomCss',
         enableBackdropDismiss: false
       });

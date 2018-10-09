@@ -64,7 +64,7 @@ export class CustomerPage {
     this.statusBar.backgroundColorByHexString('#636b80');
   }
 
-  ionViewWillleave() {
+  ionViewWillLeave() {
     this.statusBar.overlaysWebView(true);
     this.statusBar.styleBlackTranslucent();
   }
