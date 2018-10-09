@@ -28,6 +28,7 @@ export class CustomerPage {
   private failed: boolean = false;
 
   ionViewDidEnter() {
+    this.statusBar.overlaysWebView(false);
     const loader = this.loadingCtrl.create({
       content: "Please wait...",
     });

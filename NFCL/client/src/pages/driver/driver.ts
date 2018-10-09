@@ -34,6 +34,7 @@ export class DriverPage {
   private onDestroy$ = new Subject<void>();
 
   ionViewDidEnter() {
+    this.statusBar.overlaysWebView(false);
     this.storage.get('driverdetails').then((val) => {
       if (val === null) {
         this.storage.set('driverdetails', 'exists');
