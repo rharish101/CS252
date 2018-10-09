@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Geolocation } from '@ionic-native/geolocation';
-import { Http } from '@angular/http';
+import { Http, RequestOptions, Headers } from '@angular/http';
 import { GlobalVarsService } from '../../services/globalvars/globalvars';
 import { Storage } from '@ionic/storage';
 import { Network } from '@ionic-native/network';
@@ -29,6 +29,7 @@ export class DriverPage {
 
   private server: string = "https://cse.iitk.ac.in/users/rharish/NFCL/update.php";
 
+  private headers = new Headers();
   private popup;
   private onDestroy$ = new Subject<void>();
 
@@ -100,7 +101,13 @@ export class DriverPage {
         post_json.phone = val.phone;
         post_json.latitude = latitude;
         post_json.longitude = longitude;
-        this.http.post(this.server, post_json).map(res => res.json()).subscribe((data) => {
+
+        this.headers.append('Access-Control-Allow-Origin' , '*');
+        this.headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
+        this.headers.append('Accept','application/json');
+        this.headers.append('content-type','application/json');
+
+        this.http.post(this.server, post_json, new RequestOptions({ headers:this.headers})).map(res => res.json()).subscribe((data) => {
           if (!failed) {
             failure = false;
             sub_func(data);

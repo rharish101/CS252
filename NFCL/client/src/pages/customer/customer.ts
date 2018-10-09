@@ -4,7 +4,7 @@ import { CallNumber } from '@ionic-native/call-number';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Network } from '@ionic-native/network';
-import { Http } from '@angular/http';
+import { Http, RequestOptions, Headers} from '@angular/http';
 import 'rxjs/add/operator/map';
 
 /**
@@ -92,6 +92,8 @@ export class CustomerPage {
   public driver3Name: string;
   public driver3Phone: number;
 
+  private headers = new Headers();
+
   displayData(loader) {
     if (this.network.type === "none") {
       this.failure = false;
@@ -115,10 +117,16 @@ export class CustomerPage {
     else {
       this.geolocation.getCurrentPosition().then((resp) => {
         console.log(resp.coords.latitude, resp.coords.longitude);
+
+        this.headers.append('Access-Control-Allow-Origin' , '*');
+        this.headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
+        this.headers.append('Accept','application/json');
+        this.headers.append('content-type','application/json');
+
         this.http.post(this.server, {
           latitude: resp.coords.latitude,
           longitude: resp.coords.longitude,
-        }).map(res => res.json()).subscribe((data) => {
+        }, new RequestOptions({ headers:this.headers})).map(res => res.json()).subscribe((data) => {
           let length: number = data.drivers.length;
           let drivers: Array<{dist: number, name: string, phone: number}> = data.drivers;
           drivers.sort((a, b) => {
