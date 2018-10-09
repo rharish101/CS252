@@ -95,20 +95,19 @@ export class DriverPage {
     let failure: boolean = true;
     let failed: boolean = false;
 
-    let sendFunc = function (latitude, longitude) {
+    let sendFunc = (latitude, longitude) => {
       this.storage.get('drivercontacts').then((val) => {
         post_json.name = val.name;
         post_json.phone = val.phone;
         post_json.latitude = latitude;
         post_json.longitude = longitude;
 
-        /* this.headers.append('Access-Control-Allow-Origin' , '*');
+        this.headers.append('Access-Control-Allow-Origin' , '*');
         this.headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
         this.headers.append('Accept','application/json');
-        this.headers.append('content-type','application/json'); */
+        this.headers.append('content-type','application/json');
 
-        // this.http.post(this.server, post_json, new RequestOptions({ headers:this.headers})).map(res => res.json()).subscribe((data) => {
-        this.http.post(this.server, post_json).map(res => res.json()).subscribe((data) => {
+        this.http.post(this.server, post_json, new RequestOptions({ headers:this.headers})).map(res => res.json()).subscribe((data) => {
           if (!failed) {
             failure = false;
             sub_func(data);
@@ -140,7 +139,7 @@ export class DriverPage {
           cssClass: 'alertCustomCss'
         });
       }
-    }, 20000);
+    }, 10000);
 
     if ((this.network.type === "none") && (!failed)) {
       console.log('Connection error');
@@ -177,7 +176,7 @@ export class DriverPage {
   }
 
   deleteDetails() {
-    let cleanDetails = function (data) {
+    let cleanDetails = (data) => {
       this.storage.set('driverdetails', null);
       this.storage.set('drivercontacts', null);
       this.onDestroy$.next();
@@ -208,18 +207,8 @@ export class DriverPage {
     this.sendDetails(json, cleanDetails, false);
   }
 
-  showPopup(popup) {
-    try {
-      this.popup.dismiss();
-    } catch(e) {
-      console.log("try-catch", e);
-    }
-    this.popup = this.alertCtrl.create(popup);
-    this.popup.present();
-  }
-
   updateLocation() {
-    let logger = function (data) {
+    let logger = (data) => {
       console.log('Location update successful', data);
     }
 
@@ -233,6 +222,16 @@ export class DriverPage {
     }
 
     this.sendDetails(json, logger, true);
+  }
+
+  showPopup(popup) {
+    try {
+      this.popup.dismiss();
+    } catch(e) {
+      console.log("try-catch", e);
+    }
+    this.popup = this.alertCtrl.create(popup);
+    this.popup.present();
   }
 
   private notifVisible: boolean = false;
