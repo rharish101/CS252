@@ -102,12 +102,13 @@ export class DriverPage {
         post_json.latitude = latitude;
         post_json.longitude = longitude;
 
-        this.headers.append('Access-Control-Allow-Origin' , '*');
+        /* this.headers.append('Access-Control-Allow-Origin' , '*');
         this.headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
         this.headers.append('Accept','application/json');
-        this.headers.append('content-type','application/json');
+        this.headers.append('content-type','application/json'); */
 
-        this.http.post(this.server, post_json, new RequestOptions({ headers:this.headers})).map(res => res.json()).subscribe((data) => {
+        // this.http.post(this.server, post_json, new RequestOptions({ headers:this.headers})).map(res => res.json()).subscribe((data) => {
+        this.http.post(this.server, post_json).map(res => res.json()).subscribe((data) => {
           if (!failed) {
             failure = false;
             sub_func(data);
