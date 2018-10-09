@@ -1,0 +1,48 @@
+page-tutorial {
+  .top-slides {
+    position: absolute;
+    z-index: 3;
+  }
+
+  .slide-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 3;
+    top: 0%;
+  }
+
+  .slide-overlay {
+    color: white;
+    font-size: 6vw;
+    position: absolute;
+    z-index: 4;
+    bottom: 12%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    padding: 0 2vw;
+    text-shadow: 0.5vw 0.5vw 0.5vw #00000088;
+  }
+
+  .slide-close {
+    position: absolute;
+    z-index: 4;
+    bottom: 2%;
+    right: 5%;
+    width: 12vw;
+    height: 12vw;
+    color: color($colors, dark, base);
+    background-color: white !important;
+  }
+
+  .swiper-pagination-bullet {
+    background: color($colors, background, base);
+    opacity: 0.5;
+  }
+  .swiper-pagination-bullet-active {
+    background: white;
+    opacity: 0.8;
+  }
+}
