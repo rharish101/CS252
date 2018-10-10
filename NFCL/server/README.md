@@ -23,7 +23,7 @@ python manage.py runserver
 
 ## API
 
-### NearByDrivers
+### NearByDrivers:
 Return a list of NearByDrivers to customers.
 
 
@@ -82,7 +82,7 @@ Provide GPS location of customer. All fields must be sent.
 }
 ```
 
-### UpdateDriver
+### UpdateDriver:
 API for either create or update driver's data.
 
 
@@ -110,7 +110,7 @@ API for either create or update driver's data.
 - If Bad request :  `400 Bad Request`
 
 
-### DeleteDriver
+### DeleteDriver:
 API for deleting driver's data.
 
 **URL** : `/api/deleteDriver/`
