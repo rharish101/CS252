@@ -20,6 +20,10 @@
 
 If you face any **enviroment changed** errors, please run ```npm rebuild node-sass --force```.
 
+## Building Release Apk
+For building a release app, follow the instructions on: [Ionic Deploying](https://ionicframework.com/docs/intro/deploying/).
+**NOTE**: You need the private key with the correct password to build the release app.
+
 ## Testing Customers
 For testing driver details for customers:
 1. Move `drivers.php` to a location accessible by the Apache HTTP Server.
