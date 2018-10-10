@@ -25,7 +25,7 @@ SECRET_KEY = '0=x4ab_r#6gw*bp(auk8u%$x1_6*k=%3+6k!p)f_7umpz#v*9z'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -48,6 +48,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
 
 ROOT_URLCONF = 'nfcl.urls'
 
