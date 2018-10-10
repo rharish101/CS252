@@ -55,8 +55,8 @@ Provide GPS location of customer. All fields must be sent.
 {
     "drivers": [
         {	
-	         "name": "Mr. Driver1",
-	         "mobile_no": "4534567865",
+            "name": "Mr. Driver1",
+            "mobile_no": "4534567865",
             "distance": 33.77869150810907,
             "latitude": "12.670000",
             "longitude": "21.690000",
@@ -64,8 +64,8 @@ Provide GPS location of customer. All fields must be sent.
             "y_cordinate": "1422055"
         },
         {	
-	        "name": "Mr. Driver2",
-	         "mobile_no": "9454344543",
+            "name": "Mr. Driver2",
+            "mobile_no": "9454344543",
             "distance": 57.15767664977295,
             "latitude": "12.670000",
             "longitude": "21.670000",
