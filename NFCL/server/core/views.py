@@ -69,10 +69,7 @@ def nearbyDrivers(request):
             'y_cordinate' : str(y_cordinate)
     }
 
-    response = JsonResponse(data)
-    response['Access-Control-Allow-Origin'] = '*'
-    response['Access-Control-Allow-Headers'] = '*'
-    return response
+    return JsonResponse(data)
 
 
 @require_http_methods(["POST"])
