@@ -90,6 +90,22 @@ export class DriverPage {
   ionViewWillLeave() {
     this.statusBar.overlaysWebView(true);
     this.statusBar.styleBlackTranslucent();
+    this.onDestroy$.next();
+
+    let logger = (data) => {
+      console.log('Server data clear successful', data);
+    }
+
+    let json = {
+      name: "",
+      phone: 0,
+      latitude: 0,
+      longitude: 0,
+      registration: this.globalvars.registrationId,
+      remove: true
+    }
+
+    this.sendDetails(json, logger, false);
   }
 
   sendDetails(post_json, sub_func, use_geo: boolean) {
