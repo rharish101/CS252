@@ -7,7 +7,7 @@ import json, math
 from pyproj import Proj, transform
 
 def get_distance(a,b):
-    return math.sqrt( (a[1]-b[1])^2 + (a[0]-b[0])^2 )
+    return str(math.sqrt( (a[1]-b[1])^2 + (a[0]-b[0])^2 ))
 
 def nearbyDrivers(request):
     data = json.loads(request.body.decode("utf-8"))
@@ -54,7 +54,7 @@ def nearbyDrivers(request):
                         
                 } for each in drivers ]
 
-    drivers = sorted(drivers, key=lambda k: k['distance']) 
+    drivers = sorted(drivers, key=lambda k: float(k['distance']) )
 
     drivers = drivers[0:3]
 

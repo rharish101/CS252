@@ -57,7 +57,7 @@ Provide GPS location of customer. All fields must be sent.
         {	
             "name": "Mr. Driver1",
             "mobile_no": "4534567865",
-            "distance": 33.77869150810907,
+            "distance": "33.77869150810907",
             "latitude": "12.670000",
             "longitude": "21.690000",
             "x_cordinate": "2414519",
@@ -66,11 +66,9 @@ Provide GPS location of customer. All fields must be sent.
         {	
             "name": "Mr. Driver2",
             "mobile_no": "9454344543",
-            "distance": 57.15767664977295,
+            "distance": "57.15767664977295",
             "latitude": "12.670000",
             "longitude": "21.670000",
-            "mobile_no": "154454145",
-            "name": "kardam",
             "x_cordinate": "2412293",
             "y_cordinate": "1422055"
         }
