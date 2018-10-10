@@ -130,3 +130,24 @@ API for deleting driver's data.
 - If Bad request :  `400 Bad Request`
 
 
+## GPS Cordinates to Grids
+
+We are taking GPS cordinates ([Geographic coordinate system](https://en.wikipedia.org/wiki/Geographic_coordinate_system),  [World Geodetic System](https://en.wikipedia.org/wiki/World_Geodetic_System)) from user and converting it in a cartesian like system ([Web Mercator projection](https://en.wikipedia.org/wiki/Web_Mercator_projection)).
+
+- A geographic coordinate system is a coordinate system used in geography that enables every location on Earth to be specified by latitude, longitude and elevation. Its identifier is EPSG:4326 WGS 84
+- The World Geodetic System is a standard for use in [geodesy](https://en.wikipedia.org/wiki/Geodesy "Geodesy"), and [satellite navigation](https://en.wikipedia.org/wiki/Satellite_navigation "Satellite navigation") including [GPS](https://en.wikipedia.org/wiki/GPS "GPS"). It comprises a standard [coordinate system](https://en.wikipedia.org/wiki/Geographic_coordinate_system "Geographic coordinate system") for the Earth, a standard reference surface for raw altitude data, and a gravitational equipotential surface that defines the nominal sea level.
+
+- Web Mercator, Google Web Mercator, is a variant of the [Mercator projection](https://en.wikipedia.org/wiki/Mercator_projection) and is the de facto standard for Web mapping applications. Its identifier is EPSG:3857 WGS 84
+
+```python
+from pyproj import Proj, transform
+
+# output (meters east of 0, meters north of 0):
+# Web Mercator: (EPSG 3857) and World Geodetic System :(EPSG 4326).
+x_coordinate, y_coordinate = transform(Proj(init='epsg:4326'), Proj(init='epsg:3857'), float(longitude), float(latitude))
+
+# partion into grid
+grid_size =  10000  # 10km * 10km
+grid = ( int(x_coordinate/grid_size), int(y_coordinate/grid_size) )
+grid_id = hash(grid)
+```
