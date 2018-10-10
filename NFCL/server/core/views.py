@@ -88,7 +88,7 @@ def updateDriverDetail(request):
         longitude = data['longitude']
 
     except:
-         return HttpResponse("ERROR", status=403)
+         return HttpResponse("data fields are missing", status=400)
 
     x, y = transform(Proj(init='epsg:4326'), Proj(init='epsg:3857'), float(longitude), float(latitude))
     # output (meters east of 0, meters north of 0):
@@ -114,11 +114,11 @@ def updateDriverDetail(request):
     try:
         driver = Driver.objects.get(mob_id = mob_id)
         Driver.objects.filter(mob_id = mob_id).update(**data_update)
-        return HttpResponse('UPDATE', status = 200)
+        return HttpResponse(status = 202)
     except ObjectDoesNotExist:
         driver = Driver(**data_update)
         driver.save()
-        return HttpResponse('CREATE', status = 200)
+        return HttpResponse(status = 201)
 
     
 
@@ -126,13 +126,13 @@ def updateDriverDetail(request):
 def deleteDriverDetail(request):
     mob_id = json.loads(request.body.decode("utf-8")).get("mob_id")
     if(mob_id == None):
-        return HttpResponse("NoMobID", status=403)
+        return HttpResponse("No Mob_id", status=400)
     else:
         status = Driver.objects.filter(mob_id=mob_id).delete()
         if(status[0] > 0 ):
-            return HttpResponse('OK', status = 200)
+            return HttpResponse(status = 202)
         else:
-            return HttpResponse("DoesNotExist", status=403)
+            return HttpResponse("DoesNotExist", status=409)
 
 
 
