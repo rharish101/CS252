@@ -98,7 +98,7 @@ export class DriverPage {
 
     let json = {
       name: "",
-      phone: 0,
+      phone: "",
       latitude: 0,
       longitude: 0,
       registration: this.globalvars.registrationId,
@@ -215,7 +215,7 @@ export class DriverPage {
 
     let json = {
       name: "",
-      phone: 0,
+      phone: "",
       latitude: 0,
       longitude: 0,
       registration: this.globalvars.registrationId,
@@ -232,7 +232,7 @@ export class DriverPage {
 
     let json = {
       name: "",
-      phone: 0,
+      phone: "",
       latitude: 0,
       longitude: 0,
       registration: this.globalvars.registrationId,
@@ -272,7 +272,7 @@ export class DriverPage {
       });
     }
     else {
-      this.storage.set('drivercontacts', {"name": data['name'], "phone": Number(data['phone'])});
+      this.storage.set('drivercontacts', {"name": data['name'], "phone": data['phone']});
       this.updateLocation();
       Observable.interval(1000 * 60 * 20).takeUntil(this.onDestroy$).subscribe(x => {
         this.updateLocation();
