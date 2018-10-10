@@ -40,3 +40,12 @@ NFCL/client/$RECYCLE.BIN/
 NFCL/client/.DS_Store
 NFCL/client/Thumbs.db
 NFCL/client/UserInterfaceState.xcuserstate
+
+
+### Django ###
+NFCL/server/*.log
+NFCL/server/*.pot
+NFCL/server/*.pyc
+NFCL/server/__pycache__/
+NFCL/server/.env
+
