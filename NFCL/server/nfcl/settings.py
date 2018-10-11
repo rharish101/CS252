@@ -11,10 +11,16 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+from pyfcm import FCMNotification
+
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# notification service to call send notication to android using firebase.
+firebase_api_key = os.environ.get('FCM_API_KEY','hgshghghgshdghf-skjcghghsdghhjbdsg5675-gt')
+NOTIFICATION_PUSH_SERVICE = FCMNotification(api_key=firebase_api_key)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/

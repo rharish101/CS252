@@ -5,6 +5,18 @@ from django.views.decorators.http import require_http_methods
 from core.models import Driver
 import json, math
 from pyproj import Proj, transform
+from django.conf import settings 
+
+
+def send_notification(message_title, message_body, registration_ids):
+    try:
+        res = settings.NOTIFICATION_PUSH_SERVICE.notify_multiple_devices(registration_ids=registration_ids, message_title=message_title, message_body=message_body)
+        success = res['success']
+        failure = res['failure']
+        total = success + failure
+        print(str(success) +  ' Notifications sent out of ' + str(total))
+    except:
+        print("Error while sending Notification")
 
 def get_distance(a,b):
     return str(math.sqrt( (a[1]-b[1])^2 + (a[0]-b[0])^2 ))
@@ -58,9 +70,17 @@ def nearbyDrivers(request):
 
     drivers = drivers[0:3]
 
+    #mob_reg_ids = ["c-7-FuIqyVo:APA91bE1rtbaD-UKP3zVOjEwWd9fggfUkPputTYIg6DA4j3LNg0g290NSJXukiP6btGu4cHlqkRz5GAoOdAuG33Nggk1ryEavmF996clY9Ctia_eWTXMcqblaoOnqoToHjXErol1HJ_H"]
 
+    mob_ids =  [each['mob_id'] for each in drivers] 
+    for each in drivers:
+        del each["mob_id"] 
 
-        
+    message_title = "NFCL"
+    message_body = "Hope you're having a good day, You may be contacted by a customer."
+    
+    send_notification(message_title, message_body, mob_ids)
+    
     data = { 
             'drivers' : drivers, 
             'latitude' : str(latitude),
@@ -68,6 +88,7 @@ def nearbyDrivers(request):
             'x_cordinate' : str(x_cordinate),
             'y_cordinate' : str(y_cordinate)
     }
+
 
     return JsonResponse(data)
 
@@ -130,6 +151,4 @@ def deleteDriverDetail(request):
             return HttpResponse(status = 202)
         else:
             return HttpResponse("DoesNotExist", status=409)
-
-
 

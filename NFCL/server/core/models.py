@@ -23,7 +23,8 @@ class Driver(models.Model):
             'latitude' : str(self.latitude),
             'longitude' : str(self.longitude),
             'x_cordinate' : str(self.x_cordinate),
-            'y_cordinate' : str(self.y_cordinate)
+            'y_cordinate' : str(self.y_cordinate),
+            'mob_id' : str(self.mob_id)
             
         }
  
