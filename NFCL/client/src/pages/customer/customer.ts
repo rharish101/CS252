@@ -5,6 +5,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Network } from '@ionic-native/network';
 import { Http, RequestOptions, Headers} from '@angular/http';
+import { GlobalVarsService } from '../../services/globalvars/globalvars';
 import 'rxjs/add/operator/map';
 
 /**
@@ -22,7 +23,7 @@ import 'rxjs/add/operator/map';
 })
 
 export class CustomerPage {
-  constructor(private network: Network, private callNumber: CallNumber, private geolocation: Geolocation, private statusBar: StatusBar, public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, public alertCtrl: AlertController, public http: Http) { }
+  constructor(private network: Network, private callNumber: CallNumber, private geolocation: Geolocation, private statusBar: StatusBar, public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, public alertCtrl: AlertController, public http: Http, public globalvars: GlobalVarsService) { }
 
   private failure: boolean = true;
   private failed: boolean = false;
@@ -74,7 +75,7 @@ export class CustomerPage {
     this.callNumber.callNumber(phone, true);
   }
 
-  private server: string = "https://cse.iitk.ac.in/users/rharish/NFCL/drivers.php";
+  private server: string = this.globalvars.serverHost + "drivers.php";
 
   public driversInfo: string = "";
 

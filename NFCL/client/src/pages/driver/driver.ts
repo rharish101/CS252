@@ -27,7 +27,7 @@ import 'rxjs/add/operator/map';
 export class DriverPage {
   constructor(private network: Network, private storage: Storage, private geolocation: Geolocation, private statusBar: StatusBar, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public http: Http, public globalvars:GlobalVarsService) { }
 
-  private server: string = "https://cse.iitk.ac.in/users/rharish/NFCL/update.php";
+  private server: string = this.globalvars.serverHost + "update.php";
 
   private headers = new Headers();
   private popup;
