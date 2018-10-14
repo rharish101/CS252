@@ -55,4 +55,16 @@ page-driver {
     bottom: 11.7%;
     z-index: 2;
   }
+
+  .blinking {
+    animation:blinkingText 2s infinite;
+  }
+
+  @keyframes blinkingText {
+    0%{ opacity: 1; }
+    49%{ opacity: 0; }
+    50%{ opacity: 0; }
+    99%{ opacity: 1; }
+    100%{ opacity: 1; }
+  }
 }

@@ -31,6 +31,6 @@
 
   <div class="rev-shadow" *ngIf="notifVisible"></div>
   <ion-item class="notif-area" *ngIf="notifVisible">
-    No notifications
+    <div [innerHTML]="notifInfo"></div>
   </ion-item>
 </ion-content>

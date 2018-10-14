@@ -8,6 +8,7 @@ import { Storage } from '@ionic/storage';
 import { Network } from '@ionic-native/network';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
+import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import 'rxjs/add/operator/map';
 
 /**
@@ -25,13 +26,17 @@ import 'rxjs/add/operator/map';
 })
 
 export class DriverPage {
-  constructor(private network: Network, private storage: Storage, private geolocation: Geolocation, private statusBar: StatusBar, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public http: Http, public globalvars:GlobalVarsService) { }
+  constructor(private network: Network, private storage: Storage, private geolocation: Geolocation, private statusBar: StatusBar, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public http: Http, public globalvars: GlobalVarsService, public push: Push) {
+  }
 
   private server: string = this.globalvars.serverHost + "update.php";
 
   private headers = new Headers();
   private popup;
   private onDestroy$ = new Subject<void>();
+
+  public notifInfo: string = "No notifications";
+  private notifTimerId: number;
 
   ionViewDidEnter() {
     this.statusBar.overlaysWebView(false);
@@ -74,10 +79,8 @@ export class DriverPage {
           enableBackdropDismiss: false
         });
       }
-      else {
-        this.notifVisible = true;
-        this.updateLocation();
-      }
+      else
+        this.initPage();
     });
     console.log('ionViewDidEnter DriverPage');
   }
@@ -106,6 +109,27 @@ export class DriverPage {
     }
 
     this.sendDetails(json, logger, false);
+  }
+
+  initPage() {
+    this.updateLocation();
+    Observable.interval(1000 * 60 * 20).takeUntil(this.onDestroy$).subscribe(x => {
+      this.updateLocation();
+    });
+    this.notifVisible = true;
+
+    const options: PushOptions = {android: {senderID: this.globalvars.registrationId}};
+    const pushObject: PushObject = this.push.init(options);
+    pushObject.on('notification').subscribe((notification) => {
+      console.log('Received notification', notification);
+      this.notifInfo = "<span class=\"blinking\">You may be contacted</span>";
+      const timerId = Math.random();
+      this.notifTimerId = timerId;
+      setTimeout(() => {
+        if (this.notifTimerId == timerId)
+          this.notifInfo = "No notifications";
+      }, 10 * 60 * 1000);
+    });
   }
 
   sendDetails(post_json, sub_func, use_geo: boolean) {
@@ -273,11 +297,7 @@ export class DriverPage {
     }
     else {
       this.storage.set('drivercontacts', {"name": data['name'], "phone": data['phone']});
-      this.updateLocation();
-      Observable.interval(1000 * 60 * 20).takeUntil(this.onDestroy$).subscribe(x => {
-        this.updateLocation();
-      });
-      this.notifVisible = true;
+      this.initPage();
     }
   }
 }
