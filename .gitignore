@@ -49,3 +49,34 @@ NFCL/server/*.pyc
 NFCL/server/__pycache__/
 NFCL/server/.env
 
+# Assignment 3 Ionic
+assignment_3/*~
+assignment_3/*.sw[mnpcod]
+assignment_3/*.log
+assignment_3/*.tmp
+assignment_3/*.tmp.*
+assignment_3/log.txt
+assignment_3/*.sublime-project
+assignment_3/*.sublime-workspace
+assignment_3/.vscode/
+assignment_3/npm-debug.log*
+assignment_3/.idea/
+assignment_3/.ionic/
+assignment_3/.sourcemaps/
+assignment_3/.sass-cache/
+assignment_3/.tmp/
+assignment_3/.versions/
+assignment_3/coverage/
+assignment_3/dist/
+assignment_3/node_modules/
+assignment_3/tmp/
+assignment_3/temp/
+assignment_3/platforms/
+assignment_3/plugins/
+assignment_3/plugins/android.json
+assignment_3/plugins/ios.json
+assignment_3/www/
+assignment_3/$RECYCLE.BIN/
+assignment_3/.DS_Store
+assignment_3/Thumbs.db
+assignment_3/UserInterfaceState.xcuserstate
