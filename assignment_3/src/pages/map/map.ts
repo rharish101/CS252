@@ -45,7 +45,7 @@ export class MapPage {
       setView: true,
       maxZoom: 18
     })
-    .on('locationfound', (e) => {
+    .on('locationfound', (e: any) => {
       console.log('Locationfound', e);
       L.marker([e.latitude, e.longitude]).addTo(map);
       this.loading.dismiss(); //Stop showing the loading spinner once the map is loaded.
