@@ -26,10 +26,9 @@ import 'rxjs/add/operator/map';
 })
 
 export class DriverPage {
-  constructor(private network: Network, private storage: Storage, private geolocation: Geolocation, private statusBar: StatusBar, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public http: Http, public globalvars: GlobalVarsService, public push: Push) {
-  }
+  constructor(private network: Network, private storage: Storage, private geolocation: Geolocation, private statusBar: StatusBar, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public http: Http, public globalvars: GlobalVarsService, public push: Push) { }
 
-  private server: string = this.globalvars.serverHost + "update.php";
+  private server: string = "https://cse.iitk.ac.in/users/rharish/NFCL/update.php";
 
   private headers = new Headers();
   private popup;
@@ -42,7 +41,6 @@ export class DriverPage {
     this.statusBar.overlaysWebView(false);
     this.storage.get('driverdetails').then((val) => {
       if (val === null) {
-        this.storage.set('driverdetails', 'exists');
         this.showPopup({
           title: 'Details',
           message: "Enter your details",
@@ -296,6 +294,7 @@ export class DriverPage {
       });
     }
     else {
+      this.storage.set('driverdetails', 'exists');
       this.storage.set('drivercontacts', {"name": data['name'], "phone": data['phone']});
       this.initPage();
     }
