@@ -1,0 +1,17 @@
+<!--
+  Generated template for the TutorialPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-slides pager class="top-slides" (ionSlideDidChange)="slideChanged()">
+  <ion-slide>
+    <img src="assets/imgs/slides-1.jpg" class="slide-img">
+    <div class="slide-overlay">Welcome to the<br>No-Frills Cab Locator</div>
+  </ion-slide>
+  <ion-slide>
+    <img src="assets/imgs/slides-2.jpg" class="slide-img">
+    <div class="slide-overlay">Drivers are notified when a customer is given their details</div>
+    <button ion-button icon-only round (click)="closeSlides()" class="slide-close"><ion-icon name="arrow-round-forward"></ion-icon></button>
+  </ion-slide>
+</ion-slides>

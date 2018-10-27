@@ -1,0 +1,52 @@
+page-home {
+  .main-img {
+    margin: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .img-overlay {
+    color: white;
+    font-size: 8vw;
+    position: absolute;
+    z-index: 2;
+    top: 8%;
+    text-align: center;
+    padding: 0 0 0 4vw;
+    margin: 0 auto 0;
+    width: 100%;
+  }
+
+  .role-text {
+    display: flex;
+    color: white;
+    flex-direction: row;
+    font-size: 4vw;
+  }
+
+  .role-text:before, .role-text:after {
+    content: "";
+    flex: 1 1;
+    border-bottom: 0.3vw solid white;
+    margin: 2vw 3vw 2vw;
+  }
+
+  .center-text {
+    text-align: center;
+  }
+
+  .main-button {
+    margin: 5vw 3vw 10vw !important;
+    font-size: 7vw;
+    color: color($colors, dark, base);
+    text-transform: capitalize;
+    padding: 10vw;
+  }
+
+  .bottom-content {
+    position: absolute;
+    bottom: 6vw;
+    width: 100%;
+  }
+}
