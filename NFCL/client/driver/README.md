@@ -22,7 +22,7 @@ If you face any **enviroment changed** errors, please run ```npm rebuild node-sa
 
 ## Building Release Apk
 For building a release app, follow the instructions on: [Ionic Deploying](https://ionicframework.com/docs/intro/deploying/).
-**NOTE**: You do not have to generate a private key; `my-release-key.jks` is the required key, with password `cs252nfcl`.
+**NOTE**: You do not have to generate a private key; `my-release-key.jks` in the parent directory is the required key, with password `cs252nfcl`.
 
 ## Testing Customers
 For testing driver details for customers:

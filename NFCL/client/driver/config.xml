@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.nfcl.driver" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>NFCL</name>
+    <name>NFCL Drivers</name>
     <description>No Frills Cab Locator for customers.</description>
     <author email="rharish@cse.iitk.ac.in" href="http://cse.iitk.ac.in/users/rharish/">Team Rocket</author>
     <content src="index.html" />
