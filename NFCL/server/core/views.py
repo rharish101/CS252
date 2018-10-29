@@ -111,8 +111,9 @@ def updateDriverDetail(request):
         longitude = data['longitude']
 
     except:
-         return HttpResponse("data fields are missing", status=400)
-
+        JsonResponse({}) 
+         #return HttpResponse("data fields are missing", status=400)
+          
     x, y = transform(Proj(init='epsg:4326'), Proj(init='epsg:3857'), float(longitude), float(latitude))
     # output (meters east of 0, meters north of 0):
     #shortcuts for Web Mercator (EPSG 3857) and WGS 84 longitude and latitude (EPSG 4326). 
@@ -137,25 +138,31 @@ def updateDriverDetail(request):
     try:
         driver = Driver.objects.get(mob_id = mob_id)
         Driver.objects.filter(mob_id = mob_id).update(**data_update)
-        return HttpResponse(status = 202)
+        return JsonResponse({}) 
+        #return HttpResponse(status = 202)
     except ObjectDoesNotExist:
         driver = Driver(**data_update)
         driver.save()
-        return HttpResponse(status = 201)
+        return JsonResponse({})
+        #return HttpResponse(status = 201)
 
     
 
 @require_http_methods(["POST","OPTIONS"])
 def deleteDriverDetail(request):
     if(request.method == "OPTIONS"):
-        return HttpResponse(200)
+        return JsonResponse({})
+        #return HttpResponse(200)
     mob_id = json.loads(request.body.decode("utf-8")).get("mob_id")
     if(mob_id == None):
-        return HttpResponse("No Mob_id", status=400)
+        return JsonResponse({})
+        #return HttpResponse("No Mob_id", status=400)
     else:
         status = Driver.objects.filter(mob_id=mob_id).delete()
         if(status[0] > 0 ):
-            return HttpResponse(status = 202)
+            return JsonResponse({})
+            #return HttpResponse(status = 202)
         else:
-            return HttpResponse("DoesNotExist", status=409)
+            return JsonResponse({})
+            #return HttpResponse("DoesNotExist", status=409)
 
