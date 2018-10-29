@@ -82,7 +82,6 @@
     <plugin name="cordova-plugin-ionic-webview" spec="^2.0.0" />
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
     <plugin name="cordova-plugin-statusbar" spec="2.4.2" />
-    <plugin name="mx.ferreyra.callnumber" spec="~0.0.2" />
     <plugin name="cordova-sqlite-storage" spec="2.4.0" />
     <preference name="SplashScreenDelay" value="3000" />
     <plugin name="cordova-plugin-geolocation" spec="4.0.1">
