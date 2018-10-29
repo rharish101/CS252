@@ -75,24 +75,30 @@ export class CustomerPage {
     this.callNumber.callNumber(phone, true);
   }
 
-  private server: string = "https://cse.iitk.ac.in/users/rharish/NFCL/drivers.php";
+  private server: string = "http://nfcl.pythonanywhere.com/api/nearbyDrivers";
 
   public driversInfo: string = "";
 
   public driver1Visible: boolean = false;
   public driver1Dist: number;
   public driver1Name: string;
-  public driver1Phone: number;
+  public driver1Phone: string;
+  public driver1Latitude: string;
+  public driver1Longitude: string;
 
   public driver2Visible: boolean = false;
   public driver2Dist: number;
   public driver2Name: string;
-  public driver2Phone: number;
+  public driver2Phone: string;
+  public driver2Latitude: string;
+  public driver2Longitude: string;
 
   public driver3Visible: boolean = false;
   public driver3Dist: number;
   public driver3Name: string;
-  public driver3Phone: number;
+  public driver3Phone: string;
+  public driver3Latitude: string;
+  public driver3Longitude: string;
 
   private headers = new Headers();
 
@@ -131,32 +137,38 @@ export class CustomerPage {
           longitude: resp.coords.longitude,
         }, new RequestOptions({ headers:this.headers})).map(res => res.json()).subscribe((data) => {
           let length: number = data.drivers.length;
-          let drivers: Array<{dist: number, name: string, phone: number}> = data.drivers;
+          let drivers: Array<{distance: string, name: string, mobile_no: string, latitude: string, longitude: string, x_cordinate: string, y_cordinate: string}> = data.drivers;
           drivers.sort((a, b) => {
-            if (a.dist < b.dist)
+            if (Number(a.distance) < Number(b.distance))
               return -1;
-            else if (a.dist > b.dist)
+            else if (Number(a.distance) > Number(b.distance))
               return 1;
             else
               return 0;
           })
 
           if (length > 0) {
-            this.driver1Dist = Number(drivers[0].dist);
+            this.driver1Dist = Number(drivers[0].distance);
             this.driver1Name = String(drivers[0].name);
-            this.driver1Phone = Number(drivers[0].phone);
+            this.driver1Phone = String(drivers[0].mobile_no);
+            this.driver1Latitude = String(drivers[0].latitude);
+            this.driver1Longitude = String(drivers[0].longitude);
           }
 
           if (length > 1) {
-            this.driver2Dist = Number(drivers[1].dist);
+            this.driver2Dist = Number(drivers[1].distance);
             this.driver2Name = String(drivers[1].name);
-            this.driver2Phone = Number(drivers[1].phone);
+            this.driver2Phone = String(drivers[1].mobile_no);
+            this.driver2Latitude = String(drivers[1].latitude);
+            this.driver2Longitude = String(drivers[1].longitude);
           }
 
           if (length > 2) {
-            this.driver3Dist = Number(drivers[2].dist);
+            this.driver3Dist = Number(drivers[2].distance);
             this.driver3Name = String(drivers[2].name);
-            this.driver3Phone = Number(drivers[2].phone);
+            this.driver3Phone = String(drivers[2].mobile_no);
+            this.driver3Latitude = String(drivers[2].latitude);
+            this.driver3Longitude = String(drivers[2].longitude);
           }
 
           if (!this.failed) {

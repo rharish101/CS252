@@ -28,7 +28,9 @@ import 'rxjs/add/operator/map';
 export class DriverPage {
   constructor(private network: Network, private storage: Storage, private geolocation: Geolocation, private statusBar: StatusBar, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public http: Http, public globalvars: GlobalVarsService, public push: Push) { }
 
-  private server: string = "https://cse.iitk.ac.in/users/rharish/NFCL/update.php";
+  private server: string = "http://nfcl.pythonanywhere.com/api/"
+  private delete_api: string = "deleteDriver";
+  private update_api: string = "updateDriver";
 
   private headers = new Headers();
   private popup;
@@ -99,14 +101,13 @@ export class DriverPage {
 
     let json = {
       name: "",
-      phone: "",
+      mobile_no: "",
       latitude: 0,
       longitude: 0,
-      registration: this.globalvars.registrationId,
-      remove: true
+      mob_id: this.globalvars.registrationId,
     }
 
-    this.sendDetails(json, logger, false);
+    this.sendDetails(json, logger, this.delete_api, false);
   }
 
   initPage() {
@@ -130,14 +131,14 @@ export class DriverPage {
     });
   }
 
-  sendDetails(post_json, sub_func, use_geo: boolean) {
+  sendDetails(post_json, sub_func, api, use_geo: boolean) {
     let failure: boolean = true;
     let failed: boolean = false;
 
     let sendFunc = (latitude, longitude) => {
       this.storage.get('drivercontacts').then((val) => {
         post_json.name = val.name;
-        post_json.phone = val.phone;
+        post_json.mobile_no = val.phone;
         post_json.latitude = latitude;
         post_json.longitude = longitude;
 
@@ -147,7 +148,7 @@ export class DriverPage {
         this.headers.append('Accept','application/json');
         this.headers.append('content-type','application/json');
 
-        this.http.post(this.server, post_json, new RequestOptions({ headers:this.headers})).map(res => res.json()).subscribe((data) => {
+        this.http.post(this.server + api, post_json, new RequestOptions({ headers:this.headers})).map(res => res.json()).subscribe((data) => {
           if (!failed) {
             failure = false;
             sub_func(data);
@@ -237,14 +238,14 @@ export class DriverPage {
 
     let json = {
       name: "",
-      phone: "",
+      mobile_no: "",
       latitude: 0,
       longitude: 0,
-      registration: this.globalvars.registrationId,
+      mob_id: this.globalvars.registrationId,
       remove: true
     }
 
-    this.sendDetails(json, cleanDetails, false);
+    this.sendDetails(json, cleanDetails, this.delete_api, false);
   }
 
   updateLocation() {
@@ -254,14 +255,14 @@ export class DriverPage {
 
     let json = {
       name: "",
-      phone: "",
+      mobile_no: "",
       latitude: 0,
       longitude: 0,
-      registration: this.globalvars.registrationId,
+      mob_id: this.globalvars.registrationId,
       remove: false
     }
 
-    this.sendDetails(json, logger, true);
+    this.sendDetails(json, logger, this.update_api, true);
   }
 
   showPopup(popup) {
