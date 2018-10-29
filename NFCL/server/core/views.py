@@ -21,7 +21,10 @@ def send_notification(message_title, message_body, registration_ids):
 def get_distance(a,b):
     return str(math.sqrt( (a[1]-b[1])^2 + (a[0]-b[0])^2 ))
 
+@require_http_methods(["POST","OPTIONS"])
 def nearbyDrivers(request):
+    if(request.method == "OPTIONS"):
+        return HttpResponse(200)
     data = json.loads(request.body.decode("utf-8"))
     
     try:
@@ -93,8 +96,10 @@ def nearbyDrivers(request):
     return JsonResponse(data)
 
 
-@require_http_methods(["POST"])
+@require_http_methods(["POST","OPTIONS"])
 def updateDriverDetail(request):
+    if(request.method == "OPTIONS"):
+        return HttpResponse(200)
 
     data = json.loads(request.body.decode("utf-8"))
     
@@ -140,8 +145,10 @@ def updateDriverDetail(request):
 
     
 
-
+@require_http_methods(["POST","OPTIONS"])
 def deleteDriverDetail(request):
+    if(request.method == "OPTIONS"):
+        return HttpResponse(200)
     mob_id = json.loads(request.body.decode("utf-8")).get("mob_id")
     if(mob_id == None):
         return HttpResponse("No Mob_id", status=400)
