@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <title>NFCL </title>
+  </head>
+  <body>
+    <div class="container text-center">
+      <h1 class="text-center"><u>NFCL</u></h1>
+      <button onclick="getLocation()"" type="button" class="btn btn-primary text-center centre">Get Drivers</button>
+      <p id="data"></p>
+    </div>
+
+
+   
+
+
+
+    <script>
+    var x = document.getElementById("data");
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(make_post_request, showError);
+        } else { 
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+
+    function make_post_request(position){
+        
+        $.post(
+            "http://127.0.0.1:8000/api/nearbyDriversWeb",
+            {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+            
+            },
+            function(data,status){
+                var drivers = data.drivers
+                console.log(drivers.length)
+                var i=0;
+                var text = "";
+                for (i = 0; i < drivers.length; i++) { 
+                    text += "Name : " + drivers[i].name + " || Mobile No. : " + drivers[i].mobile_no + " || Distance : " + drivers[i].distance + " m<br>";
+                }
+                x.innerHTML = "<br>" + text;
+
+            },
+            "json"
+            );
+
+    }
+    function showPosition(position) {
+        x.innerHTML = "Latitude: " + position.coords.latitude + 
+        "<br>Longitude: " + position.coords.longitude;
+    }
+
+    function showError(error) {
+        switch(error.code) {
+            case error.PERMISSION_DENIED:
+                x.innerHTML = "User denied the request for Geolocation."
+                break;
+            case error.POSITION_UNAVAILABLE:
+                x.innerHTML = "Location information is unavailable."
+                break;
+            case error.TIMEOUT:
+                x.innerHTML = "The request to get user location timed out."
+                break;
+            case error.UNKNOWN_ERROR:
+                x.innerHTML = "An unknown error occurred."
+                break;
+        }
+    }
+    </script>
+    
+</body>
+</html>

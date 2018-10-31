@@ -7,6 +7,8 @@ import json, math
 from pyproj import Proj, transform
 from django.conf import settings 
 
+def index(request):
+    return render(request, 'index.html', {})
 
 def send_notification(message_title, message_body, registration_ids):
     try:
@@ -19,7 +21,8 @@ def send_notification(message_title, message_body, registration_ids):
         print("Error while sending Notification")
 
 def get_distance(a,b):
-    return str(math.sqrt( (a[1]-b[1])^2 + (a[0]-b[0])^2 ))
+    print(a,b)
+    return str( abs(a[1]-b[1]) + abs(a[0]-b[0]) )
 
 def get_nearby_drivers(latitude, longitude):
     x, y = transform(Proj(init='epsg:4326'), Proj(init='epsg:3857'), float(longitude), float(latitude))
