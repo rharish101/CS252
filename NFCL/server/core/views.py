@@ -21,18 +21,7 @@ def send_notification(message_title, message_body, registration_ids):
 def get_distance(a,b):
     return str(math.sqrt( (a[1]-b[1])^2 + (a[0]-b[0])^2 ))
 
-@require_http_methods(["POST","OPTIONS"])
-def nearbyDrivers(request):
-    if(request.method == "OPTIONS"):
-        return HttpResponse(200)
-    data = json.loads(request.body.decode("utf-8"))
-    
-    try:
-        latitude = data['latitude']
-        longitude = data['longitude']
-    except:
-         return HttpResponse("ERROR", status=403)
-
+def get_nearby_drivers(latitude, longitude):
     x, y = transform(Proj(init='epsg:4326'), Proj(init='epsg:3857'), float(longitude), float(latitude))
     # output (meters east of 0, meters north of 0):
     #shortcuts for Web Mercator (EPSG 3857) and WGS 84 longitude and latitude (EPSG 4326). 
@@ -91,8 +80,41 @@ def nearbyDrivers(request):
             'x_cordinate' : str(x_cordinate),
             'y_cordinate' : str(y_cordinate)
     }
+    return data
 
 
+
+@require_http_methods(["POST"])
+def nearbyDriversWeb(request):
+    print(request.POST, request.body)
+    data = request.POST 
+    try:
+        latitude = data['latitude']
+        longitude = data['longitude']
+    except:
+         return HttpResponse("ERROR", status=403)
+    
+    print(latitude, longitude)
+    
+    data = get_nearby_drivers(latitude, longitude)
+    return JsonResponse(data)
+    
+
+
+@require_http_methods(["POST","OPTIONS"])
+def nearbyDrivers(request):
+    if(request.method == "OPTIONS"):
+        return HttpResponse(200)
+  
+    data = json.loads(request.body.decode("utf-8"))
+    
+    try:
+        latitude = data['latitude']
+        longitude = data['longitude']
+    except:
+         return HttpResponse("ERROR", status=403)
+
+    data = get_nearby_drivers(latitude, longitude)
     return JsonResponse(data)
 
 
