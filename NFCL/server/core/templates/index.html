@@ -38,7 +38,7 @@
     function make_post_request(position){
         
         $.post(
-            "http://127.0.0.1:8000/api/nearbyDriversWeb",
+            "https://nfcl.pythonanywhere.com/api/nearbyDriversWeb",
             {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
