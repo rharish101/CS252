@@ -10,38 +10,31 @@ page-driver {
     overflow: hidden;
   }
 
-  .notif-title {
-    margin-left: 3vw;
-    font-variant: small-caps;
-    font-variant-ligatures: none;
-    position: absolute;
-    bottom: 11%;
-  }
-
-  .notif-area {
-    background: color($colors, dark, base);
-    color: white;
-    position: absolute;
-    height: 11%;
-    bottom: -1%;
-  }
-
   .centering {
     text-align: center;
   }
 
   .update-button {
-    margin: 3vw 6vw 1vw !important;
-    padding: 9vw 11vw !important;
+    margin: 5vw 6vw 2vw !important;
+    padding: 10vw 12vw !important;
     font-size: 6vw !important;
   }
 
-  .second-button {
-    margin: 1vw 4vw 3vw !important;
-    padding: 2vw 5vw !important;
-    font-size: 3vw !important;
+  .delete-button {
+    margin: 4vw 4vw 4vw !important;
+    padding: 4vw 7vw !important;
+    font-size: 4vw !important;
     text-transform: capitalize !important;
-    height: 10vw !important;
+    height: 12vw !important;
+  }
+
+  .close-button {
+    margin: 2vw 4vw 4vw !important;
+    padding: 8vw 11vw !important;
+    font-size: 6vw !important;
+    text-transform: capitalize !important;
+    height: 14vw !important;
+    color: color($colors, dark, base);
   }
 
   .rev-shadow {
@@ -54,17 +47,5 @@ page-driver {
     position: absolute;
     bottom: 9.7%;
     z-index: 2;
-  }
-
-  .blinking {
-    animation:blinkingText 2s infinite;
-  }
-
-  @keyframes blinkingText {
-    0%{ opacity: 1; }
-    49%{ opacity: 0; }
-    50%{ opacity: 0; }
-    99%{ opacity: 1; }
-    100%{ opacity: 1; }
   }
 }

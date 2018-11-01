@@ -36,9 +36,6 @@ export class DriverPage {
   private popup;
   private onDestroy$ = new Subject<void>();
 
-  public notifInfo: string = "No notifications";
-  private notifTimerId: number;
-
   ionViewDidEnter() {
     this.statusBar.overlaysWebView(false);
     this.storage.get('driverdetails').then((val) => {
@@ -88,6 +85,7 @@ export class DriverPage {
   ionViewWillEnter() {
     this.statusBar.overlaysWebView(false);
     this.statusBar.backgroundColorByHexString('#636b80');
+    this.statusBar.overlaysWebView(false);
   }
 
   ionViewWillLeave() {
@@ -115,19 +113,11 @@ export class DriverPage {
     Observable.interval(1000 * 60 * 20).takeUntil(this.onDestroy$).subscribe(x => {
       this.updateLocation();
     });
-    this.notifVisible = true;
 
     const options: PushOptions = {android: {senderID: this.globalvars.registrationId}};
     const pushObject: PushObject = this.push.init(options);
     pushObject.on('notification').subscribe((notification) => {
       console.log('Received notification', notification);
-      this.notifInfo = "<span class=\"blinking\">You may be contacted</span>";
-      const timerId = Math.random();
-      this.notifTimerId = timerId;
-      setTimeout(() => {
-        if (this.notifTimerId == timerId)
-          this.notifInfo = "No notifications";
-      }, 10 * 60 * 1000);
     });
   }
 
@@ -274,8 +264,6 @@ export class DriverPage {
     this.popup = this.alertCtrl.create(popup);
     this.popup.present();
   }
-
-  private notifVisible: boolean = false;
 
   handleData(data: {'name': string, 'phone': string}) {
     let phone_regex = new RegExp(String.raw`^(\+\d{2}-?)?\d+$`);
