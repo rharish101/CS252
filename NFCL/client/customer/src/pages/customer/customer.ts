@@ -7,6 +7,8 @@ import { Network } from '@ionic-native/network';
 import { Http, RequestOptions, Headers} from '@angular/http';
 import { GlobalVarsService } from '../../services/globalvars/globalvars';
 import 'rxjs/add/operator/map';
+import 'leaflet';
+import L from 'leaflet';
 
 /**
  * Generated class for the CustomerPage page.
@@ -78,6 +80,7 @@ export class CustomerPage {
   private server: string = "http://nfcl.pythonanywhere.com/api/nearbyDrivers";
 
   public driversInfo: string = "";
+  public mapVisible: boolean = false;
 
   public driver1Visible: boolean = false;
   public driver1Dist: number;
@@ -124,7 +127,34 @@ export class CustomerPage {
     }
     else {
       this.geolocation.getCurrentPosition().then((resp) => {
-        console.log(resp.coords.latitude, resp.coords.longitude);
+        console.log("Geolocation:", resp.coords.latitude, resp.coords.longitude);
+
+        var map = L.map("map").setView([resp.coords.latitude, resp.coords.longitude], 13);
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attributions: 'www.tphangout.com',
+          maxZoom: 18
+        }).addTo(map);
+
+        var redMarker = new L.Icon({
+          iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        });
+        var blueMarker = new L.Icon({
+          iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        });
+
+        var selfMarker = L.marker([resp.coords.latitude, resp.coords.longitude], {icon: redMarker});
+        selfMarker.bindPopup("You");
+        selfMarker.addTo(map);
 
         this.headers.append('Access-Control-Allow-Origin' , '*');
         this.headers.append('Access-Control-Allow-Headers' , '*');
@@ -153,6 +183,10 @@ export class CustomerPage {
             this.driver1Phone = String(drivers[0].mobile_no);
             this.driver1Latitude = String(drivers[0].latitude);
             this.driver1Longitude = String(drivers[0].longitude);
+
+            var driver1Marker = L.marker([this.driver1Latitude, this.driver1Longitude], {icon: blueMarker});
+            driver1Marker.bindPopup(this.driver1Name);
+            driver1Marker.addTo(map);
           }
 
           if (length > 1) {
@@ -161,6 +195,10 @@ export class CustomerPage {
             this.driver2Phone = String(drivers[1].mobile_no);
             this.driver2Latitude = String(drivers[1].latitude);
             this.driver2Longitude = String(drivers[1].longitude);
+
+            var driver2Marker = L.marker([this.driver2Latitude, this.driver2Longitude], {icon: blueMarker});
+            driver2Marker.bindPopup(this.driver2Name);
+            driver2Marker.addTo(map);
           }
 
           if (length > 2) {
@@ -169,11 +207,17 @@ export class CustomerPage {
             this.driver3Phone = String(drivers[2].mobile_no);
             this.driver3Latitude = String(drivers[2].latitude);
             this.driver3Longitude = String(drivers[2].longitude);
+
+            var driver3Marker = L.marker([this.driver3Latitude, this.driver3Longitude], {icon: blueMarker});
+            driver3Marker.bindPopup(this.driver3Name);
+            driver3Marker.addTo(map);
           }
 
           if (!this.failed) {
-            if (length > 0)
+            if (length > 0) {
               this.driver1Visible = true;
+              this.mapVisible = true;
+            }
             if (length > 1)
               this.driver2Visible = true;
             if (length > 2)

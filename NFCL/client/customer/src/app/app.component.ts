@@ -18,7 +18,8 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       statusBar.overlaysWebView(true);
       statusBar.styleBlackTranslucent();
-      screenOrientation.lock(screenOrientation.ORIENTATIONS.PORTRAIT);
+      if (!platform.is('core'))
+        screenOrientation.lock(screenOrientation.ORIENTATIONS.PORTRAIT);
       splashScreen.hide();
     });
   }
