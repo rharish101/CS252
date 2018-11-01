@@ -3,9 +3,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_http_methods
 from core.models import Driver
-import json, math
+import json, math, time
 from pyproj import Proj, transform
 from django.conf import settings 
+
 
 def index(request):
     return render(request, 'index.html', {})
@@ -48,10 +49,15 @@ def get_nearby_drivers(latitude, longitude):
                   ]
     
     near_by_grid_id = [str(hash(each)) for each in nearbygrids]
+    
+    last_allowed = int(time.time()) - 1260 # 21 min time
 
     drivers = Driver.objects.filter(grid__in = near_by_grid_id)
 
+
     drivers =  [ obj.to_dict() for obj in drivers ]
+
+    drivers = [d for d in drivers if int(d['timestamp']) >= last_allowed]
 
     drivers =  [ {**each, 'distance':\
                              get_distance(\
@@ -64,8 +70,6 @@ def get_nearby_drivers(latitude, longitude):
     drivers = sorted(drivers, key=lambda k: float(k['distance']) )
 
     drivers = drivers[0:3]
-
-    #mob_reg_ids = ["c-7-FuIqyVo:APA91bE1rtbaD-UKP3zVOjEwWd9fggfUkPputTYIg6DA4j3LNg0g290NSJXukiP6btGu4cHlqkRz5GAoOdAuG33Nggk1ryEavmF996clY9Ctia_eWTXMcqblaoOnqoToHjXErol1HJ_H"]
 
     mob_ids =  [each['mob_id'] for each in drivers] 
     for each in drivers:
@@ -153,7 +157,8 @@ def updateDriverDetail(request):
             'longitude' : longitude,
             'x_cordinate' : x,
             'y_cordinate' : y,
-            'grid' : grid_id
+            'grid' : grid_id,
+            'timestamp': int(time.time())
         }
 
         try:

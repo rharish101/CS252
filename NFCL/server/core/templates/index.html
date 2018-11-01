@@ -49,6 +49,9 @@
                 console.log(drivers.length)
                 var i=0;
                 var text = "";
+                if(drivers.length == 0){
+                    text += "No Driver available in this region"
+                }
                 for (i = 0; i < drivers.length; i++) { 
                     text += "Name : " + drivers[i].name + " || Mobile No. : " + drivers[i].mobile_no + " || Distance : " + drivers[i].distance + " m<br>";
                 }

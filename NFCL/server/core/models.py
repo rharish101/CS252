@@ -10,7 +10,7 @@ class Driver(models.Model):
     x_cordinate = models.IntegerField()
     y_cordinate = models.IntegerField()
     grid = models.CharField(max_length=300)
-    updated_at = models.DateTimeField(auto_now=True)
+    timestamp = models.IntegerField()
     
 
     def __str__(self):
@@ -24,7 +24,7 @@ class Driver(models.Model):
             'longitude' : str(self.longitude),
             'x_cordinate' : str(self.x_cordinate),
             'y_cordinate' : str(self.y_cordinate),
-            'mob_id' : str(self.mob_id)
-            
+            'mob_id' : str(self.mob_id),
+            'timestamp' : str(self.timestamp)
         }
  
