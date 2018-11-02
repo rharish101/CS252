@@ -80,7 +80,7 @@ export class CustomerPage {
   private server: string = "http://nfcl.pythonanywhere.com/api/nearbyDrivers";
 
   public driversInfo: string = "";
-  public mapVisible: boolean = false;
+  public mapVisible: string = "hidden";
 
   public driver1Visible: boolean = false;
   public driver1Dist: number;
@@ -216,7 +216,8 @@ export class CustomerPage {
           if (!this.failed) {
             if (length > 0) {
               this.driver1Visible = true;
-              this.mapVisible = true;
+              this.mapVisible = "visible";
+              map.invalidateSize();
             }
             if (length > 1)
               this.driver2Visible = true;
