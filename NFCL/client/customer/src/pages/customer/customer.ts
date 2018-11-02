@@ -178,7 +178,7 @@ export class CustomerPage {
           })
 
           if (length > 0) {
-            this.driver1Dist = Number(drivers[0].distance);
+            this.driver1Dist = Math.round(Number(drivers[0].distance) / 10) / 100.0
             this.driver1Name = String(drivers[0].name);
             this.driver1Phone = String(drivers[0].mobile_no);
             this.driver1Latitude = String(drivers[0].latitude);
@@ -190,7 +190,7 @@ export class CustomerPage {
           }
 
           if (length > 1) {
-            this.driver2Dist = Number(drivers[1].distance);
+            this.driver2Dist = Math.round(Number(drivers[1].distance) / 10) / 100.0
             this.driver2Name = String(drivers[1].name);
             this.driver2Phone = String(drivers[1].mobile_no);
             this.driver2Latitude = String(drivers[1].latitude);
@@ -202,7 +202,7 @@ export class CustomerPage {
           }
 
           if (length > 2) {
-            this.driver3Dist = Number(drivers[2].distance);
+            this.driver3Dist = Math.round(Number(drivers[2].distance) / 10) / 100.0
             this.driver3Name = String(drivers[2].name);
             this.driver3Phone = String(drivers[2].mobile_no);
             this.driver3Latitude = String(drivers[2].latitude);
