@@ -86,22 +86,22 @@ export class CustomerPage {
   public driver1Dist: number;
   public driver1Name: string;
   public driver1Phone: string;
-  public driver1Latitude: string;
-  public driver1Longitude: string;
+  public driver1Latitude: number;
+  public driver1Longitude: number;
 
   public driver2Visible: boolean = false;
   public driver2Dist: number;
   public driver2Name: string;
   public driver2Phone: string;
-  public driver2Latitude: string;
-  public driver2Longitude: string;
+  public driver2Latitude: number;
+  public driver2Longitude: number;
 
   public driver3Visible: boolean = false;
   public driver3Dist: number;
   public driver3Name: string;
   public driver3Phone: string;
-  public driver3Latitude: string;
-  public driver3Longitude: string;
+  public driver3Latitude: number;
+  public driver3Longitude: number;
 
   private headers = new Headers();
 
@@ -177,12 +177,24 @@ export class CustomerPage {
               return 0;
           })
 
+          function shift_val(val1: number, val2: number) {
+            let sign: number = Math.sign(val1 - val2);
+            if (sign == 0)
+              sign = 1;
+            return val1 + 0.05 * sign;
+          }
+
           if (length > 0) {
             this.driver1Dist = Math.round(Number(drivers[0].distance) / 10) / 100.0
             this.driver1Name = String(drivers[0].name);
             this.driver1Phone = String(drivers[0].mobile_no);
-            this.driver1Latitude = String(drivers[0].latitude);
-            this.driver1Longitude = String(drivers[0].longitude);
+            this.driver1Latitude = Number(drivers[0].latitude);
+            this.driver1Longitude = Number(drivers[0].longitude);
+
+            if (this.driver1Dist < 0.05) {
+              this.driver1Latitude = shift_val(this.driver1Latitude, resp.coords.latitude);
+              this.driver1Longitude = shift_val(this.driver1Longitude, resp.coords.longitude);
+            }
 
             var driver1Marker = L.marker([this.driver1Latitude, this.driver1Longitude], {icon: blueMarker});
             driver1Marker.bindPopup(this.driver1Name);
@@ -193,8 +205,13 @@ export class CustomerPage {
             this.driver2Dist = Math.round(Number(drivers[1].distance) / 10) / 100.0
             this.driver2Name = String(drivers[1].name);
             this.driver2Phone = String(drivers[1].mobile_no);
-            this.driver2Latitude = String(drivers[1].latitude);
-            this.driver2Longitude = String(drivers[1].longitude);
+            this.driver2Latitude = Number(drivers[1].latitude);
+            this.driver2Longitude = Number(drivers[1].longitude);
+
+            if (this.driver2Dist < 0.05) {
+              this.driver2Latitude = shift_val(this.driver2Latitude, resp.coords.latitude);
+              this.driver2Longitude = shift_val(this.driver2Longitude, resp.coords.longitude);
+            }
 
             var driver2Marker = L.marker([this.driver2Latitude, this.driver2Longitude], {icon: blueMarker});
             driver2Marker.bindPopup(this.driver2Name);
@@ -205,8 +222,13 @@ export class CustomerPage {
             this.driver3Dist = Math.round(Number(drivers[2].distance) / 10) / 100.0
             this.driver3Name = String(drivers[2].name);
             this.driver3Phone = String(drivers[2].mobile_no);
-            this.driver3Latitude = String(drivers[2].latitude);
-            this.driver3Longitude = String(drivers[2].longitude);
+            this.driver3Latitude = Number(drivers[2].latitude);
+            this.driver3Longitude = Number(drivers[2].longitude);
+
+            if (this.driver3Dist < 0.05) {
+              this.driver3Latitude = shift_val(this.driver3Latitude, resp.coords.latitude);
+              this.driver3Longitude = shift_val(this.driver3Longitude, resp.coords.longitude);
+            }
 
             var driver3Marker = L.marker([this.driver3Latitude, this.driver3Longitude], {icon: blueMarker});
             driver3Marker.bindPopup(this.driver3Name);
