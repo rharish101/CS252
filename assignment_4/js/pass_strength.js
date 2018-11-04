@@ -48,7 +48,7 @@ fetch("./common_passwords.txt").then(response => response.text()).then((text) =>
   var med_html = '<span class="text-warning">Medium</span>';
   var strong_html = '<span class="text-success">Strong</span>';
 
-  setInterval(() => {
+  window.onkeypress = () => {
     var str = document.getElementById("password").value;
     if (str.length > 0) {
       if (str.length < 6)
@@ -68,5 +68,5 @@ fetch("./common_passwords.txt").then(response => response.text()).then((text) =>
     }
     else
       document.getElementById("passStr").innerHTML = "None";
-  }, 200);
+  };
 });
