@@ -20,11 +20,10 @@ include_once 'includes/functions.php';
 
 sec_session_start();
 
-if (login_check($mysqli) == true) {
+if (login_check($mysqli) == true)
     $logged = 'in';
-} else {
+else
     $logged = 'out';
-}
 ?>
 <!DOCTYPE html>
 <html>
@@ -36,20 +35,26 @@ if (login_check($mysqli) == true) {
     </head>
     <body>
         <?php
-        if (isset($_GET['error'])) {
-            echo '<p class="error">Error Logging In!</p>';
-        }
+            if (isset($_GET['error']))
+                echo '<p class="error">Error Logging In!</p>';
         ?>
+        <h1>Secure Login</h1>
+        <br>
         <form action="includes/process_login.php" method="post" name="login_form">
-            Email: <input type="text" name="email" />
-            Password: <input type="password"
-                             name="password"
-                             id="password"/>
-            <input type="button"
-                   value="Login"
-                   onclick="formhash(this.form, this.form.password);" />
+            <div class="row align-items-center">
+                <div class="col-sm-1">Email:</div>
+                <div class="col-sm-2"><input type="text" name="email" /></div>
+                <div class="col-sm-1">Password:</div>
+                <div class="col-sm-2">
+                    <input type="password" name="password" id="password"/>
+                </div>
+                <div class="col-sm-2">
+                    <input type="button" class="btn" value="Login" onclick="formhash(this.form, this.form.password);" />
+                </div>
+            </div>
         </form>
         <p><a href="forgot.php">Forgot Password&#63</a></p>
+        <br>
         <p>If you don't have a login, please <a href="register.php">register</a></p>
         <p>If you are done, please <a href="includes/logout.php">log out</a>.</p>
         <p>You are currently logged <?php echo $logged ?>.</p>

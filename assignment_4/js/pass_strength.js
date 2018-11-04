@@ -44,22 +44,26 @@ function edit_distance(str1, str2) {
 fetch("./common_passwords.txt").then(response => response.text()).then((text) => {
   var comm_pass = text.replace(/\n$/, "").split("\n");
 
+  var weak_html = '<span class="text-danger"><b>Weak</b></span>';
+  var med_html = '<span class="text-warning">Medium</span>';
+  var strong_html = '<span class="text-success">Strong</span>';
+
   setInterval(() => {
     var str = document.getElementById("password").value;
     if (str.length > 0) {
       if (str.length < 6)
-        document.getElementById("passStr").innerHTML = "<b>Weak</b>";
+        document.getElementById("passStr").innerHTML = weak_html;
       else {
         var dist = 999;
         for (const pass of comm_pass)
           dist = Math.min(dist, edit_distance(str, pass) / (1.0 * str.length));
 
         if (dist < 0.2)
-          document.getElementById("passStr").innerHTML = "<b>Weak</b>";
+          document.getElementById("passStr").innerHTML = weak_html;
         else if ((dist > 0.5) && (/[A-Z]/.test(str)) && (/[a-z]/.test(str)) && (/[0-9]/.test(str)))
-          document.getElementById("passStr").innerHTML = "<i>Strong</i>";
+          document.getElementById("passStr").innerHTML = strong_html;
         else
-          document.getElementById("passStr").innerHTML = "Medium";
+          document.getElementById("passStr").innerHTML = med_html;
       }
     }
     else

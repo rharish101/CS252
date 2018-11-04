@@ -35,6 +35,25 @@ function reset_pass($mysqli, $old_pass, $new_pass)
         return -1;
     }
 }
+
+function is_valid($mysqli, $token)
+{
+    $prep_stmt = "SELECT username FROM members WHERE password = ?";
+    $stmt = $mysqli->prepare($prep_stmt);
+
+    if ($stmt)
+    {
+        $stmt->bind_param('s', $token);
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt->num_rows == 1)
+            return 1;
+        else
+            return 0;
+    }
+    else
+        return -1;
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -49,17 +68,22 @@ function reset_pass($mysqli, $old_pass, $new_pass)
         ?>
     </head>
     <body>
+        <h1>Password Reset</h1>
+        <br>
         <?php
-        if (isset($_POST['token'])) {
-            $result = reset_pass($mysqli, $_POST['token'], $_POST['p']);
-            if ($result == -1) {
-                die('<p class="error">Database error</p>');
-            } else {
-                die('<p>Password reset success.</p><br></p>Return to the <a href="index.php">login page</a>.</p>');
+            $valid = is_valid($mysqli, $_GET['token']);
+            if (isset($_POST['token']))
+            {
+                $result = reset_pass($mysqli, $_POST['token'], $_POST['p']);
+                if ($result == -1)
+                    die('<p class="error">Database error</p>');
+                else
+                    die('<p>Password reset success.</p><br></p>Return to the <a href="index.php">login page</a>.</p>');
             }
-        } elseif (!isset($_GET['token'])) {
-            die('<p class="error">Incorrect token</p>');
-        }
+            elseif ((!isset($_GET['token'])) || ($valid == 0))
+                die('<p class="error">Incorrect token</p>');
+            elseif ($valid == -1)
+                die('<p class="error">Database error</p>');
         ?>
         <ul>
             <li>Passwords must be at least 6 characters long</li>
@@ -70,15 +94,27 @@ function reset_pass($mysqli, $old_pass, $new_pass)
                     <li>At least one number (0..9)</li>
                 </ul>
             </li>
-            <li>Your password and confirmation must match exactly</li>
+            <li>Your password and confirmation must match</li>
         </ul>
         <form action="recover.php" method="post" name="login_form">
             <input type="hidden" name="token" value="<?php echo $_GET['token'] ?>" />
-            New Password: <input type="password" name="password" id="password" /> Strength: <span id="passStr">None</span><br>
-            Confirm Password: <input type="password" name="confirmpwd" id="confirmpwd" />
+            <table class="table-sm">
+                <tr>
+                    <td>New Password:</td>
+                    <td><input type="password" name="password" id="password" /></td>
+                    <td>Strength: <span id="passStr">None</span></td>
+                </tr>
+                <tr>
+                    <td>Confirm Password:</td>
+                    <td><input type="password" name="confirmpwd" id="confirmpwd" /></td>
+                </tr>
+            </table>
             <input type="button"
+                   class="btn"
                    value="Reset password"
                    onclick="resetformhash(this.form, this.form.password, this.form.confirmpwd);" />
         </form>
+        <br>
+        <p>Return to the <a href="index.php">login page</a>.</p>
     </body>
 </html>

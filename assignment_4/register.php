@@ -32,10 +32,10 @@ include_once 'includes/functions.php';
         <!-- Registration form to be output if the POST variables are not
         set or if the registration script caused an error. -->
         <h1>Register with us</h1>
+        <br>
         <?php
-        if (!empty($error_msg)) {
-            echo $error_msg;
-        }
+            if (!empty($error_msg))
+                echo $error_msg;
         ?>
         <ul>
             <li>Usernames may contain only digits, upper and lower case letters and underscores</li>
@@ -48,25 +48,39 @@ include_once 'includes/functions.php';
                     <li>At least one number (0..9)</li>
                 </ul>
             </li>
-            <li>Your password and confirmation must match exactly</li>
+            <li>Your password and confirmation must match</li>
         </ul>
         <form method="post" name="registration_form" action="<?php echo esc_url($_SERVER['PHP_SELF']); ?>">
-            Username: <input type='text' name='username' id='username' /><br>
-            Email: <input type="text" name="email" id="email" /><br>
-            Password: <input type="password"
-                             name="password"
-                             id="password"/> Strength: <span id="passStr">None</span><br>
-            Confirm password: <input type="password"
-                                     name="confirmpwd"
-                                     id="confirmpwd" /><br>
+            <table class="table-sm">
+                <tr>
+                    <td>Username</td>
+                    <td><input type='text' name='username' id='username' /></td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td><input type="text" name="email" id="email" /></td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td><input type="password" name="password" id="password"/></td>
+                    <td>Strength: <span id="passStr">None</span></td>
+                </tr>
+                <tr>
+                    <td>Confirm password</td>
+                    <td><input type="password" name="confirmpwd" id="confirmpwd" /></td>
+                </tr>
+                <tr>
+            </table>
             <input type="button"
-                   value="Register"
-                   onclick="return regformhash(this.form,
-                                   this.form.username,
-                                   this.form.email,
-                                   this.form.password,
-                                   this.form.confirmpwd);" />
+                value="Register"
+                class="btn"
+                onclick="return regformhash(this.form,
+                                            this.form.username,
+                                            this.form.email,
+                                            this.form.password,
+                                            this.form.confirmpwd);" />
         </form>
+        <br>
         <p>Return to the <a href="index.php">login page</a>.</p>
     </body>
 </html>
