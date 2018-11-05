@@ -81,8 +81,9 @@
     </header>
     <!-- Home-Area-End -->
 
-
-
+    <!-- Testimonial-Area -->
+    <div id="drivers"></div>
+    <!-- Testimonial-Area-End -->
 
     <section class="gallery-area section-padding" id="gallery_page">
         <div class="container-fluid">
@@ -172,7 +173,7 @@
                                             <div class="row">
                                                 <div class="col-xs-12">
                                                     <div class="page-title text-center">
-                                                        <h5 class="title">Drivers</h5>
+                                                        <h5 class="title">Closest Drivers</h5>
                                                         <div class="space-40"></div>
                                                     </div>
                                                 </div>
@@ -204,7 +205,7 @@
                 },
                 "json"
                 );
-                document.getElementById('drivers').scrollIntoView();
+                document.getElementById('drivers').scrollIntoView({behavior: "smooth", block: "start"});
 
         }
 
