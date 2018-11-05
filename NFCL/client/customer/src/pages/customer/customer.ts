@@ -181,7 +181,7 @@ export class CustomerPage {
             let sign: number = Math.sign(val1 - val2);
             if (sign == 0)
               sign = 1;
-            return val1 + 0.05 * sign;
+            return val1 + 0.1 * sign;
           }
 
           if (length > 0) {
@@ -191,7 +191,7 @@ export class CustomerPage {
             this.driver1Latitude = Number(drivers[0].latitude);
             this.driver1Longitude = Number(drivers[0].longitude);
 
-            if (this.driver1Dist < 0.05) {
+            if (this.driver1Dist < 0.1) {
               this.driver1Latitude = shift_val(this.driver1Latitude, resp.coords.latitude);
               this.driver1Longitude = shift_val(this.driver1Longitude, resp.coords.longitude);
             }
@@ -208,7 +208,7 @@ export class CustomerPage {
             this.driver2Latitude = Number(drivers[1].latitude);
             this.driver2Longitude = Number(drivers[1].longitude);
 
-            if (this.driver2Dist < 0.05) {
+            if (this.driver2Dist < 0.1) {
               this.driver2Latitude = shift_val(this.driver2Latitude, resp.coords.latitude);
               this.driver2Longitude = shift_val(this.driver2Longitude, resp.coords.longitude);
             }
@@ -225,7 +225,7 @@ export class CustomerPage {
             this.driver3Latitude = Number(drivers[2].latitude);
             this.driver3Longitude = Number(drivers[2].longitude);
 
-            if (this.driver3Dist < 0.05) {
+            if (this.driver3Dist < 0.1) {
               this.driver3Latitude = shift_val(this.driver3Latitude, resp.coords.latitude);
               this.driver3Longitude = shift_val(this.driver3Longitude, resp.coords.longitude);
             }
