@@ -105,7 +105,7 @@ $token_form = '
                 <div class="col-sm-2"><input type="submit" class="btn" value="Recover password" /></div>
             </div>
         </form>
-        <p>We will send you a recovery link to your email</p>
+        <p>We will send you a recovery token to your email</p>
         <br>
         If you have a password reset token,
         <br>
