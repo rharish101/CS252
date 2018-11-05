@@ -119,10 +119,10 @@ input:-webkit-autofill:focus {
 
 .bttn-white {
     position: relative;
-    background: rgb(47, 52, 63);
-    background: -webkit-linear-gradient(45deg, rgba(47, 52, 63, 1) 0%, rgba(99, 107, 128, 1) 100%);
-    background: -o-linear-gradient(45deg, rgba(47, 52, 63, 1) 0%, rgba(99, 107, 128, 1) 100%);
-    background: linear-gradient(45deg, rgba(47, 52, 63, 1) 0%, rgba(99, 107, 128, 1) 100%);
+    background: rgb(59, 132, 222);
+    background: -webkit-linear-gradient(45deg, rgba(59, 132, 222, 1) 0%, rgba(82, 148, 226, 1) 100%);
+    background: -o-linear-gradient(45deg, rgba(59, 132, 222, 1) 0%, rgba(82, 148, 226, 1) 100%);
+    background: linear-gradient(45deg, rgba(59, 132, 222, 1) 0%, rgba(82, 148, 226, 1) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#505666', endColorstr='#5294e2', GradientType=1);
     overflow: hidden;
     z-index: 1;
@@ -190,16 +190,16 @@ input:-webkit-autofill:focus {
 .bttn-default {
     padding: 12px 40px;
     /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#505666+0,6ac6f0+100 */
-    background: rgb(47, 52, 63);
+    background: rgb(211, 218, 227);
     /* Old browsers */
     /* FF3.6-15 */
-    background: -webkit-linear-gradient(45deg, rgba(47, 52, 63, 1) 0%, rgba(99, 107, 128, 1) 100%);
+    background: -webkit-linear-gradient(45deg, rgba(211, 218, 227, 1) 0%, rgba(211, 218, 227, 1) 100%);
     /* Chrome10-25,Safari5.1-6 */
-    background: -o-linear-gradient(45deg, rgba(47, 52, 63, 1) 0%, rgba(99, 107, 128, 1) 100%);
-    background: linear-gradient(45deg, rgba(47, 52, 63, 1) 0%, rgba(99, 107, 128, 1) 100%);
+    background: -o-linear-gradient(45deg, rgba(211, 218, 227, 1) 0%, rgba(211, 218, 227, 1) 100%);
+    background: linear-gradient(45deg, rgba(211, 218, 227, 1) 0%, rgba(211, 218, 227, 1) 100%);
     /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#505666', endColorstr='#5294e2', GradientType=1);
-    color: #d3dae3;
+    color: #636b80;
     -webkit-box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1);
     box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1);
     -webkit-transform: translateY(0);
@@ -208,7 +208,7 @@ input:-webkit-autofill:focus {
 }
 
 .bttn-default:hover {
-    color: #d3dae3;
+    color: #636b80;
     -webkit-box-shadow: 0 25px 50px -20px rgba(0, 0, 0, 0.6);
     box-shadow: 0 25px 50px -20px rgba(0, 0, 0, 0.6);
     -webkit-transform: translateY(-5px);
@@ -642,13 +642,13 @@ input:-webkit-autofill:focus {
 
 .gallery-area {
     /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#505666+0,6ac6f0+100 */
-    background: rgb(47, 52, 63);
+    background: rgb(59, 132, 222);
     /* Old browsers */
     /* FF3.6-15 */
-    background: -webkit-linear-gradient(45deg, rgba(47, 52, 63, 1) 0%, rgba(99, 107, 128, 1) 100%);
+    background: -webkit-linear-gradient(45deg, rgba(59, 132, 222, 1) 0%, rgba(82, 148, 226, 1) 100%);
     /* Chrome10-25,Safari5.1-6 */
-    background: -o-linear-gradient(45deg, rgba(47, 52, 63, 1) 0%, rgba(99, 107, 128, 1) 100%);
-    background: linear-gradient(45deg, rgba(47, 52, 63, 1) 0%, rgba(99, 107, 128, 1) 100%);
+    background: -o-linear-gradient(45deg, rgba(59, 132, 222, 1) 0%, rgba(82, 148, 226, 1) 100%);
+    background: linear-gradient(45deg, rgba(59, 132, 222, 1) 0%, rgba(82, 148, 226, 1) 100%);
     /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#505666', endColorstr='#5294e2', GradientType=1);
     /* IE6-9 fallback on horizontal gradient */
@@ -656,14 +656,15 @@ input:-webkit-autofill:focus {
 }
 
 .gallery-slide .owl-stage-outer {
-    background: url('images/mobile-screen.png') no-repeat center right / auto 100%;
+    background: url('images/device-framed.png') no-repeat center right / auto 100%;
 
 }
 
 .gallery-slide .item {
-    margin: 58px 17px 70px 15px;
+    margin: 70px 15px 60px 27px;
     overflow: hidden;
     border-radius: 2px;
+    width: 80%;
 }
 
 .gallery-slide .owl-controls {
