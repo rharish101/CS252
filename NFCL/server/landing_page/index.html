@@ -150,6 +150,7 @@
     <!-- CUSTOm SCRIPT -->
     <script>
         var x = document.getElementById("drivers");
+
         function getLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(make_post_request, showError);
@@ -158,8 +159,8 @@
                 x.innerHTML = "Geolocation is not supported by this browser.";
             }
         }
-        function make_post_request(position){
 
+        function make_post_request(position){
             $.post(
                 "http://nfcl.pythonanywhere.com/api/nearbyDriversWeb",
                 {
@@ -168,45 +169,51 @@
 
                 },
                 function(data,status){
-                    x.innerHTML = `<section class="testimonial-area" id="testimonial_page">
-                                        <div id=""class="container">
-                                            <div class="row">
-                                                <div class="col-xs-12">
-                                                    <div class="page-title text-center">
-                                                        <h5 class="title">Closest Drivers</h5>
-                                                        <div class="space-40"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-xs-offset-2 col-xs-8 text-center">
-                                                    <div class="team-slide">
-                                                        <div class="team-box">
-                                                            <h4>Ashekur Rahman</h4>
-                                                            <h5>7318015417</h5>
-                                                        </div>
-                                                        <div class="team-box">
-
-                                                            <h4>Ashekur Rahman</h4>
-                                                            <h5>7318015417</h5>
-
-                                                        </div>
-                                                        <div class="team-box">
-
-                                                            <h4>Ashekur Rahman</h4>
-                                                            <h5>7318015417</h5>
+                    if (status === "success") {
+                        var drivers = data.drivers;
+                        drivers.sort((a, b) => {
+                            if (Number(a.distance) < Number(b.distance))
+                                return -1;
+                            else if (Number(a.distance) > Number(b.distance))
+                                return 1;
+                            else
+                                return 0;
+                        })
+                        var html = `<section class="testimonial-area" id="testimonial_page">
+                                            <div id=""class="container">
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <div class="page-title text-center">
+                                                            <h5 class="title">Closest Drivers</h5>
+                                                            <div class="space-40"></div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                                <div class="row">
+                                                    <div class="col-xs-offset-2 col-xs-8 text-center">`;
+                        if (drivers.length == 0)
+                            html += '<h4 class="title">No Drivers Found</h4>';
+                        else {
+                            html += '<div class="team-slide">';
+                            for (var i = 0; i < drivers.length; i++) {
+                                html += '<div class="team-box"><h4>' + drivers[i].name + '</h4>';
+                                html += '<h5>' + drivers[i].mobile_no + '</h5>';
+                                html += '<h5>' + Math.round(Number(drivers[i].distance) / 10) / 100.0 + 'km away</h5>';
+                                html += '</div>';
+                            }
+                            html += '</div>';
+                        }
+                        html += `
                                         </div>
-                                    </section>;`
-
+                                    </div>
+                                </div>
+                            </section>`;
+                        x.innerHTML = html;
+                        document.getElementById('drivers').scrollIntoView({behavior: "smooth", block: "start"});
+                    }
                 },
                 "json"
                 );
-                document.getElementById('drivers').scrollIntoView({behavior: "smooth", block: "start"});
-
         }
 
         function showError(error) {
