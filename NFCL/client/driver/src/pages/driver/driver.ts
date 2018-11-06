@@ -28,7 +28,7 @@ import 'rxjs/add/operator/map';
 export class DriverPage {
   constructor(private network: Network, private storage: Storage, private geolocation: Geolocation, private statusBar: StatusBar, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public http: Http, public globalvars: GlobalVarsService, public push: Push) { }
 
-  private server: string = "http://nfcl.pythonanywhere.com/api/"
+  private server: string = "https://nfcl.pythonanywhere.com/api/"
   private delete_api: string = "deleteDriver";
   private update_api: string = "updateDriver";
 

@@ -77,7 +77,7 @@ export class CustomerPage {
     this.callNumber.callNumber(phone, true);
   }
 
-  private server: string = "http://nfcl.pythonanywhere.com/api/nearbyDrivers";
+  private server: string = "https://nfcl.pythonanywhere.com/api/nearbyDrivers";
 
   public driversInfo: string = "";
   public mapVisible: string = "hidden";
