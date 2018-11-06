@@ -9,7 +9,7 @@ from django.conf import settings
 
 
 def index(request):
-    return render(request, 'index.html', {})
+    return render(request, 'nfcl.html', {})
 
 def send_notification(message_title, message_body, registration_ids):
     try:
