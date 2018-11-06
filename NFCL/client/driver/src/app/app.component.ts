@@ -4,16 +4,18 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
-
+import { AlertController } from 'ionic-angular';
 import { HomePage } from '../pages/home/home';
 import { GlobalVarsService } from '../services/globalvars/globalvars';
+
 @Component({
   templateUrl: 'app.html'
 })
+
 export class MyApp {
   rootPage:any = HomePage;
 
-  constructor(private screenOrientation: ScreenOrientation, public platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public globalvars: GlobalVarsService, private push: Push) {
+  constructor(private screenOrientation: ScreenOrientation, public platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public globalvars: GlobalVarsService, private push: Push, public alertCtrl: AlertController) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -76,10 +78,20 @@ export class MyApp {
 
     const pushObject: PushObject = this.push.init(options);
 
-    pushObject.on('notification').subscribe((notification: any) => console.log('Received a notification', notification));
     pushObject.on('registration').subscribe((registration: any) => {
       console.log('Device registered', registration.registrationId);
       this.globalvars.registrationId = registration.registrationId;
+    });
+    pushObject.on('notification').subscribe((notification: any) => {
+      console.log('Received a notification', notification);
+      if (notification.additionalData.foreground) {
+      const alert = this.alertCtrl.create({
+        title: 'Info',
+        subTitle: 'You may be contacted by a customer',
+        buttons: ['Ok']
+      });
+      alert.present();
+      }
     });
     pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
   }
