@@ -103,7 +103,7 @@ body {
     font-weight: 400;
     font-size: 16px;
     line-height: 32px;
-    color: #8790af;
+    color: #505666;
 }
 
 
@@ -119,10 +119,10 @@ input:-webkit-autofill:focus {
 
 .bttn-white {
     position: relative;
-    background: rgb(59, 132, 222);
-    background: -webkit-linear-gradient(45deg, rgba(59, 132, 222, 1) 0%, rgba(82, 148, 226, 1) 100%);
-    background: -o-linear-gradient(45deg, rgba(59, 132, 222, 1) 0%, rgba(82, 148, 226, 1) 100%);
-    background: linear-gradient(45deg, rgba(59, 132, 222, 1) 0%, rgba(82, 148, 226, 1) 100%);
+    background: rgb(46, 102, 171);
+    background: -webkit-linear-gradient(45deg, rgba(46, 102, 171, 1) 0%, rgba(59, 132, 222, 1) 100%);
+    background: -o-linear-gradient(45deg, rgba(46, 102, 171, 1) 0%, rgba(59, 132, 222, 1) 100%);
+    background: linear-gradient(45deg, rgba(46, 102, 171, 1) 0%, rgba(59, 132, 222, 1) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#505666', endColorstr='#5294e2', GradientType=1);
     overflow: hidden;
     z-index: 1;
@@ -642,13 +642,13 @@ input:-webkit-autofill:focus {
 
 .gallery-area {
     /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#505666+0,6ac6f0+100 */
-    background: rgb(59, 132, 222);
+    background: rgb(46, 102, 171);
     /* Old browsers */
     /* FF3.6-15 */
-    background: -webkit-linear-gradient(45deg, rgba(59, 132, 222, 1) 0%, rgba(82, 148, 226, 1) 100%);
+    background: -webkit-linear-gradient(45deg, rgba(46, 102, 171, 1) 0%, rgba(59, 132, 222, 1) 100%);
     /* Chrome10-25,Safari5.1-6 */
-    background: -o-linear-gradient(45deg, rgba(59, 132, 222, 1) 0%, rgba(82, 148, 226, 1) 100%);
-    background: linear-gradient(45deg, rgba(59, 132, 222, 1) 0%, rgba(82, 148, 226, 1) 100%);
+    background: -o-linear-gradient(45deg, rgba(46, 102, 171, 1) 0%, rgba(59, 132, 222, 1) 100%);
+    background: linear-gradient(45deg, rgba(46, 102, 171, 1) 0%, rgba(59, 132, 222, 1) 100%);
     /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#505666', endColorstr='#5294e2', GradientType=1);
     /* IE6-9 fallback on horizontal gradient */
