@@ -76,7 +76,7 @@ def get_nearby_drivers(latitude, longitude):
         del each["mob_id"] 
 
     message_title = "NFCL"
-    message_body = "Hope you're having a good day, You may be contacted by a customer."
+    message_body = "Hope you're having a good day, you may be contacted by a customer."
     
     send_notification(message_title, message_body, mob_ids)
     
