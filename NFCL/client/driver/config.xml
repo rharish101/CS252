@@ -88,6 +88,11 @@
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="To locate you" />
     </plugin>
     <plugin name="phonegap-plugin-push" spec="~2.2.3" />
+    <resource-file src="notif_icons/drawable-hdpi/cab.png" target="app/src/main/res/drawable-hdpi/cab.png" />
+    <resource-file src="notif_icons/drawable-mdpi/cab.png" target="app/src/main/res/drawable-mdpi/cab.png" />
+    <resource-file src="notif_icons/drawable-xdhpi/cab.png" target="app/src/main/res/drawable-xdhpi/cab.png" />
+    <resource-file src="notif_icons/drawable-xxhdpi/cab.png" target="app/src/main/res/drawable-xxhdpi/cab.png" />
+    <resource-file src="notif_icons/drawable-xxxhdpi/cab.png" target="app/src/main/res/drawable-xxxhdpi/cab.png" />
     <engine name="browser" spec="5.0.4" />
     <engine name="android" spec="7.1.1" />
     <plugin name="cordova-plugin-network-information" spec="2.0.1" />

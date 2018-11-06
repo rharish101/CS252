@@ -59,15 +59,18 @@ export class MyApp {
     // to initialize push notifications
 
     const options: PushOptions = {
-      android: {},
+      android: {
+        icon: 'cab',
+        iconColor: '#FEC33A'
+      },
       ios: {
-          alert: 'true',
-          badge: true,
-          sound: 'false'
+        alert: 'true',
+        badge: true,
+        sound: 'false'
       },
       windows: {},
       browser: {
-          pushServiceURL: 'http://push.api.phonegap.com/v1/push'
+        pushServiceURL: 'http://push.api.phonegap.com/v1/push'
       }
     };
 
