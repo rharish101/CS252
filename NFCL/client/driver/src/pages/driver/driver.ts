@@ -115,7 +115,13 @@ export class DriverPage {
       this.updateLocation();
     });
 
-    const options: PushOptions = {android: {senderID: this.globalvars.registrationId}};
+    const options: PushOptions = {
+      android: {
+        senderID: this.globalvars.registrationId,
+        icon: 'cab',
+        iconColor: '#FEC33A'
+      }
+    };
     const pushObject: PushObject = this.push.init(options);
     pushObject.on('notification').subscribe((notification) => {
       console.log('Received notification', notification);
