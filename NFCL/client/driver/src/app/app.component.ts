@@ -82,17 +82,6 @@ export class MyApp {
       console.log('Device registered', registration.registrationId);
       this.globalvars.registrationId = registration.registrationId;
     });
-    pushObject.on('notification').subscribe((notification: any) => {
-      console.log('Received a notification', notification);
-      if (notification.additionalData.foreground) {
-      const alert = this.alertCtrl.create({
-        title: 'Info',
-        subTitle: 'You may be contacted by a customer',
-        buttons: ['Ok']
-      });
-      alert.present();
-      }
-    });
     pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
   }
 }

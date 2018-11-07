@@ -9,6 +9,7 @@ import { Network } from '@ionic-native/network';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
 import { Push, PushObject, PushOptions } from '@ionic-native/push';
+import { MyApp } from '../../app/app.component'
 import 'rxjs/add/operator/map';
 
 /**
@@ -118,6 +119,14 @@ export class DriverPage {
     const pushObject: PushObject = this.push.init(options);
     pushObject.on('notification').subscribe((notification) => {
       console.log('Received notification', notification);
+      if (notification.additionalData.foreground) {
+        this.showPopup({
+          title: 'Info',
+          message: 'You may be contacted by a customer',
+          buttons: ['Ok'],
+          cssClass: 'alertCustomCss',
+        });
+      }
     });
   }
 
