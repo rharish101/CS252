@@ -88,8 +88,8 @@
     <plugin name="cordova-plugin-geolocation" spec="4.0.1">
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="To locate you" />
     </plugin>
-    <engine name="browser" spec="5.0.4" />
-    <engine name="android" spec="7.1.1" />
     <plugin name="cordova-plugin-network-information" spec="2.0.1" />
     <plugin name="cordova-plugin-screen-orientation" spec="3.0.1" />
+    <engine name="browser" spec="5.0.4" />
+    <engine name="android" spec="7.1.1" />
 </widget>
