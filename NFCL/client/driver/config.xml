@@ -19,7 +19,6 @@
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <preference name="SplashScreen" value="screen" />
     <preference name="ShowSplashScreenSpinner" value="false" />
-    <resource-file src="notif_icons/drawable-xxxhdpi/cab.png" target="app/src/main/res/drawable/cab.png" />
     <platform name="android">
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
@@ -40,9 +39,11 @@
         <splash density="port-xhdpi" src="resources/android/splash/drawable-port-xhdpi-screen.png" />
         <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi-screen.png" />
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
-        <resource-file src="notif_icons/drawable-xxxhdpi/cab.png" target="app/src/main/res/drawable/cab.png" />
+        <resource-file src="notif/cab.png" target="app/src/main/res/drawable/cab.png" />
+        <resource-file src="notif/colors.xml" target="app/src/main/res/values/colors.xml" />
         <custom-config-file parent="./application" target="AndroidManifest.xml">
             <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@drawable/cab" />
+            <meta-data android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color/colorAccent" />
         </custom-config-file>
     </platform>
     <platform name="ios">
@@ -98,6 +99,7 @@
         <variable name="ANDROID_SUPPORT_V13_VERSION" value="27.+" />
         <variable name="FCM_VERSION" value="11.6.2" />
     </plugin>
+    <plugin name="cordova-custom-config" spec="5.0.2" />
     <engine name="browser" spec="5.0.4" />
     <engine name="android" spec="7.1.1" />
 </widget>
