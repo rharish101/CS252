@@ -3,7 +3,12 @@ Dockerized version of "Secure Login" for Heroku.
 
 ## Adding to Heroku
 1. Install the Heroku CLI
-2. Create the app as follows:
+2. Login as follows:
+```
+heroku login
+heroku container:login
+```
+3. Create the app as follows:
 ```
 heroku create cs252-a4
 ```
