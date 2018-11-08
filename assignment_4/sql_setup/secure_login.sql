@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 -- Database: `secure_login`
 --
 
+USE secure_login;
+
 -- --------------------------------------------------------
 
 --
