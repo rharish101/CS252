@@ -41,8 +41,9 @@ function send_mail($mysqli, $email)
                 <html>
                     <head><title>Reset Password</title>
                     <body>
-                        <p>Hello ' . $username . ',<p>
-                        <p>Your token for resetting the password in Secure Login is <b>' . $password . '</b>. Do not share this with anyone.
+                        <p>Hello ' . $username . ',</p>
+                        <p>Your token for resetting the password in Secure Login is <b>' . $password . '</b>.  Do not share this with anyone.</p>
+                        <p>If you did not request for a password reset, then you can safely ignore this mail</p>
                     </body>
                 </html>',
                 array(
