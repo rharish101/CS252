@@ -49,24 +49,27 @@ fetch("./common_passwords.txt").then(response => response.text()).then((text) =>
   var strong_html = '<span class="text-success">Strong</span>';
 
   window.onkeypress = () => {
-    var str = document.getElementById("password").value;
-    if (str.length > 0) {
-      if (str.length < 6)
-        document.getElementById("passStr").innerHTML = weak_html;
-      else {
-        var dist = 999;
-        for (const pass of comm_pass)
-          dist = Math.min(dist, edit_distance(str, pass) / (1.0 * str.length));
-
-        if (dist < 0.2)
+    var check = function() {
+      var str = document.getElementById("password").value;
+      if (str.length > 0) {
+        if (str.length < 6)
           document.getElementById("passStr").innerHTML = weak_html;
-        else if ((dist > 0.5) && (/[A-Z]/.test(str)) && (/[a-z]/.test(str)) && (/[0-9]/.test(str)))
-          document.getElementById("passStr").innerHTML = strong_html;
-        else
-          document.getElementById("passStr").innerHTML = med_html;
+        else {
+          var dist = 999;
+          for (const pass of comm_pass)
+            dist = Math.min(dist, edit_distance(str, pass) / (1.0 * str.length));
+
+          if (dist < 0.2)
+            document.getElementById("passStr").innerHTML = weak_html;
+          else if ((dist > 0.5) && (/[A-Z]/.test(str)) && (/[a-z]/.test(str)) && (/[0-9]/.test(str)))
+            document.getElementById("passStr").innerHTML = strong_html;
+          else
+            document.getElementById("passStr").innerHTML = med_html;
+        }
       }
-    }
-    else
-      document.getElementById("passStr").innerHTML = "None";
+      else
+        document.getElementById("passStr").innerHTML = "None";
+    };
+    setTimeout(check, 1000);
   };
 });

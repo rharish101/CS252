@@ -22,17 +22,15 @@ include_once 'psl-config.php';
 
 $error_msg = "";
 
-function check_user_exists($mysqli, $username)
+function check_user_exists($conn, $username)
 {
-    $prep_stmt = "SELECT id FROM members WHERE username = ? LIMIT 1";
-    $stmt = $mysqli->prepare($prep_stmt);
+    $prep_stmt = "SELECT id FROM members WHERE username = $1 LIMIT 1";
+    $stmt = pg_prepare($conn, "", $prep_stmt);
 
     if ($stmt) {
-        $stmt->bind_param('s', $username);
-        $stmt->execute();
-        $stmt->store_result();
+        $result = pg_execute($conn, "", array($username));
 
-        if ($stmt->num_rows == 1) {
+        if (pg_fetch_object($result)) {
             // A user with this username exists
             return 1;
         } else {
@@ -43,11 +41,11 @@ function check_user_exists($mysqli, $username)
     }
 }
 
-function get_username($mysqli, $username)
+function get_username($conn, $username)
 {
     $count = 0;
     while (true) {
-        $result = check_user_exists($mysqli, $username . ((string) $count));
+        $result = check_user_exists($conn, $username . ((string) $count));
         if ($result == -1) {
             return "";
         } else if ($result == 0) {
@@ -80,25 +78,23 @@ if (isset($_POST['username'], $_POST['email'], $_POST['p'])) {
     // breaking these rules.
     //
 
-    $prep_stmt = "SELECT id FROM members WHERE email = ? LIMIT 1";
-    $stmt = $mysqli->prepare($prep_stmt);
+    $prep_stmt = "SELECT id FROM members WHERE email = $1 LIMIT 1";
+    $stmt = pg_prepare($conn, "", $prep_stmt);
 
     if ($stmt) {
-        $stmt->bind_param('s', $email);
-        $stmt->execute();
-        $stmt->store_result();
+        $result = pg_execute($conn, "", array($email));
 
-        if ($stmt->num_rows == 1) {
+        if (pg_fetch_object($result)) {
             // A user with this email address already exists
             $error_msg .= '<p class="error">A user with this email address already exists.</p>';
         }
         else {
-            $result = check_user_exists($mysqli, $username);
+            $result = check_user_exists($conn, $username);
             if ($result == -1) {
                 $error_msg .= '<p class="error">Database error</p>';
             } else if ($result == 1) {
                 // A user with this username already exists
-                $new_name = get_username($mysqli, $username);
+                $new_name = get_username($conn, $username);
                 if ($username === "") {
                     $error_msg .= '<p class="error">Database error</p>';
                 } else {
@@ -123,10 +119,9 @@ if (isset($_POST['username'], $_POST['email'], $_POST['p'])) {
         $password = hash('sha512', $password . $random_salt);
 
         // Insert the new user into the database
-        if ($insert_stmt = $mysqli->prepare("INSERT INTO members (username, email, password, salt) VALUES (?, ?, ?, ?)")) {
-            $insert_stmt->bind_param('ssss', $username, $email, $password, $random_salt);
-            // Execute the prepared query.
-            if (! $insert_stmt->execute()) {
+        if ($insert_stmt = pg_prepare($conn, "", "INSERT INTO members (username, email, password, salt) VALUES ($1, $2, $3, $4)")) {
+            $result = pg_execute($conn, "", array($username, $email, $password, $random_salt)); // Execute the prepared query.
+            if (! $result) {
                 header('Location: ../error.php?err=Registration failure: INSERT');
                 exit();
             }

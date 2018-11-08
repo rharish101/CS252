@@ -18,35 +18,31 @@
 include_once 'includes/db_connect.php';
 include_once 'includes/functions.php';
 
-function reset_pass($mysqli, $old_pass, $new_pass)
+function reset_pass($conn, $old_pass, $new_pass)
 {
     $random_salt = hash('sha512', uniqid(openssl_random_pseudo_bytes(16), TRUE));
     $new_pass = hash('sha512', $new_pass . $random_salt);
 
-    $prep_stmt = "UPDATE members SET password = ?, salt = ? WHERE password = ?";
-    $stmt = $mysqli->prepare($prep_stmt);
+    $prep_stmt = "UPDATE members SET password = $1, salt = $2 WHERE password = $3";
+    $stmt = pg_prepare($conn, "", $prep_stmt);
 
     if ($stmt) {
-        $stmt->bind_param('sss', $new_pass, $random_salt, $old_pass);
-        $stmt->execute();
-        $stmt->store_result();
+        $result = pg_execute($conn, "", array($new_pass, $random_salt, $old_pass));
         return 0;
     } else {
         return -1;
     }
 }
 
-function is_valid($mysqli, $token)
+function is_valid($conn, $token)
 {
-    $prep_stmt = "SELECT username FROM members WHERE password = ?";
-    $stmt = $mysqli->prepare($prep_stmt);
+    $prep_stmt = "SELECT username FROM members WHERE password = $1";
+    $stmt = pg_prepare($conn, "", $prep_stmt);
 
     if ($stmt)
     {
-        $stmt->bind_param('s', $token);
-        $stmt->execute();
-        $stmt->store_result();
-        if ($stmt->num_rows == 1)
+        $result = pg_execute($conn, "", array($token));
+        if ($result)
             return 1;
         else
             return 0;
@@ -71,10 +67,10 @@ function is_valid($mysqli, $token)
         <h1>Password Reset</h1>
         <br>
         <?php
-            $valid = is_valid($mysqli, $_GET['token']);
+            $valid = is_valid($conn, $_GET['token']);
             if (isset($_POST['token']))
             {
-                $result = reset_pass($mysqli, $_POST['token'], $_POST['p']);
+                $result = reset_pass($conn, $_POST['token'], $_POST['p']);
                 if ($result == -1)
                     die('<p class="error">Database error</p>');
                 else

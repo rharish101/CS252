@@ -18,20 +18,18 @@
 include_once 'includes/db_connect.php';
 include_once 'includes/functions.php';
 
-function send_mail($mysqli, $email)
+function send_mail($conn, $email)
 {
-    $prep_stmt = "SELECT username, password FROM members WHERE email = ? LIMIT 1";
-    $stmt = $mysqli->prepare($prep_stmt);
+    $prep_stmt = "SELECT username, password FROM members WHERE email = $1 LIMIT 1";
+    $stmt = pg_prepare($conn, "", $prep_stmt);
 
     if ($stmt)
     {
-        $stmt->bind_param('s', $email);
-        $stmt->execute();
-        $stmt->store_result();
-        $stmt->bind_result($username, $password);
-        $stmt->fetch();
+        $result = pg_execute($conn, "", array($email));
+        $username = pg_fetch_result($result, 0, 0);
+        $password = pg_fetch_result($result, 0, 1);
 
-        if ($stmt->num_rows == 1)
+        if ($result)
         {
             $sender = 'harish.rajagopals@gmail.com';
             mail(
@@ -89,7 +87,7 @@ $token_form = '
             if (isset($_POST['done']))
             {
                 $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-                $result = send_mail($mysqli, $email);
+                $result = send_mail($conn, $email);
                 if ($result == 1)
                     echo '<p class="error">This email is not registered</p>';
                 elseif ($result == -1)

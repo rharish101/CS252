@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * Copyright (C) 2013 peredur.net
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,8 +19,8 @@
 
 include_once 'psl-config.php';   // Needed because functions.php is not included
 
-$mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
-if ($mysqli->connect_error) {
-    header("Location: error.php?err=Unable to connect to MySQL");
+$conn = pg_connect(getenv("DATABASE_URL"));
+if (!$conn) {
+    header("Location: error.php?err=Unable to connect to PostgreSQL");
     exit();
 }
