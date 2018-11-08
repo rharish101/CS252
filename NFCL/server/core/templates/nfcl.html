@@ -16,6 +16,7 @@
     <!-- Plugin-CSS -->
     <link rel="stylesheet" href="{% static 'core/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'core/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/owl.theme.default.min.css' %}">
     <link rel="stylesheet" href="{% static 'core/css/linearicons.css' %}">
     <link rel="stylesheet" href="{% static 'core/css/magnific-popup.css' %}">
     <link rel="stylesheet" href="{% static 'core/css/animate.css' %}">
@@ -36,7 +37,7 @@
     <div class="preloader">
         <span><i class="lnr lnr-sun"></i></span>
     </div>
-    
+
     <!-- Home-Area -->
     <header class="home-area overlay" id="home_page">
         <div class="container">
@@ -53,10 +54,11 @@
                     <div class="desc wow fadeInUp" data-wow-delay="0.6s">
                         <p>The "No-Frills Cab Locator" helps connect customers directly to drivers. It's easy to use, requiring just the click of a button; truly no-frills.</p>
                     </div>
-                    <div class="space-20"></div>
-                    <a href="#" class="bttn-white wow fadeInUp" data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: fadeInUp;"><i class="lnr lnr-download"></i>Download Customer App</a>
-
-                    <a href="#" class="bttn-white wow fadeInUp" data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: fadeInUp;"><i class="lnr lnr-download"></i>Download Driver App</a>
+                    <div class="space-40"></div>
+                    <div id="app-download">
+                      <a href="{% static 'core/apk/NFCL-customer.apk' %}" download class="bttn-white wow fadeInUp" data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: fadeInUp;"><i class="lnr lnr-download"></i>Download Customer App</a>
+                      <a href="{% static 'core/apk/NFCL-driver.apk' %}" download class="bttn-white wow fadeInUp" data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: fadeInUp;"><i class="lnr lnr-download"></i>Download Driver App</a>
+                    </div>
                     <!--  -->
                     <div class="space-40"></div>
                     <button onclick="getLocation()" class="bttn-white wow fadeInUp" data-wow-delay="0.8s"><i class="lnr "></i>Try It Now : Get NearBy Drivers</button>
@@ -72,7 +74,7 @@
     <!-- Testimonial-Area-End -->
 
     <section class="gallery-area section-padding" id="gallery_page">
-        <div class="container-fluid">
+        <!-- <div class="container-fluid">
             <div class="row">
                 <div class="col-xs-12 col-sm-6 gallery-slider">
                     <div class="gallery-slide">
@@ -90,22 +92,46 @@
                         <div class="item"><img src="{% static 'core/images/g4.png' %}" alt=""></div>
                         <div class="item"><img src="{% static 'core/images/g2.png' %}" alt=""></div>
                         <div class="item"><img src="{% static 'core/images/g3.png' %}" alt=""></div>
-
-                       
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-5 col-lg-3">
                     <div class="page-title">
-                        <h5 class="white-color title wow fadeInUp" data-wow-delay="0.2s">Screenshots</h5>
-                        <div class="space-10"></div>
-                        <h3 class="white-color wow fadeInUp" data-wow-delay="0.4s">Truly No Frills</h3>
+                        [><h5 class="white-color title wow fadeInUp" data-wow-delay="0.2s">Screenshots</h5><]
+                        [><div class="space-10"></div><]
+                        <h3 class="white-color wow fadeInUp" data-wow-delay="0.4s">Screenshots</h3>
                     </div>
-                    <div class="space-20"></div>
+                    [><div class="space-20"></div><]
                     <div class="desc wow fadeInUp" data-wow-delay="0.6s">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiing elit, sed do eiusmod tempor incididunt ut labore et laborused sed do eiusmod tempor incididunt ut labore et laborused.</p>
+                        <p>Here are some screenshots from our apps</p>
                     </div>
-                    <div class="space-50"></div>
-                    <a href="#" class="bttn-default wow fadeInUp" data-wow-delay="0.8s">Learn More</a>
+                    <div class="space-30"></div>
+                    <button onclick="document.getElementById('app-download').scrollIntoView({behavior: 'smooth', block: 'end'});" class="bttn-default wow fadeInUp" data-wow-delay="0.8s">Get the App</a>
+                </div>
+            </div>
+        </div> -->
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 gallery-back">
+                    <div class="owl-carousel">
+                        <div class="item" style="width: 250px;"><img src="{% static 'core/images/g1.png' %}" alt=""></div>
+                        <div class="item" style="width: 250px;"><img src="{% static 'core/images/g4.png' %}" alt=""></div>
+                        <div class="item" style="width: 250px;"><img src="{% static 'core/images/g2.png' %}" alt=""></div>
+                        <div class="item" style="width: 250px;"><img src="{% static 'core/images/g3.png' %}" alt=""></div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-5 col-lg-3">
+                    <div class="space-20"></div>
+                    <div class="page-title">
+                        <!-- <h5 class="white-color title wow fadeInUp" data-wow-delay="0.2s">Screenshots</h5> -->
+                        <!-- <div class="space-10"></div> -->
+                        <h3 class="white-color wow fadeInUp" data-wow-delay="0.4s">Screenshots</h3>
+                    </div>
+                    <!-- <div class="space-20"></div> -->
+                    <div class="desc wow fadeInUp" data-wow-delay="0.6s">
+                        <p>Here are some screenshots from our apps</p>
+                    </div>
+                    <div class="space-30"></div>
+                    <button onclick="document.getElementById('app-download').scrollIntoView({behavior: 'smooth', block: 'end'});" class="bttn-default wow fadeInUp" data-wow-delay="0.8s">Get the App</a>
                 </div>
             </div>
         </div>
@@ -120,7 +146,7 @@
             <div class="container">
                 <div class="row">
                     <div class=" text-center">
-                           
+
 
                             <span>&copy;<script>document.write(new Date().getFullYear());</script> NFCL. All rights reserved </span>
 
@@ -228,6 +254,27 @@
     <script src="{% static 'core/js/vendor/bootstrap.min.js' %}"></script>
     <!--Plugin-JS-->
     <script src="{% static 'core/js/owl.carousel.min.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+            $(".owl-carousel").owlCarousel({
+                margin: 60,
+                loop: true,
+                autoWidth: true,
+                dots: true,
+                center: true,
+                autoplay: true,
+                autoplayTimeout: 2000,
+                responsive: {
+                    0: {
+                        items: 1,
+                        margin: 300
+                    },
+                    600: {items: 2},
+                    1000: {items: 4}
+                }
+            });
+        })
+    </script>
     <script src="{% static 'core/js/contact-form.js' %}"></script>
     <script src="{% static 'core/js/ajaxchimp.js' %}"></script>
     <script src="{% static 'core/js/scrollUp.min.js' %}"></script>

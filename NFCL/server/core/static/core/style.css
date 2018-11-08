@@ -660,9 +660,15 @@ input:-webkit-autofill:focus {
 
 }
 
+.gallery-back {
+    background: url('images/device-framed.png') no-repeat center center / auto 575px !important;
+    padding: 150px 5px 0px;
+}
+
 .gallery-slide .item {
     margin: 70px 0px 60px 0px;
-    padding-right: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
     overflow: hidden;
     border-radius: 2px;
 }
