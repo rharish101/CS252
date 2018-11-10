@@ -1341,3 +1341,27 @@ input:-webkit-autofill:focus {
 .lnr-arrow-up {
     color: #2f343f;
 }
+
+#map {
+  height: 360px;
+  border: 1px solid rgba(100, 100, 100, 0.05);
+}
+
+.map-box {
+    position: relative;
+    -webkit-box-shadow: 0 0 30px -5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 30px -5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin-top: 40px;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
+    margin-bottom: 30px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.map-box:hover {
+    -webkit-box-shadow: 0 0 60px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 60px 0 rgba(0, 0, 0, 0.1);
+}
