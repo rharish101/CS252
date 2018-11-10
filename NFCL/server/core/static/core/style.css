@@ -1337,3 +1337,7 @@ input:-webkit-autofill:focus {
 .form-double .box.last {
     float: right;
 }
+
+.lnr-arrow-up {
+    color: #2f343f;
+}
