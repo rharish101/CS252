@@ -65,19 +65,22 @@ def get_nearby_drivers(latitude, longitude):
 
     drivers = [obj.to_dict() for obj in drivers]
 
-    drivers = [
-        d
-        for d in drivers
-        if (int(d["timestamp"]) >= last_allowed)
-        and (
-            int(
-                get_distance(
+    
+    allowed_drivers = []
+    for d in drivers:
+        if(int(d["timestamp"]) >= last_allowed):
+            allowed_drivers = allowed_drivers.append(d)
+        else:
+            try:
+                Driver.objects.filter(mob_id=d["mob_id"]).delete()
+            except:
+                pass
+    drivers = [ d for d in allowed_drivers if
+            int(  get_distance(
                     (x_cordinate, y_cordinate),
                     (int(d["x_cordinate"]), int(d["y_cordinate"])),
                 )
-            )
-            < 10 * 1000
-        )
+            ) < 10 * 1000
     ]
 
     drivers = [
