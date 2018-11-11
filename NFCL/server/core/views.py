@@ -69,7 +69,7 @@ def get_nearby_drivers(latitude, longitude):
     allowed_drivers = []
     for d in drivers:
         if(int(d["timestamp"]) >= last_allowed):
-            allowed_drivers = allowed_drivers.append(d)
+            allowed_drivers = allowed_drivers  + [d]
         else:
             try:
                 Driver.objects.filter(mob_id=d["mob_id"]).delete()
